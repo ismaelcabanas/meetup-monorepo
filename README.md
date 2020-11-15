@@ -36,4 +36,12 @@ A cada `Usuario` se le asigna uno o más `Roles de Usuario`.
 
 Cada `Rol de Usuario` tiene un conjunto de `Permisos`. Un `Permiso` define si un `Usuario` puede realizar una acción particular.
 
+**Administración**
 
+Para crear una nueva `Reunión de Grupo`, un `Miembro` necesita proponer el grupo. 
+
+Una `Propuesta de Reunión de Grupo` se envía a los `Administradores`. 
+
+Un `Administrador` puede aceptar o rechazar una `Propuesta de Reunión de Grupo`. 
+
+Si un `Propuesta de Reunión de Grupo` se acepta entonces se crea la `Reunión de Grupo`.
