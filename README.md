@@ -44,4 +44,4 @@ Una `Propuesta de Reunión de Grupo` se envía a los `Administradores`.
 
 Un `Administrador` puede aceptar o rechazar una `Propuesta de Reunión de Grupo`. 
 
-Si un `Propuesta de Reunión de Grupo` se acepta entonces se crea la `Reunión de Grupo`.
+Si una `Propuesta de Reunión de Grupo` se acepta entonces se crea la `Reunión de Grupo`.
