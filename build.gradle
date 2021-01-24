@@ -50,6 +50,7 @@ allprojects {
 		testImplementation("io.rest-assured:spring-mock-mvc:3.1.1")
 		testImplementation("com.github.javafaker:javafaker:1.0.1")
 		testImplementation("io.kotest:kotest-assertions-core:$kotestAssertionsVersion")
+		testImplementation "io.mockk:mockk:1.10.5"
 	}
 }
 

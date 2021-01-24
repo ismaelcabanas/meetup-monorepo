@@ -30,11 +30,19 @@ Entre los requisitos que nos vamos a encontrar:
 
 **Usuarios**
 
-Cada `Administrador`, `Miembro` y `Pagador` es un `Usuario`. Para ser un `Usuario`, se requiere un `Registro de Usuario` y una confirmación de la misma.
+ - Cada `Administrador`, `Miembro` y `Pagador` es un `Usuario`. 
 
-A cada `Usuario` se le asigna uno o más `Roles de Usuario`.
+ - Para ser un `Usuario`, se requiere que el usuario se registre previamente (`Registro de Usuario`) que confirme el registro. 
 
-Cada `Rol de Usuario` tiene un conjunto de `Permisos`. Un `Permiso` define si un `Usuario` puede realizar una acción particular.
+ - El usuario sólo puede registrarse una sola vez.
+
+ - Un registro de usuario puede expirar mientras esté pendiente de confirmación.
+   
+ - El usuario deberá confirmar el registro de usuario para poder ser registrado en el sistema.
+   
+ - A cada `Usuario` se le asigna uno o más `Roles de Usuario`.
+
+ - Cada `Rol de Usuario` tiene un conjunto de `Permisos`. Un `Permiso` define si un `Usuario` puede realizar una acción particular.
 
 **Administración**
 
