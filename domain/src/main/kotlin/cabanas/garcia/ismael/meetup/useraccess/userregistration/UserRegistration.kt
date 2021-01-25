@@ -12,9 +12,33 @@ data class UserRegistration (
     val firstName:String,
     val lastName: String,
     val status: UserRegistrationStatus = UserRegistrationStatus.WAITING_FOR_CONFIRMATION,
-    val events: List<DomainEvent> = emptyList(),
-    val registerDate: Instant? = null
+    val registerDate: Instant? = Instant.now()
 ) {
+    private var events: List<DomainEvent> = mutableListOf()
+
+    private constructor(
+        id: UserRegistrationId,
+        login: String,
+        password: String,
+        email: String,
+        firstName: String,
+        lastName: String,
+        status: UserRegistrationStatus,
+        registerDate: Instant?,
+        events: List<DomainEvent>
+    ) : this(
+        id,
+        login,
+        password,
+        email,
+        firstName,
+        lastName,
+        status,
+        registerDate
+    ) {
+        this.events = events
+    }
+
     fun register(usersCounter: UsersCounter) =
         if (usersCounter.countUsersByLogin(this.login) == 0)
             UserRegistration(
@@ -24,9 +48,10 @@ data class UserRegistration (
                 this.email,
                 this.firstName,
                 this.lastName,
-                events = mutableListOf(NewUserRegistered(id.value, login, email, firstName, lastName)),
-                registerDate = Instant.now()
-            )
+                this.status,
+                this.registerDate,
+                events = mutableListOf(NewUserRegistered(id.value, login, email, firstName, lastName))
+                )
         else throw UserRegistrationAlreadyExistException(this.login)
 
     fun id() = id.value

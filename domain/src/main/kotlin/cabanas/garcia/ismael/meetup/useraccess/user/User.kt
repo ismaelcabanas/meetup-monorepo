@@ -15,7 +15,7 @@ data class User(
     private var events: List<DomainEvent> = mutableListOf()
     val isActive: Boolean = true
 
-    constructor(
+    private constructor(
         userId: String,
         login: String,
         password: String,
