@@ -46,10 +46,13 @@ Entre los requisitos que nos vamos a encontrar:
 
 **Administración**
 
-Para crear una nueva `Reunión de Grupo`, un `Miembro` necesita proponer el grupo. 
+Para crear un nuevo `Grupo de Meetup`, un `Miembro` debe hacer una `Propuesta de Grupo de Meetup`.
 
-Una `Propuesta de Reunión de Grupo` se envía a los `Administradores`. 
+Para proponer una `Propuesta de Grupo de Meetup` se necesita indicar un nombre, una descripción, la localización, el usuario que la propone y la fecha del meetup.
 
-Un `Administrador` puede aceptar o rechazar una `Propuesta de Reunión de Grupo`. 
+Una `Propuesta de Grupo de Meetup` se envía a los `Administradores`. 
 
-Si una `Propuesta de Reunión de Grupo` se acepta entonces se crea la `Reunión de Grupo`.
+Un `Administrador` puede aceptar o rechazar una `Propuesta de Grupo de Meetup`. Si se rechaza la propuesta se debe 
+indicar el motivo del rechazo.
+
+Si una `Propuesta de Grupo de Meetup` se acepta entonces se crea el `Grupo de Meetup`.
