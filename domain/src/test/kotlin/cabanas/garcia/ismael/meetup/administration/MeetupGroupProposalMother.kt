@@ -13,12 +13,11 @@ object MeetupGroupProposalMother {
 
     fun aMeetupGroupProposalPendingOfApproval(): MeetupGroupProposal =
         MeetupGroupProposal(
-            SOME_ID,
+            MeetupGroupProposalId(SOME_ID),
             SOME_USER_ID,
-            SOME_COUNTRY,
-            SOME_CITY,
             SOME_NAME,
             SOME_DESCRIPTION,
+            MeetupLocation(SOME_COUNTRY, SOME_CITY),
             Instant.parse(SOME_DATE)
         )
 

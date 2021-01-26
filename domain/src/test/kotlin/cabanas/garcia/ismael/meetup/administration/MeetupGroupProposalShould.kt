@@ -13,10 +13,13 @@ class MeetupGroupProposalShould {
             MeetupGroupProposalFactory.createProposal(SOME_ID, SOME_USER_ID, SOME_NAME, SOME_DESCRIPTION, SOME_COUNTRY, SOME_CITY, Instant.parse(SOME_DATE))
 
         meetupGroupProposal.events() shouldContain
-                MeetupGroupProposalCreated(
-                    meetupGroupProposal.id,
-                    meetupGroupProposal.country,
-                    meetupGroupProposal.city,
+            MeetupGroupProposalCreated(
+                    meetupGroupProposal.id.value,
+                    meetupGroupProposal.proposalUserId,
+                    meetupGroupProposal.name,
+                    meetupGroupProposal.description,
+                    meetupGroupProposal.location.country,
+                    meetupGroupProposal.location.city,
                     meetupGroupProposal.date
                 )
         meetupGroupProposal.status shouldBe MeetupGroupProposalStatus.PENDING_OF_APPROVAL
@@ -31,7 +34,7 @@ class MeetupGroupProposalShould {
 
         meetupGroupProposalApproved.events() shouldContain
                 MeetupGroupProposalApproved(
-                    meetupGroupProposalApproved.id,
+                    meetupGroupProposalApproved.id.value,
                     meetupGroupProposalApproved.proposalUserId
                 )
         meetupGroupProposalApproved.status shouldBe MeetupGroupProposalStatus.APPROVED
@@ -58,7 +61,7 @@ class MeetupGroupProposalShould {
             meetupGroupProposalApproved.approve(memberUser)
         }
 
-        exception.message shouldBe "Meetup group proposal '${meetupGroupProposalApproved.id}' already approved."
+        exception.message shouldBe "Meetup group proposal '${meetupGroupProposalApproved.id.value}' already approved."
     }
 
     @Test
@@ -70,7 +73,7 @@ class MeetupGroupProposalShould {
 
         meetupGroupProposalRejected.events() shouldContain
                 MeetupGroupProposalRejected(
-                    meetupGroupProposalRejected.id,
+                    meetupGroupProposalRejected.id.value,
                     meetupGroupProposalRejected.proposalUserId
                 )
         meetupGroupProposalRejected.status shouldBe MeetupGroupProposalStatus.REJECTED
@@ -97,7 +100,7 @@ class MeetupGroupProposalShould {
             meetupGroupProposalRejected.reject(memberUser)
         }
 
-        exception.message shouldBe "Meetup group proposal '${meetupGroupProposalRejected.id}' already rejected."
+        exception.message shouldBe "Meetup group proposal '${meetupGroupProposalRejected.id.value}' already rejected."
     }
 
     private companion object {

@@ -4,24 +4,22 @@ import cabanas.garcia.ismael.meetup.useraccess.userregistration.DomainEvent
 import java.time.Instant
 
 data class MeetupGroupProposal(
-    val id: String,
+    val id: MeetupGroupProposalId,
     val proposalUserId: String,
     val name: String,
     val description: String,
-    val country: String,
-    val city: String,
+    val location: MeetupLocation,
     val date: Instant,
     val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL
 ) {
     private var events: List<DomainEvent> = mutableListOf()
 
     private constructor(
-        id: String,
+        id: MeetupGroupProposalId,
         userId: String,
         name: String,
         description: String,
-        country: String,
-        city: String,
+        location: MeetupLocation,
         date: Instant,
         status: MeetupGroupProposalStatus,
         events: List<DomainEvent>
@@ -30,8 +28,7 @@ data class MeetupGroupProposal(
         userId,
         name,
         description,
-        country,
-        city,
+        location,
         date,
         status
     ) {
@@ -46,17 +43,18 @@ data class MeetupGroupProposal(
             proposalUserId,
             name,
             description,
-            country,
-            city,
+            location,
             date,
             MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
-            events = mutableListOf<DomainEvent>(MeetupGroupProposalCreated(id, country, city, date))
+            events = mutableListOf<DomainEvent>(
+                MeetupGroupProposalCreated(id.value, proposalUserId, name, description, location.country, location.city, date)
+            )
         )
     }
 
     fun approve(user: User): MeetupGroupProposal {
         if (status == MeetupGroupProposalStatus.APPROVED) {
-            throw MeetupGroupProposalAlreadyApprovedException(this.id)
+            throw MeetupGroupProposalAlreadyApprovedException(id)
         }
         if (!user.isAdmin()) {
             throw MeetupGroupProposalCannotBeApprovedException(user.id)
@@ -67,17 +65,16 @@ data class MeetupGroupProposal(
             proposalUserId,
             name,
             description,
-            country,
-            city,
+            location,
             date,
             status = MeetupGroupProposalStatus.APPROVED,
-            events = mutableListOf<DomainEvent>(MeetupGroupProposalApproved(this.id, this.proposalUserId))
+            events = mutableListOf<DomainEvent>(MeetupGroupProposalApproved(id.value, proposalUserId))
         )
     }
 
     fun reject(user: User): MeetupGroupProposal {
         if (status == MeetupGroupProposalStatus.REJECTED) {
-            throw MeetupGroupProposalAlreadyRejectedException(this.id)
+            throw MeetupGroupProposalAlreadyRejectedException(id)
         }
         if (!user.isAdmin()) {
             throw MeetupGroupProposalCannotBeRejectedException(user.id)
@@ -88,11 +85,10 @@ data class MeetupGroupProposal(
             proposalUserId,
             name,
             description,
-            country,
-            city,
+            location,
             date,
             status = MeetupGroupProposalStatus.REJECTED,
-            events = mutableListOf<DomainEvent>(MeetupGroupProposalRejected(this.id, this.proposalUserId))
+            events = mutableListOf<DomainEvent>(MeetupGroupProposalRejected(id.value, proposalUserId))
         )
     }
 }
