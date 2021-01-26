@@ -11,11 +11,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class UserRegistrationShould {
-    lateinit var usersCounter: UsersCounter
+    var usersCounter: UsersCounter = mockk()
 
     @BeforeEach
     fun `configure source under test`() {
-        usersCounter = mockk()
         every { usersCounter.countUsersByLogin(SOME_LOGIN) } returns 0
     }
 
