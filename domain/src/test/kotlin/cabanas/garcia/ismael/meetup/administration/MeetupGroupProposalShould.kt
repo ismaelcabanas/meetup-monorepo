@@ -40,7 +40,7 @@ class MeetupGroupProposalShould {
                     meetupGroupProposalPendingOfApproval.description,
                     meetupGroupProposalPendingOfApproval.location.country,
                     meetupGroupProposalPendingOfApproval.location.city,
-                    meetupGroupProposalPendingOfApproval.proposalDate
+                    meetupGroupProposalApproved.decisionDate!!
                 )
         meetupGroupProposalApproved.status shouldBe MeetupGroupProposalStatus.APPROVED
     }
@@ -81,7 +81,8 @@ class MeetupGroupProposalShould {
                 MeetupGroupProposalRejected(
                     meetupGroupProposalRejected.id.value,
                     meetupGroupProposalRejected.proposalUserId.value,
-                    rejectedReason
+                    rejectedReason,
+                    meetupGroupProposalRejected.decisionDate!!
                 )
         meetupGroupProposalRejected.status shouldBe MeetupGroupProposalStatus.REJECTED
     }

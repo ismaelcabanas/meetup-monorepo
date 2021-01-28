@@ -4,7 +4,7 @@ import java.time.Instant
 
 object MeetupGroupProposalMother {
     private const val SOME_ID = "some id"
-    private const val SOME_USER_ID = "some id"
+    private const val SOME_USER_ID = "some user id"
     private const val SOME_COUNTRY = "some country"
     private const val SOME_CITY = "some city"
     private const val SOME_NAME = "some name"
