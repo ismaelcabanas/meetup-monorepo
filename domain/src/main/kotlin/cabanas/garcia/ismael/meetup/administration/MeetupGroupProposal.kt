@@ -10,7 +10,8 @@ data class MeetupGroupProposal(
     val description: String,
     val location: MeetupLocation,
     val date: Instant,
-    val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL
+    val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
+    val rejectedReason: String? = null
 ) {
     private var events: List<DomainEvent> = mutableListOf()
 
@@ -22,6 +23,7 @@ data class MeetupGroupProposal(
         location: MeetupLocation,
         date: Instant,
         status: MeetupGroupProposalStatus,
+        rejectedReason: String?,
         events: List<DomainEvent>
     ) : this(
         id,
@@ -30,7 +32,8 @@ data class MeetupGroupProposal(
         description,
         location,
         date,
-        status
+        status,
+        rejectedReason
     ) {
         this.events = events
     }
@@ -46,6 +49,7 @@ data class MeetupGroupProposal(
             location,
             date,
             MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
+            rejectedReason,
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalCreated(id.value, proposalUserId, name, description, location.country, location.city, date)
             )
@@ -68,6 +72,7 @@ data class MeetupGroupProposal(
             location,
             date,
             status = MeetupGroupProposalStatus.APPROVED,
+            rejectedReason = rejectedReason,
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalApproved(
                     id.value,
@@ -82,12 +87,15 @@ data class MeetupGroupProposal(
         )
     }
 
-    fun reject(user: User): MeetupGroupProposal {
+    fun reject(user: User, rejectedReason: String): MeetupGroupProposal {
         if (status == MeetupGroupProposalStatus.REJECTED) {
             throw MeetupGroupProposalAlreadyRejectedException(id)
         }
         if (!user.isAdmin()) {
             throw MeetupGroupProposalCannotBeRejectedException(user.id)
+        }
+        if (rejectedReason.isNullOrBlank()) {
+            throw MeetupGroupProposalRequireReasonException()
         }
 
         return MeetupGroupProposal(
@@ -98,7 +106,15 @@ data class MeetupGroupProposal(
             location,
             date,
             status = MeetupGroupProposalStatus.REJECTED,
-            events = mutableListOf<DomainEvent>(MeetupGroupProposalRejected(id.value, proposalUserId))
+            rejectedReason = rejectedReason,
+            events = mutableListOf<DomainEvent>(
+                MeetupGroupProposalRejected(
+                    id.value,
+                    proposalUserId,
+                    rejectedReason
+                )
+            )
         )
     }
+
 }

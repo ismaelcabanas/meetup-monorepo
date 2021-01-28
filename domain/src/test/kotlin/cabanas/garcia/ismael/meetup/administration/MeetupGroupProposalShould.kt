@@ -34,13 +34,13 @@ class MeetupGroupProposalShould {
 
         meetupGroupProposalApproved.events() shouldContain
                 MeetupGroupProposalApproved(
-                    meetupGroupProposalApproved.id.value,
-                    meetupGroupProposalApproved.proposalUserId,
-                    meetupGroupProposalApproved.name,
-                    meetupGroupProposalApproved.description,
-                    meetupGroupProposalApproved.location.country,
-                    meetupGroupProposalApproved.location.city,
-                    meetupGroupProposalApproved.date
+                    meetupGroupProposalPendingOfApproval.id.value,
+                    meetupGroupProposalPendingOfApproval.proposalUserId,
+                    meetupGroupProposalPendingOfApproval.name,
+                    meetupGroupProposalPendingOfApproval.description,
+                    meetupGroupProposalPendingOfApproval.location.country,
+                    meetupGroupProposalPendingOfApproval.location.city,
+                    meetupGroupProposalPendingOfApproval.date
                 )
         meetupGroupProposalApproved.status shouldBe MeetupGroupProposalStatus.APPROVED
     }
@@ -70,27 +70,43 @@ class MeetupGroupProposalShould {
     }
 
     @Test
-    fun `reject a pending meetup group proposal by admin user`() {
+    fun `reject a pending meetup group proposal by admin user with a reason`() {
         val meetupGroupProposalPendingOfApproval = MeetupGroupProposalMother.aMeetupGroupProposalPendingOfApproval()
         val adminUser = UserMother.aAdminUser()
+        val rejectedReason = "some reason"
 
-        val meetupGroupProposalRejected = meetupGroupProposalPendingOfApproval.reject(adminUser)
+        val meetupGroupProposalRejected = meetupGroupProposalPendingOfApproval.reject(adminUser, rejectedReason)
 
         meetupGroupProposalRejected.events() shouldContain
                 MeetupGroupProposalRejected(
                     meetupGroupProposalRejected.id.value,
-                    meetupGroupProposalRejected.proposalUserId
+                    meetupGroupProposalRejected.proposalUserId,
+                    rejectedReason
                 )
         meetupGroupProposalRejected.status shouldBe MeetupGroupProposalStatus.REJECTED
+    }
+
+    @Test
+    fun `fail when reject a pending meetup group proposal by admin user without reason`() {
+        val meetupGroupProposalPendingOfApproval = MeetupGroupProposalMother.aMeetupGroupProposalPendingOfApproval()
+        val adminUser = UserMother.aAdminUser()
+        val emptyRejectedReason = ""
+
+        val exception = shouldThrow<MeetupGroupProposalRequireReasonException> {
+            meetupGroupProposalPendingOfApproval.reject(adminUser, emptyRejectedReason)
+        }
+
+        exception.message shouldBe "A reason is a required to reject a meetup group proposal."
     }
 
     @Test
     fun `fail when reject a pending meetup group proposal by not admin user`() {
         val meetupGroupProposalPendingOfApproval = MeetupGroupProposalMother.aMeetupGroupProposalPendingOfApproval()
         val memberUser = UserMother.aMemberUser()
+        val rejectedReason = "some reason"
 
         val exception = shouldThrow<MeetupGroupProposalCannotBeRejectedException> {
-            meetupGroupProposalPendingOfApproval.reject(memberUser)
+            meetupGroupProposalPendingOfApproval.reject(memberUser, rejectedReason)
         }
 
         exception.message shouldBe "User '${memberUser.id.value}' is not Admin and cannot reject the proposal."
@@ -100,9 +116,10 @@ class MeetupGroupProposalShould {
     fun `fail to reject a already rejected meetup group proposal`() {
         val meetupGroupProposalRejected = MeetupGroupProposalMother.aMeetupGroupProposalRejected()
         val memberUser = UserMother.aMemberUser()
+        val rejectedReason = "some reason"
 
         val exception = shouldThrow<MeetupGroupProposalAlreadyRejectedException> {
-            meetupGroupProposalRejected.reject(memberUser)
+            meetupGroupProposalRejected.reject(memberUser, rejectedReason)
         }
 
         exception.message shouldBe "Meetup group proposal '${meetupGroupProposalRejected.id.value}' already rejected."

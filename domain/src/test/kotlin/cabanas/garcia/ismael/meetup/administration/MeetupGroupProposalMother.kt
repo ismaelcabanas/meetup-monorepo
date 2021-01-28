@@ -30,6 +30,9 @@ object MeetupGroupProposalMother {
     fun aMeetupGroupProposalRejected(): MeetupGroupProposal {
         val meetupGroupProposalPendingOfApproval = aMeetupGroupProposalPendingOfApproval()
 
-        return meetupGroupProposalPendingOfApproval.proposal().reject(User(UserId(SOME_USER_ID), "ADMIN"))
+        return meetupGroupProposalPendingOfApproval.proposal().reject(
+            User(UserId(SOME_USER_ID), "ADMIN"),
+            "some reason"
+        )
     }
 }

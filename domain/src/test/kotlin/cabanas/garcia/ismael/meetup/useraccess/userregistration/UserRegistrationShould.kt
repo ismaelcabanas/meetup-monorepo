@@ -95,7 +95,7 @@ class UserRegistrationShould {
 
         userRegistrationExpired.events() shouldContain
                 UserRegistrationExpired(
-                    userRegistrationExpired.id()
+                    userRegistrationRegistered.id()
 
                 )
         userRegistrationExpired.status shouldBe UserRegistrationStatus.EXPIRED
