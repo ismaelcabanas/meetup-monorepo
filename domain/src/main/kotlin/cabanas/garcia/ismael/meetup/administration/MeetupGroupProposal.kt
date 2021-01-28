@@ -8,7 +8,7 @@ data class MeetupGroupProposal(
     val proposalUserId: String,
     val name: String,
     val description: String,
-    val location: MeetupLocation,
+    val location: MeetupGroupLocation,
     val date: Instant,
     val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
     val rejectedReason: String? = null
@@ -20,7 +20,7 @@ data class MeetupGroupProposal(
         userId: String,
         name: String,
         description: String,
-        location: MeetupLocation,
+        location: MeetupGroupLocation,
         date: Instant,
         status: MeetupGroupProposalStatus,
         rejectedReason: String?,

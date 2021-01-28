@@ -11,7 +11,7 @@ object MeetupGroupProposalFactory {
         country: String,
         city: String,
         date: Instant): MeetupGroupProposal {
-        val meetupGroupProposal = MeetupGroupProposal(MeetupGroupProposalId(id), userId, name, description, MeetupLocation(country, city), date)
+        val meetupGroupProposal = MeetupGroupProposal(MeetupGroupProposalId(id), userId, name, description, MeetupGroupLocation(country, city), date)
 
         return meetupGroupProposal.proposal()
     }

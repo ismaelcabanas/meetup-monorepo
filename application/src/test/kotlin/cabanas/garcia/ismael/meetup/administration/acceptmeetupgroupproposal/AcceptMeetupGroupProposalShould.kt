@@ -20,7 +20,7 @@ class AcceptMeetupGroupProposalShould {
             SOME_USER_ID,
             SOME_NAME,
             SOME_DESCRIPTION,
-            MeetupLocation(SOME_COUNTRY, SOME_CITY),
+            MeetupGroupLocation(SOME_COUNTRY, SOME_CITY),
             Instant.parse(SOME_DATE)
         )
         val command = AcceptMeetupGroupProposalCommand(
