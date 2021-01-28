@@ -50,9 +50,6 @@ Para crear un nuevo `Grupo de Meetup`, un `Miembro` debe hacer una `Propuesta de
 
 Para proponer una `Propuesta de Grupo de Meetup` se necesita indicar un nombre, una descripción, la localización, el usuario que la propone y la fecha del meetup.
 
-Una `Propuesta de Grupo de Meetup` se envía a los `Administradores`. 
-
-Un `Administrador` puede aceptar o rechazar una `Propuesta de Grupo de Meetup`. Si se rechaza la propuesta se debe 
-indicar el motivo del rechazo.
+Una `Propuesta de Grupo de Meetup` se envía a los `Administradores` y éste puede aceptar o rechazar la propuesta en un momento determinado. Si la rechaza debe indicar el motivo del rechazo.
 
 Si una `Propuesta de Grupo de Meetup` se acepta entonces se crea el `Grupo de Meetup`.

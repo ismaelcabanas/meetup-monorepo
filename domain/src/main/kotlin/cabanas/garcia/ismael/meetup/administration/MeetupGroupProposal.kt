@@ -9,7 +9,7 @@ data class MeetupGroupProposal(
     val name: String,
     val description: String,
     val location: MeetupGroupLocation,
-    val date: Instant,
+    val proposalDate: Instant,
     val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
     val rejectedReason: String? = null
 ) {
@@ -47,11 +47,11 @@ data class MeetupGroupProposal(
             name,
             description,
             location,
-            date,
+            proposalDate,
             MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
             rejectedReason,
             events = mutableListOf<DomainEvent>(
-                MeetupGroupProposalCreated(id.value, proposalUserId.value, name, description, location.country, location.city, date)
+                MeetupGroupProposalCreated(id.value, proposalUserId.value, name, description, location.country, location.city, proposalDate)
             )
         )
     }
@@ -70,7 +70,7 @@ data class MeetupGroupProposal(
             name,
             description,
             location,
-            date,
+            proposalDate,
             status = MeetupGroupProposalStatus.APPROVED,
             rejectedReason = rejectedReason,
             events = mutableListOf<DomainEvent>(
@@ -81,7 +81,7 @@ data class MeetupGroupProposal(
                     description,
                     location.country,
                     location.city,
-                    date
+                    proposalDate
                 )
             )
         )
@@ -104,7 +104,7 @@ data class MeetupGroupProposal(
             name,
             description,
             location,
-            date,
+            proposalDate,
             status = MeetupGroupProposalStatus.REJECTED,
             rejectedReason = rejectedReason,
             events = mutableListOf<DomainEvent>(

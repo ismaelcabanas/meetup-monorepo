@@ -20,7 +20,7 @@ class MeetupGroupProposalShould {
                     meetupGroupProposal.description,
                     meetupGroupProposal.location.country,
                     meetupGroupProposal.location.city,
-                    meetupGroupProposal.date
+                    meetupGroupProposal.proposalDate
                 )
         meetupGroupProposal.status shouldBe MeetupGroupProposalStatus.PENDING_OF_APPROVAL
     }
@@ -40,7 +40,7 @@ class MeetupGroupProposalShould {
                     meetupGroupProposalPendingOfApproval.description,
                     meetupGroupProposalPendingOfApproval.location.country,
                     meetupGroupProposalPendingOfApproval.location.city,
-                    meetupGroupProposalPendingOfApproval.date
+                    meetupGroupProposalPendingOfApproval.proposalDate
                 )
         meetupGroupProposalApproved.status shouldBe MeetupGroupProposalStatus.APPROVED
     }
