@@ -35,7 +35,12 @@ class MeetupGroupProposalShould {
         meetupGroupProposalApproved.events() shouldContain
                 MeetupGroupProposalApproved(
                     meetupGroupProposalApproved.id.value,
-                    meetupGroupProposalApproved.proposalUserId
+                    meetupGroupProposalApproved.proposalUserId,
+                    meetupGroupProposalApproved.name,
+                    meetupGroupProposalApproved.description,
+                    meetupGroupProposalApproved.location.country,
+                    meetupGroupProposalApproved.location.city,
+                    meetupGroupProposalApproved.date
                 )
         meetupGroupProposalApproved.status shouldBe MeetupGroupProposalStatus.APPROVED
     }

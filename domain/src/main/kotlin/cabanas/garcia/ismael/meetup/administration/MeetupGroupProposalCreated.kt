@@ -10,6 +10,5 @@ data class MeetupGroupProposalCreated(
     val description: String,
     val country: String,
     val city: String,
-    val proposalDate: Instant)
-    : DomainEvent {
-}
+    val proposalDate: Instant
+) : DomainEvent

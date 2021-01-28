@@ -68,7 +68,17 @@ data class MeetupGroupProposal(
             location,
             date,
             status = MeetupGroupProposalStatus.APPROVED,
-            events = mutableListOf<DomainEvent>(MeetupGroupProposalApproved(id.value, proposalUserId))
+            events = mutableListOf<DomainEvent>(
+                MeetupGroupProposalApproved(
+                    id.value,
+                    proposalUserId,
+                    name,
+                    description,
+                    location.country,
+                    location.city,
+                    date
+                )
+            )
         )
     }
 
