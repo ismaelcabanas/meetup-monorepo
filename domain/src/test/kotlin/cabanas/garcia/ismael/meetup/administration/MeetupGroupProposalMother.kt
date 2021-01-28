@@ -14,7 +14,7 @@ object MeetupGroupProposalMother {
     fun aMeetupGroupProposalPendingOfApproval(): MeetupGroupProposal =
         MeetupGroupProposal(
             MeetupGroupProposalId(SOME_ID),
-            SOME_USER_ID,
+            UserId(SOME_USER_ID),
             SOME_NAME,
             SOME_DESCRIPTION,
             MeetupGroupLocation(SOME_COUNTRY, SOME_CITY),

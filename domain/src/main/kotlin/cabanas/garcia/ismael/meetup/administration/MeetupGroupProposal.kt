@@ -5,7 +5,7 @@ import java.time.Instant
 
 data class MeetupGroupProposal(
     val id: MeetupGroupProposalId,
-    val proposalUserId: String,
+    val proposalUserId: UserId,
     val name: String,
     val description: String,
     val location: MeetupGroupLocation,
@@ -17,7 +17,7 @@ data class MeetupGroupProposal(
 
     private constructor(
         id: MeetupGroupProposalId,
-        userId: String,
+        proposalUserId: UserId,
         name: String,
         description: String,
         location: MeetupGroupLocation,
@@ -27,7 +27,7 @@ data class MeetupGroupProposal(
         events: List<DomainEvent>
     ) : this(
         id,
-        userId,
+        proposalUserId,
         name,
         description,
         location,
@@ -51,7 +51,7 @@ data class MeetupGroupProposal(
             MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
             rejectedReason,
             events = mutableListOf<DomainEvent>(
-                MeetupGroupProposalCreated(id.value, proposalUserId, name, description, location.country, location.city, date)
+                MeetupGroupProposalCreated(id.value, proposalUserId.value, name, description, location.country, location.city, date)
             )
         )
     }
@@ -76,7 +76,7 @@ data class MeetupGroupProposal(
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalApproved(
                     id.value,
-                    proposalUserId,
+                    proposalUserId.value,
                     name,
                     description,
                     location.country,
@@ -110,7 +110,7 @@ data class MeetupGroupProposal(
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalRejected(
                     id.value,
-                    proposalUserId,
+                    proposalUserId.value,
                     rejectedReason
                 )
             )

@@ -15,7 +15,7 @@ class MeetupGroupProposalShould {
         meetupGroupProposal.events() shouldContain
             MeetupGroupProposalCreated(
                     meetupGroupProposal.id.value,
-                    meetupGroupProposal.proposalUserId,
+                    meetupGroupProposal.proposalUserId.value,
                     meetupGroupProposal.name,
                     meetupGroupProposal.description,
                     meetupGroupProposal.location.country,
@@ -35,7 +35,7 @@ class MeetupGroupProposalShould {
         meetupGroupProposalApproved.events() shouldContain
                 MeetupGroupProposalApproved(
                     meetupGroupProposalPendingOfApproval.id.value,
-                    meetupGroupProposalPendingOfApproval.proposalUserId,
+                    meetupGroupProposalPendingOfApproval.proposalUserId.value,
                     meetupGroupProposalPendingOfApproval.name,
                     meetupGroupProposalPendingOfApproval.description,
                     meetupGroupProposalPendingOfApproval.location.country,
@@ -80,7 +80,7 @@ class MeetupGroupProposalShould {
         meetupGroupProposalRejected.events() shouldContain
                 MeetupGroupProposalRejected(
                     meetupGroupProposalRejected.id.value,
-                    meetupGroupProposalRejected.proposalUserId,
+                    meetupGroupProposalRejected.proposalUserId.value,
                     rejectedReason
                 )
         meetupGroupProposalRejected.status shouldBe MeetupGroupProposalStatus.REJECTED
