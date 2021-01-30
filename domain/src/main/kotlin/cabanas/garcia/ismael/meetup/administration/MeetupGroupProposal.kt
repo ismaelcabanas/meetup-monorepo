@@ -11,8 +11,7 @@ data class MeetupGroupProposal(
     val location: MeetupGroupLocation,
     val proposalDate: Instant,
     val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
-    val rejectedReason: String? = null,
-    val decisionDate: Instant? = null
+    val decision: MeetupGroupProposalDecision = MeetupGroupProposalDecision()
 ) {
     private var events: List<DomainEvent> = mutableListOf()
 
@@ -24,8 +23,7 @@ data class MeetupGroupProposal(
         location: MeetupGroupLocation,
         date: Instant,
         status: MeetupGroupProposalStatus,
-        rejectedReason: String?,
-        decisionDate: Instant?,
+        decision: MeetupGroupProposalDecision,
         events: List<DomainEvent>
     ) : this(
         id,
@@ -35,8 +33,7 @@ data class MeetupGroupProposal(
         location,
         date,
         status,
-        rejectedReason,
-        decisionDate
+        decision
     ) {
         this.events = events
     }
@@ -51,9 +48,8 @@ data class MeetupGroupProposal(
             description,
             location,
             proposalDate,
-            MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
-            rejectedReason,
-            decisionDate,
+            decision.statusForDecision(),
+            decision,
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalCreated(id.value, proposalUserId.value, name, description, location.country, location.city, proposalDate)
             )
@@ -64,11 +60,8 @@ data class MeetupGroupProposal(
         if (status == MeetupGroupProposalStatus.APPROVED) {
             throw MeetupGroupProposalAlreadyApprovedException(id)
         }
-        if (!user.isAdmin()) {
-            throw MeetupGroupProposalCannotBeApprovedException(user.id)
-        }
 
-        val decisionDate = Instant.now()
+        val newDecision = decision.accept(Instant.now(), user)
 
         return MeetupGroupProposal(
             id,
@@ -77,9 +70,8 @@ data class MeetupGroupProposal(
             description,
             location,
             proposalDate,
-            status = MeetupGroupProposalStatus.APPROVED,
-            rejectedReason = rejectedReason,
-            decisionDate = decisionDate,
+            newDecision.statusForDecision(),
+            newDecision,
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalApproved(
                     id.value,
@@ -88,7 +80,7 @@ data class MeetupGroupProposal(
                     description,
                     location.country,
                     location.city,
-                    decisionDate
+                    newDecision.date!!
                 )
             )
         )
@@ -98,14 +90,8 @@ data class MeetupGroupProposal(
         if (status == MeetupGroupProposalStatus.REJECTED) {
             throw MeetupGroupProposalAlreadyRejectedException(id)
         }
-        if (!user.isAdmin()) {
-            throw MeetupGroupProposalCannotBeRejectedException(user.id)
-        }
-        if (rejectedReason.isNullOrBlank()) {
-            throw MeetupGroupProposalRequireReasonException()
-        }
 
-        val decisionDate = Instant.now()
+        val newDecision = decision.reject(Instant.now(), user, rejectedReason)
 
         return MeetupGroupProposal(
             id,
@@ -114,15 +100,14 @@ data class MeetupGroupProposal(
             description,
             location,
             proposalDate,
-            status = MeetupGroupProposalStatus.REJECTED,
-            rejectedReason = rejectedReason,
-            decisionDate = decisionDate,
+            newDecision.statusForDecision(),
+            newDecision,
             events = mutableListOf<DomainEvent>(
                 MeetupGroupProposalRejected(
                     id.value,
                     proposalUserId.value,
-                    rejectedReason,
-                    decisionDate
+                    newDecision.rejectedReason!!,
+                    newDecision.date!!
                 )
             )
         )
