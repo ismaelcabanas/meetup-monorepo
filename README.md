@@ -53,3 +53,13 @@ Para proponer una `Propuesta de Grupo de Meetup` se necesita indicar un nombre, 
 Una `Propuesta de Grupo de Meetup` se envía a los `Administradores` y éste puede aceptar o rechazar la propuesta en un momento determinado. Si la rechaza debe indicar el motivo del rechazo.
 
 Si una `Propuesta de Grupo de Meetup` se acepta entonces se crea el `Grupo de Meetup`.
+
+**Meetings**
+
+***Comentarios en el meeting***
+
+Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.
+
+Un usuario que no sea `Miembro` del `Grupo de Meetup` no puede añadir comentarios. 
+
+Los comentarios sólo podrán añadirse si éstos están habilitados por configuración.
