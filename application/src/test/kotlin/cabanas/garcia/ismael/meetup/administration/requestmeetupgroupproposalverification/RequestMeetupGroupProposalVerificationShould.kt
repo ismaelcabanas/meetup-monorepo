@@ -1,40 +1,35 @@
-package cabanas.garcia.ismael.meetup.administration.acceptmeetupgroupproposal
+package cabanas.garcia.ismael.meetup.administration.requestmeetupgroupproposalverification
 
 import cabanas.garcia.ismael.meetup.administration.*
 import cabanas.garcia.ismael.meetup.shared.service.EventBus
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import java.time.Instant
 
-class AcceptMeetupGroupProposalShould {
+class RequestMeetupGroupProposalVerificationShould {
     var repository = mockk<MeetupGroupProposalRepository>(relaxed = true)
     var eventBus = mockk<EventBus>(relaxed = true)
 
     @Test
-    fun `accept a meetup group proposal`() {
-        every { repository.findBy(UserId(SOME_USER_ID)) } returns User(UserId(SOME_USER_ID), "ADMIN")
-        every { repository.findBy(MeetupGroupProposalId(SOME_MEETUP_GROUP_PROPOSAL_ID)) } returns MeetupGroupProposal(
-            MeetupGroupProposalId(SOME_MEETUP_GROUP_PROPOSAL_ID),
-            UserId(SOME_USER_ID),
+    fun `create meetup group proposal`() {
+        val command = RequestMeetupGroupProposalVerificationCommand(
+            SOME_MEETUP_GROUP_PROPOSAL_ID,
+            SOME_USER_ID,
             SOME_NAME,
             SOME_DESCRIPTION,
-            MeetupGroupLocation(SOME_COUNTRY, SOME_CITY),
+            SOME_COUNTRY,
+            SOME_CITY,
             Instant.parse(SOME_DATE)
         )
-        val command = AcceptMeetupGroupProposalCommand(
-            SOME_MEETUP_GROUP_PROPOSAL_ID,
-            SOME_USER_ID
-        )
-        val commandHandler = AcceptMeetupGroupProposalCommandHandler(repository, eventBus)
+        val commandHandler = RequestMeetupGroupProposalVerificationCommandHandler(repository, eventBus)
 
         commandHandler.handle(command)
 
         verify {
             eventBus.publish(
                 listOf(
-                    MeetupGroupProposalApproved(
+                    MeetupGroupProposalCreated(
                         SOME_MEETUP_GROUP_PROPOSAL_ID,
                         SOME_USER_ID,
                         SOME_NAME,
