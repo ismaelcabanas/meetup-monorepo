@@ -9,10 +9,10 @@ data class Meeting(
     val id: MeetingId
 ) {
 
-    fun addComment(meetingCommentId: MeetingCommentId, authorId: MemberId, comment: String): MeetingComment =
+    fun addComment(meetingCommentId: String, authorId: String, comment: String): MeetingComment =
         MeetingCommentFactory.create(
             meetingCommentId,
-            id,
+            id.value,
             authorId,
             comment
         )

@@ -14,13 +14,13 @@ class MeetupGroupProposalShould {
 
         meetupGroupProposal.events() shouldContain
             MeetupGroupProposalCreated(
-                    meetupGroupProposal.id.value,
-                    meetupGroupProposal.proposalUserId.value,
-                    meetupGroupProposal.name,
-                    meetupGroupProposal.description,
-                    meetupGroupProposal.location.country,
-                    meetupGroupProposal.location.city,
-                    meetupGroupProposal.proposalDate
+                    SOME_ID,
+                    SOME_USER_ID,
+                    SOME_NAME,
+                    SOME_DESCRIPTION,
+                    SOME_COUNTRY,
+                    SOME_CITY,
+                    Instant.parse(SOME_DATE)
                 )
         meetupGroupProposal.status shouldBe MeetupGroupProposalStatus.PENDING_OF_APPROVAL
     }

@@ -5,24 +5,15 @@ import cabanas.garcia.ismael.meetup.meetings.member.MemberId
 
 object MeetingCommentFactory {
     fun create(
-        meetingCommentId: MeetingCommentId,
-        meetingId: MeetingId,
-        authorId: MemberId,
+        meetingCommentId: String,
+        meetingId: String,
+        authorId: String,
         comment: String
     ): MeetingComment =
         MeetingComment(
-            meetingCommentId,
-            meetingId,
-            authorId,
-            comment
-        ).also {
-            it.registerDomainEvent(
-                MeetingCommentCreated(
-                    it.id.value,
-                    it.meetingId.value,
-                    it.memberId.value,
-                    it.comment
-                )
-            )
-        }
+            MeetingCommentId(meetingCommentId),
+            MeetingId(meetingId),
+            MemberId(authorId),
+            Comment(comment)
+        ).create()
 }
