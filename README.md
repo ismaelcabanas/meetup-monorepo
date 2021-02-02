@@ -60,6 +60,6 @@ Si una `Propuesta de Grupo de Meetup` se acepta entonces se crea el `Grupo de Me
 
 Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.
 
-Un usuario que no sea `Miembro` del `Grupo de Meetup` no puede añadir comentarios. 
+Un usuario puede añadir comentarios si es `Miembro` del `Grupo de Meetup`. 
 
 Los comentarios sólo podrán añadirse si éstos están habilitados por configuración.
