@@ -27,17 +27,7 @@ class MeetingComment(
         }
     }
 
-    fun events(): List<DomainEvent> {
-        return listOf(
-            MeetingCommentCreated(
-                id.value,
-                meetingId.value,
-                authorId.value,
-                comment.value,
-                date
-            )
-        )
-    }
+    fun events(): List<DomainEvent> = events
 
     fun create(): MeetingComment {
         registerDomainEvent(
