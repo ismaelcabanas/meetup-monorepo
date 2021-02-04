@@ -46,20 +46,30 @@ Entre los requisitos que nos vamos a encontrar:
 
 **Administración**
 
-Para crear un nuevo `Grupo de Meetup`, un `Miembro` debe hacer una `Propuesta de Grupo de Meetup`.
+ - Para crear un nuevo `Grupo de Meetup`, un `Miembro` debe hacer una `Propuesta de Grupo de Meetup`.
 
-Para proponer una `Propuesta de Grupo de Meetup` se necesita indicar un nombre, una descripción, la localización, el usuario que la propone y la fecha del meetup.
+ - Para proponer una `Propuesta de Grupo de Meetup` se necesita indicar un nombre, una descripción, la localización, el usuario que la propone y la fecha del meetup.
 
-Una `Propuesta de Grupo de Meetup` se envía a los `Administradores` y éste puede aceptar o rechazar la propuesta en un momento determinado. Si la rechaza debe indicar el motivo del rechazo.
+ - Una `Propuesta de Grupo de Meetup` se envía a los `Administradores` y éste puede aceptar o rechazar la propuesta en un momento determinado. Si la rechaza debe indicar el motivo del rechazo.
 
-Si una `Propuesta de Grupo de Meetup` se acepta entonces se crea el `Grupo de Meetup`.
+ - Si una `Propuesta de Grupo de Meetup` se acepta entonces se crea el `Grupo de Meetup`.
 
 **Meetings**
 
+***Propuesta de grupo de Meetup***
+
+ - Para crear un nuevo `Grupo de Meetup`, un `Miembro` hacer una `Propuesta de Grupo de Meetup`. 
+   
+ - Para proponer una `Propuesta de Grupo de Meetup`, el `Miembro` necesita indicar un nombre, una descripción y la localización.
+
+ - Cuando se acepta una `Propuesta de Grupo de Meetup` se crea el `Grupo de Meetup` y el usuario que propuso el grupo pasa a ser miembro del grupo del meetup.
+
+ - No se puede aceptar una propuesta de grupo cuando ésta ya ha sido aceptada.
+
 ***Comentarios en el meeting***
 
-Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.
+ - Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.
 
-Un usuario puede añadir comentarios si es `Miembro` del `Grupo de Meetup`. 
+ - Un usuario puede añadir comentarios si es `Miembro` del `Grupo de Meetup`. 
 
-Los comentarios sólo podrán añadirse si éstos están habilitados por configuración.
+ - Los comentarios sólo podrán añadirse si éstos están habilitados por configuración.
