@@ -1,7 +1,9 @@
 package cabanas.garcia.ismael.meetup.meetings.meetinggroupproposal
 
 import cabanas.garcia.ismael.meetup.meetings.member.MemberId
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import java.time.Instant
 
@@ -18,7 +20,7 @@ class MeetingGroupProposalShould {
         )
 
         meetingGroupProposal.events() shouldContain
-                MeetingGroupProposalCreated(
+                MeetingGroupProposalProposed(
                     SOME_MEETING_GROUP_PROPOSAL_ID,
                     SOME_MEMBER_ID,
                     SOME_NAME,
@@ -27,6 +29,33 @@ class MeetingGroupProposalShould {
                     SOME_CITY,
                     Instant.parse(SOME_DATE)
                 )
+    }
+
+    @Test
+    fun `accept meeting group proposal`() {
+        val meetingGroupProposalProposed = MeetingGroupProposalMother.proposed(
+            SOME_MEETING_GROUP_PROPOSAL_ID
+        )
+
+        meetingGroupProposalProposed.accept()
+
+        meetingGroupProposalProposed.events() shouldContain
+                MeetingGroupProposalAccepted(
+                    SOME_MEETING_GROUP_PROPOSAL_ID
+                )
+    }
+
+    @Test
+    fun `fail when accept meeting group proposal already accepted`() {
+        val meetingGroupProposalAccepted = MeetingGroupProposalMother.accepted(
+            SOME_MEETING_GROUP_PROPOSAL_ID
+        )
+
+        val exception = shouldThrow<MeetingGroupProposalAlreadyAcceptedException> {
+            meetingGroupProposalAccepted.accept()
+        }
+
+        exception.message shouldBe "Meeting group proposal '$SOME_MEETING_GROUP_PROPOSAL_ID' already accepted."
     }
 
     private companion object {

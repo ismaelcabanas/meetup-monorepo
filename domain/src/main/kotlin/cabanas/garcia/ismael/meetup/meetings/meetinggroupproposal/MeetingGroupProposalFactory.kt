@@ -19,6 +19,6 @@ object MeetingGroupProposalFactory {
             description,
             meetingGroupLocation,
             proposalDate
-        ).new()
+        ).propose()
 
 }

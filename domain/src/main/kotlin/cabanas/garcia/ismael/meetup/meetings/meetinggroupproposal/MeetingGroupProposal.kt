@@ -12,11 +12,14 @@ data class MeetingGroupProposal(
     val meetingGroupLocation: MeetingGroupLocation,
     val proposalDate: Instant
 ) {
+    private lateinit var state: MeetingGroupProposalState
     private var events = mutableListOf<DomainEvent>()
 
-    fun new(): MeetingGroupProposal {
+    fun propose(): MeetingGroupProposal {
+        this.state = MeetingGroupProposalState.PROPOSED
+
         registerDomainEvent(
-            MeetingGroupProposalCreated(
+            MeetingGroupProposalProposed(
                 id.value,
                 proposalMemberId.value,
                 name,
@@ -24,6 +27,22 @@ data class MeetingGroupProposal(
                 meetingGroupLocation.country,
                 meetingGroupLocation.city,
                 proposalDate
+            )
+        )
+
+        return this
+    }
+
+    fun accept(): MeetingGroupProposal {
+        if (this.state == MeetingGroupProposalState.ACCEPTED) {
+            throw MeetingGroupProposalAlreadyAcceptedException(this.id)
+        }
+
+        this.state = MeetingGroupProposalState.ACCEPTED
+
+        registerDomainEvent(
+            MeetingGroupProposalAccepted(
+                this.id.value
             )
         )
 

@@ -3,7 +3,7 @@ package cabanas.garcia.ismael.meetup.meetings.meetinggroupproposal
 import cabanas.garcia.ismael.meetup.useraccess.userregistration.DomainEvent
 import java.time.Instant
 
-data class MeetingGroupProposalCreated(
+data class MeetingGroupProposalProposed(
     val meetingGroupProposalId: String,
     val proposalMemberId: String,
     val name: String,
