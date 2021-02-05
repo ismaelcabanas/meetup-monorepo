@@ -62,9 +62,12 @@ Entre los requisitos que nos vamos a encontrar:
    
  - Para proponer una `Propuesta de Grupo de Meetup`, el `Miembro` necesita indicar un nombre, una descripción y la localización.
 
- - Cuando se acepta una `Propuesta de Grupo de Meetup` se crea el `Grupo de Meetup` y el usuario que propuso el grupo pasa a ser miembro del grupo del meetup.
+ - La propuesta de grupo de meetup se puede aceptar.
 
- - No se puede aceptar una propuesta de grupo cuando ésta ya ha sido aceptada.
+ - No se puede aceptar una propuesta de grupo de meetup cuando ésta ya ha sido aceptada.
+  
+ - Una vez aceptada la propuesta de grupo de meetup, se puede crear el grupo de meetup y el creador 
+   de la propuesta se convierte en miembro organizador del grupo de meetup.
 
 ***Comentarios en el meeting***
 

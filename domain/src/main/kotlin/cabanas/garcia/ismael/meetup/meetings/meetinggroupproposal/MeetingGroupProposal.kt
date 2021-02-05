@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.meetup.meetings.meetinggroupproposal
 
+import cabanas.garcia.ismael.meetup.meetings.meetinggroup.MeetingGroup
+import cabanas.garcia.ismael.meetup.meetings.meetinggroup.MeetingGroupId
 import cabanas.garcia.ismael.meetup.meetings.member.MemberId
 import cabanas.garcia.ismael.meetup.useraccess.userregistration.DomainEvent
 import java.time.Instant
@@ -48,6 +50,16 @@ data class MeetingGroupProposal(
 
         return this
     }
+
+    fun createMeetingGroup(creationDate: Instant): MeetingGroup =
+        MeetingGroup(
+            MeetingGroupId(id.value),
+            proposalMemberId,
+            name,
+            description,
+            meetingGroupLocation,
+            creationDate
+        ).create()
 
     fun events() = events
 
