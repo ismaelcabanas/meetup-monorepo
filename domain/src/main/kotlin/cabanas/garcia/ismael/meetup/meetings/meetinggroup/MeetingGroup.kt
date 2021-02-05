@@ -24,27 +24,26 @@ data class MeetingGroup(
         return memberMeetingGroup.isPresent
     }
 
-    fun create(): MeetingGroup {
-        registerDomainEvent(
-            MeetingGroupCreated(
-                this.id.value,
-                this.creatorId.value,
-                this.name,
-                this.description,
-                this.location.country,
-                this.location.city,
-                this.creationDate
+    fun create(): MeetingGroup =
+        this.also {
+            registerDomainEvent(
+                MeetingGroupCreated(
+                    this.id.value,
+                    this.creatorId.value,
+                    this.name,
+                    this.description,
+                    this.location.country,
+                    this.location.city,
+                    this.creationDate
+                )
             )
-        )
-        registerDomainEvent(
-            NewMeetingGroupMemberJoined(
-                this.id.value,
-                this.creatorId.value
+            registerDomainEvent(
+                NewMeetingGroupMemberJoined(
+                    this.id.value,
+                    this.creatorId.value
+                )
             )
-        )
-
-        return this
-    }
+        }
 
     fun events() = events
 

@@ -40,8 +40,8 @@ data class MeetupGroupProposal(
 
     fun events() = events.toList()
 
-    fun proposal(): MeetupGroupProposal {
-        return MeetupGroupProposal(
+    fun proposal(): MeetupGroupProposal =
+        MeetupGroupProposal(
             id,
             proposalUserId,
             name,
@@ -54,7 +54,6 @@ data class MeetupGroupProposal(
                 MeetupGroupProposalCreated(id.value, proposalUserId.value, name, description, location.country, location.city, proposalDate)
             )
         )
-    }
 
     fun approve(user: User): MeetupGroupProposal {
         if (status == MeetupGroupProposalStatus.APPROVED) {

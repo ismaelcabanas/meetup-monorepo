@@ -38,20 +38,10 @@ data class User(
 
     fun events(): List<DomainEvent> = events.toList()
 
-    fun addRole(role: Role): User {
-        val user = User(
-            this.id.value,
-            this.login,
-            this.password,
-            this.email,
-            this.firstName,
-            this.lastName,
-            this.events
-        )
-        user.roles.add(role)
-
-        return user
-    }
+    fun addRole(role: Role): User =
+        this.apply {
+            roles.add(role)
+        }
 
     fun roles(): List<Role> = roles.toList()
 }

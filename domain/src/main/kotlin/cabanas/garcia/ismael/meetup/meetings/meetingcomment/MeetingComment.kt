@@ -29,19 +29,18 @@ class MeetingComment(
 
     fun events(): List<DomainEvent> = events
 
-    fun create(): MeetingComment {
-        registerDomainEvent(
-            MeetingCommentCreated(
-                id.value,
-                meetingId.value,
-                authorId.value,
-                comment.value,
-                date
+    fun create(): MeetingComment =
+        this.also {
+            registerDomainEvent(
+                MeetingCommentCreated(
+                    id.value,
+                    meetingId.value,
+                    authorId.value,
+                    comment.value,
+                    date
+                )
             )
-        )
-
-        return this
-    }
+        }
 
     private fun registerDomainEvent(domainEvent: DomainEvent) {
         events.add(domainEvent)

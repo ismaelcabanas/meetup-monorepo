@@ -17,38 +17,37 @@ data class MeetingGroupProposal(
     private lateinit var state: MeetingGroupProposalState
     private var events = mutableListOf<DomainEvent>()
 
-    fun propose(): MeetingGroupProposal {
-        this.state = MeetingGroupProposalState.PROPOSED
+    fun propose(): MeetingGroupProposal =
+        this.also {
+            this.state = MeetingGroupProposalState.PROPOSED
 
-        registerDomainEvent(
-            MeetingGroupProposalProposed(
-                id.value,
-                proposalMemberId.value,
-                name,
-                description,
-                meetingGroupLocation.country,
-                meetingGroupLocation.city,
-                proposalDate
+            registerDomainEvent(
+                MeetingGroupProposalProposed(
+                    id.value,
+                    proposalMemberId.value,
+                    name,
+                    description,
+                    meetingGroupLocation.country,
+                    meetingGroupLocation.city,
+                    proposalDate
+                )
             )
-        )
-
-        return this
-    }
+        }
 
     fun accept(): MeetingGroupProposal {
         if (this.state == MeetingGroupProposalState.ACCEPTED) {
             throw MeetingGroupProposalAlreadyAcceptedException(this.id)
         }
 
-        this.state = MeetingGroupProposalState.ACCEPTED
+        return this.also {
+            this.state = MeetingGroupProposalState.ACCEPTED
 
-        registerDomainEvent(
-            MeetingGroupProposalAccepted(
-                this.id.value
+            registerDomainEvent(
+                MeetingGroupProposalAccepted(
+                    this.id.value
+                )
             )
-        )
-
-        return this
+        }
     }
 
     fun createMeetingGroup(creationDate: Instant): MeetingGroup =
