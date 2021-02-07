@@ -22,7 +22,7 @@ class MeetupGroupProposalShould {
                     SOME_CITY,
                     Instant.parse(SOME_DATE)
                 )
-        meetupGroupProposal.status shouldBe MeetupGroupProposalStatus.PENDING_OF_APPROVAL
+        meetupGroupProposal.state().value() shouldBe MeetupGroupProposalStatus.PENDING_OF_APPROVAL
     }
 
     @Test
@@ -36,13 +36,9 @@ class MeetupGroupProposalShould {
                 MeetupGroupProposalApproved(
                     meetupGroupProposalPendingOfApproval.id.value,
                     meetupGroupProposalPendingOfApproval.proposalUserId.value,
-                    meetupGroupProposalPendingOfApproval.name,
-                    meetupGroupProposalPendingOfApproval.description,
-                    meetupGroupProposalPendingOfApproval.location.country,
-                    meetupGroupProposalPendingOfApproval.location.city,
-                    meetupGroupProposalApproved.decision.date!!
+                    meetupGroupProposalApproved.approveDate()!!
                 )
-        meetupGroupProposalApproved.status shouldBe MeetupGroupProposalStatus.APPROVED
+        meetupGroupProposalApproved.state().value() shouldBe MeetupGroupProposalStatus.APPROVED
     }
 
     @Test
@@ -75,16 +71,17 @@ class MeetupGroupProposalShould {
         val adminUser = UserMother.aAdminUser()
         val rejectedReason = "some reason"
 
-        val meetupGroupProposalRejected = meetupGroupProposalPendingOfApproval.reject(adminUser, rejectedReason)
+        val meetupGroupProposalRejected =
+            meetupGroupProposalPendingOfApproval.reject(adminUser, rejectedReason)
 
         meetupGroupProposalRejected.events() shouldContain
                 MeetupGroupProposalRejected(
-                    meetupGroupProposalRejected.id.value,
-                    meetupGroupProposalRejected.proposalUserId.value,
+                    meetupGroupProposalPendingOfApproval.id.value,
+                    meetupGroupProposalPendingOfApproval.proposalUserId.value,
                     rejectedReason,
-                    meetupGroupProposalRejected.decision.date!!
+                    meetupGroupProposalRejected.rejectDate()!!
                 )
-        meetupGroupProposalRejected.status shouldBe MeetupGroupProposalStatus.REJECTED
+        meetupGroupProposalRejected.state().value() shouldBe MeetupGroupProposalStatus.REJECTED
     }
 
     @Test
@@ -124,6 +121,53 @@ class MeetupGroupProposalShould {
         }
 
         exception.message shouldBe "Meetup group proposal '${meetupGroupProposalRejected.id.value}' already rejected."
+    }
+
+    @Test
+    fun `fail to approved a rejected meetup group proposal`() {
+        val meetupGroupProposalRejected = MeetupGroupProposalMother.aMeetupGroupProposalRejected()
+        val memberUser = UserMother.aMemberUser()
+
+        val exception = shouldThrow<IllegalStateException> {
+            meetupGroupProposalRejected.approve(memberUser)
+        }
+
+        exception.message shouldBe "Cannot approve a rejected meetup group proposal."
+    }
+
+    @Test
+    fun `fail to propose a rejected meetup group proposal`() {
+        val meetupGroupProposalRejected = MeetupGroupProposalMother.aMeetupGroupProposalRejected()
+
+        val exception = shouldThrow<IllegalStateException> {
+            meetupGroupProposalRejected.proposal()
+        }
+
+        exception.message shouldBe "Cannot propose a rejected meetup group proposal."
+    }
+
+    @Test
+    fun `fail to reject a approved meetup group proposal`() {
+        val meetupGroupProposalApproved = MeetupGroupProposalMother.aMeetupGroupProposalApproved()
+        val memberUser = UserMother.aMemberUser()
+        val rejectedReason = "some reason"
+
+        val exception = shouldThrow<IllegalStateException> {
+            meetupGroupProposalApproved.reject(memberUser, rejectedReason)
+        }
+
+        exception.message shouldBe "Cannot reject a approved meetup group proposal."
+    }
+
+    @Test
+    fun `fail to propose a approved meetup group proposal`() {
+        val meetupGroupProposalApproved = MeetupGroupProposalMother.aMeetupGroupProposalApproved()
+
+        val exception = shouldThrow<IllegalStateException> {
+            meetupGroupProposalApproved.proposal()
+        }
+
+        exception.message shouldBe "Cannot pending of approval a approved meetup group proposal."
     }
 
     private companion object {

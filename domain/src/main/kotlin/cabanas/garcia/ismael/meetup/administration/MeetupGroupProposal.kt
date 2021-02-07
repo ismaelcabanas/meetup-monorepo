@@ -9,107 +9,74 @@ data class MeetupGroupProposal(
     val name: String,
     val description: String,
     val location: MeetupGroupLocation,
-    val proposalDate: Instant,
-    val status: MeetupGroupProposalStatus = MeetupGroupProposalStatus.PENDING_OF_APPROVAL,
-    val decision: MeetupGroupProposalDecision = MeetupGroupProposalDecision()
+    val proposalDate: Instant
 ) {
-    private var events: List<DomainEvent> = mutableListOf()
+    private var state: MeetupGroupProposalState
+    private var events = mutableListOf<DomainEvent>()
 
-    private constructor(
-        id: MeetupGroupProposalId,
-        proposalUserId: UserId,
-        name: String,
-        description: String,
-        location: MeetupGroupLocation,
-        date: Instant,
-        status: MeetupGroupProposalStatus,
-        decision: MeetupGroupProposalDecision,
-        events: List<DomainEvent>
-    ) : this(
-        id,
-        proposalUserId,
-        name,
-        description,
-        location,
-        date,
-        status,
-        decision
-    ) {
-        this.events = events
+    init {
+        state = PendingApprovalState()
     }
 
     fun events() = events.toList()
 
-    fun proposal(): MeetupGroupProposal =
-        MeetupGroupProposal(
-            id,
-            proposalUserId,
-            name,
-            description,
-            location,
-            proposalDate,
-            decision.statusForDecision(),
-            decision,
-            events = mutableListOf<DomainEvent>(
-                MeetupGroupProposalCreated(id.value, proposalUserId.value, name, description, location.country, location.city, proposalDate)
-            )
-        )
+    fun state() = state
 
-    fun approve(user: User): MeetupGroupProposal {
-        if (status == MeetupGroupProposalStatus.APPROVED) {
-            throw MeetupGroupProposalAlreadyApprovedException(id)
+    fun approveDate() =
+        when (state) {
+            is ApprovedState -> (state as ApprovedState).approveDate
+            else -> null
         }
 
-        val newDecision = decision.accept(Instant.now(), user)
+    fun rejectDate() =
+        when (state) {
+            is RejectedState -> (state as RejectedState).rejectDate
+            else -> null
+        }
 
-        return MeetupGroupProposal(
-            id,
-            proposalUserId,
-            name,
-            description,
-            location,
-            proposalDate,
-            newDecision.statusForDecision(),
-            newDecision,
-            events = mutableListOf<DomainEvent>(
-                MeetupGroupProposalApproved(
+    fun proposal(): MeetupGroupProposal =
+        this.apply {
+            this.state.pendingApprove(this)
+            this.events.add(
+                MeetupGroupProposalCreated(
                     id.value,
                     proposalUserId.value,
                     name,
                     description,
                     location.country,
                     location.city,
-                    newDecision.date!!
+                    proposalDate
                 )
             )
-        )
-    }
-
-    fun reject(user: User, rejectedReason: String): MeetupGroupProposal {
-        if (status == MeetupGroupProposalStatus.REJECTED) {
-            throw MeetupGroupProposalAlreadyRejectedException(id)
         }
 
-        val newDecision = decision.reject(Instant.now(), user, rejectedReason)
+    fun approve(approveBy: User): MeetupGroupProposal =
+        this.apply {
+            state.approve(this, approveBy)
+            events.add(
+                MeetupGroupProposalApproved(
+                    id.value,
+                    proposalUserId.value,
+                    approveDate()!!
+                )
+            )
+        }
 
-        return MeetupGroupProposal(
-            id,
-            proposalUserId,
-            name,
-            description,
-            location,
-            proposalDate,
-            newDecision.statusForDecision(),
-            newDecision,
-            events = mutableListOf<DomainEvent>(
+    fun reject(rejectBy: User, rejectedReason: String): MeetupGroupProposal =
+        this.apply {
+            state.reject(this, rejectBy, rejectedReason)
+            events.add(
                 MeetupGroupProposalRejected(
                     id.value,
                     proposalUserId.value,
-                    newDecision.rejectedReason!!,
-                    newDecision.date!!
+                    rejectedReason,
+                    rejectDate()!!
                 )
             )
-        )
-    }
+        }
 
+    fun changeState(newState: MeetupGroupProposalState): MeetupGroupProposal =
+        this.apply {
+            state = newState
+        }
 }

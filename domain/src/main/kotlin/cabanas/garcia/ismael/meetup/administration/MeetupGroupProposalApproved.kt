@@ -6,9 +6,5 @@ import java.time.Instant
 data class MeetupGroupProposalApproved(
     val meetupGroupProposalId: String,
     val proposalId: String,
-    val name: String,
-    val description: String,
-    val country: String,
-    val city: String,
-    val decisionDate: Instant
+    val approveDate: Instant
 ) : DomainEvent
