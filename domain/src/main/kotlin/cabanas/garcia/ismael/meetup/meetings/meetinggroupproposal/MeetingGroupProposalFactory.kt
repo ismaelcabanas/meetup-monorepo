@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.meetup.meetings.meetinggroupproposal
 
+import cabanas.garcia.ismael.meetup.meetings.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.member.MemberId
 import java.time.Instant
 
