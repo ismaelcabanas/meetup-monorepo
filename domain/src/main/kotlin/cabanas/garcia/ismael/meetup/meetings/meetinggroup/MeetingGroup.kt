@@ -45,10 +45,31 @@ data class MeetingGroup(
             )
         }
 
+    fun update(newName: String, newDescription: String, newLocation: MeetingGroupLocation): MeetingGroup =
+        MeetingGroup(
+            this.id,
+            this.creatorId,
+            newName,
+            newDescription,
+            newLocation,
+            this.creationDate,
+            this.membersMeetingGroup
+        ).also {
+            it.events = this.events()
+            it.registerDomainEvent(
+                MeetingGroupUpdated(
+                    this.id.value,
+                    newName,
+                    newDescription,
+                    newLocation.country,
+                    newLocation.city
+                )
+            )
+        }
+
     fun events() = events
 
     private fun registerDomainEvent(domainEvent: DomainEvent) {
         events.add(domainEvent)
     }
-
 }

@@ -11,6 +11,7 @@ object MeetingGroupMother {
     private const val SOME_COUNTRY = "some country"
     private const val SOME_CITY = "some city"
     private const val SOME_CREATION_DATE = "2021-02-01T03:13:03Z"
+    private const val SOME_MEMBER_ID = "some member id"
 
     fun withMember(memberId: String): MeetingGroup =
         MeetingGroup(
@@ -21,4 +22,7 @@ object MeetingGroupMother {
             MeetingGroupLocation(SOME_COUNTRY, SOME_CITY),
             Instant.parse(SOME_CREATION_DATE)
         )
+
+    fun create(): MeetingGroup =
+        withMember(SOME_MEMBER_ID)
 }

@@ -69,6 +69,16 @@ Entre los requisitos que nos vamos a encontrar:
  - Una vez aceptada la propuesta de grupo de meetup, se puede crear el grupo de meetup y el creador 
    de la propuesta se convierte en miembro organizador del grupo de meetup.
 
+***Grupos de Meetup***
+
+ - Un grupo de meetup se crea una vez que una propuesta de creación del grupo esté aceptada, en ese momento se
+   podrá crear.
+
+ - La información de un grupo de meetup son el nombre, la descripción, la localización, el creador y la fecha de
+   creación del grupo de meetup.
+
+ - El creador del grupo podrá actualizar el nombre, la descripción y la localización del grupo de meetup.
+
 ***Comentarios en el meeting***
 
  - Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.
