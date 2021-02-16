@@ -79,6 +79,8 @@ Entre los requisitos que nos vamos a encontrar:
 
  - El creador del grupo podrá actualizar el nombre, la descripción y la localización del grupo de meetup.
 
+ - Al grupo de meetup se podrán añadir nuevos miembros, pero no miembros ya existentes.
+
 ***Comentarios en el meeting***
 
  - Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.
