@@ -11,18 +11,18 @@ object MeetingGroupMother {
     private const val SOME_COUNTRY = "some country"
     private const val SOME_CITY = "some city"
     private const val SOME_CREATION_DATE = "2021-02-01T03:13:03Z"
-    private const val SOME_MEMBER_ID = "some member id"
+    private const val SOME_CREATOR_MEMBER_ID = "some creator member id"
 
     fun withMember(memberId: String): MeetingGroup =
+        create().join(MemberId(memberId))
+
+    fun create(): MeetingGroup =
         MeetingGroup(
             MeetingGroupId(SOME_MEETING_GROUP_ID),
-            MemberId(memberId),
+            MemberId(SOME_CREATOR_MEMBER_ID),
             SOME_NAME,
             SOME_DESCRIPTION,
             MeetingGroupLocation(SOME_COUNTRY, SOME_CITY),
             Instant.parse(SOME_CREATION_DATE)
         )
-
-    fun create(): MeetingGroup =
-        withMember(SOME_MEMBER_ID)
 }

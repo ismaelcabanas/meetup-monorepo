@@ -13,12 +13,8 @@ data class MeetingGroup(
     val location: MeetingGroupLocation,
     val creationDate: Instant
 ) {
-    private var membersMeetingGroup = mutableListOf<MemberMeetingGroup>()
+    private var membersMeetingGroup: List<MemberMeetingGroup> = mutableListOf(MemberMeetingGroup(id, creatorId))
     private var events = mutableListOf<DomainEvent>()
-
-    init {
-        membersMeetingGroup.add(MemberMeetingGroup(id, creatorId))
-    }
 
     fun isMemberMeetingGroup(memberId: MemberId): Boolean {
         val memberMeetingGroup = membersMeetingGroup.stream()
@@ -72,15 +68,15 @@ data class MeetingGroup(
         }
 
     fun join(newMember: MemberId): MeetingGroup {
-        if (memberAlreadyExist(newMember)) {
+        if (isMemberMeetingGroup(newMember)) {
             throw MemberHasAlreadyJoinedException(newMember, this.id)
         }
 
-        addNewMember(newMember)
+        val newMemberMeetingGroup = addNewMember(newMember)
 
         registerDomainEvent(
             NewMeetingGroupMemberJoined(
-                this.id.value,
+                id.value,
                 newMember.value
             )
         )
@@ -93,7 +89,37 @@ data class MeetingGroup(
             this.location,
             this.creationDate
         ).also {
-            it.membersMeetingGroup = this.membersMeetingGroup
+            it.membersMeetingGroup = newMemberMeetingGroup
+            it.events = this.events
+        }
+    }
+
+    fun leave(memberId: MemberId): MeetingGroup {
+        if (isCreator(memberId)) {
+            throw CreatorMemberCannotLeaveGroupException(memberId, id)
+        }
+        if (!isMemberMeetingGroup(memberId)) {
+            throw MemberCannotLeaveGroupException(memberId, id)
+        }
+
+        val newMemberMeetingGroup = removeMember(memberId)
+
+        registerDomainEvent(
+            MeetingGroupMemberLeftGroup(
+                id.value,
+                memberId.value
+            )
+        )
+
+        return MeetingGroup(
+            this.id,
+            this.creatorId,
+            this.name,
+            this.description,
+            this.location,
+            this.creationDate
+        ).also {
+            it.membersMeetingGroup = newMemberMeetingGroup
             it.events = this.events
         }
     }
@@ -102,12 +128,14 @@ data class MeetingGroup(
 
     fun events() = events.toList()
 
-    private fun addNewMember(newMember: MemberId) {
-        this.membersMeetingGroup.add(MemberMeetingGroup(id, newMember))
+    private fun isCreator(memberId: MemberId): Boolean = memberId == creatorId
+
+    private fun addNewMember(newMember: MemberId) : List<MemberMeetingGroup> {
+        return this.membersMeetingGroup.plus(MemberMeetingGroup(id, newMember))
     }
 
-    private fun memberAlreadyExist(member: MemberId): Boolean =
-        this.membersMeetingGroup.contains(MemberMeetingGroup(id, member))
+    private fun removeMember(memberId: MemberId): List<MemberMeetingGroup> =
+        membersMeetingGroup.filter { it != MemberMeetingGroup(id, memberId) }
 
     private fun registerDomainEvent(domainEvent: DomainEvent) {
         events.add(domainEvent)

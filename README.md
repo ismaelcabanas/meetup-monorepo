@@ -81,6 +81,9 @@ Entre los requisitos que nos vamos a encontrar:
 
  - Al grupo de meetup se podrán añadir nuevos miembros, pero no miembros ya existentes.
 
+ - Un miembro del grupo de meetup puede dejar el grupo en cualquier momento, pero el creador del grupo de meetup 
+   no puede dejar el grupo.
+
 ***Comentarios en el meeting***
 
  - Un `Miembro` de un `Grupo de Meetup` puede añadir comentarios a un `Meeting` existente. El comentario debe ser obligatorio.

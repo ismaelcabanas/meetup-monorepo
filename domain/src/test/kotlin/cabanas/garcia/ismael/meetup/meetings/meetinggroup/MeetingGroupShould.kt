@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.meetup.meetings.member.MemberId
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -72,6 +73,44 @@ class MeetingGroupShould {
         }
 
         exception.message shouldBe "Member '$MEMBER_ID' has already joined to group '${meetingGroup.id.value}'"
+    }
+
+    @Test
+    fun `member leave the meeting group successfully`() {
+        val meetingGroup = MeetingGroupMother.withMember(NEW_MEMBER_ID)
+
+        val meetingGroupWithoutMember = meetingGroup.leave(MemberId(NEW_MEMBER_ID))
+
+        meetingGroupWithoutMember.events() shouldContain
+                MeetingGroupMemberLeftGroup(
+                    meetingGroup.id.value,
+                    NEW_MEMBER_ID
+                )
+        meetingGroupWithoutMember.membersGroup() shouldNotContain
+                MemberMeetingGroup(meetingGroup.id, MemberId(NEW_MEMBER_ID))
+    }
+
+    @Test
+    fun `fail when a member wants leave a meeting group and member is not joined in meeting group`() {
+        val meetingGroup = MeetingGroupMother.create()
+
+        val exception = shouldThrow<MemberCannotLeaveGroupException> {
+            meetingGroup.leave(MemberId(NEW_MEMBER_ID))
+        }
+
+        exception.message shouldBe "Member '$NEW_MEMBER_ID' cannot leave the group '${meetingGroup.id.value}'."
+    }
+
+    @Test
+    fun `fail when creator member wants to leave the meeting group`() {
+        val meetingGroup = MeetingGroupMother.create()
+
+        val exception = shouldThrow<CreatorMemberCannotLeaveGroupException> {
+            meetingGroup.leave(meetingGroup.creatorId)
+        }
+
+        exception.message shouldBe
+                "Creator member '${meetingGroup.creatorId.value}' cannot leave the group '${meetingGroup.id.value}'."
     }
 
     private companion object {
