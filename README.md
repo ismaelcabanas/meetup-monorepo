@@ -56,6 +56,13 @@ Entre los requisitos que nos vamos a encontrar:
 
 **Meetings**
 
+***Meeting***
+
+ - Un meeting puede tener asistentes. Éstos asistentes pueden ser invitados o miembros del grupo 
+   de meetup. Si el meeting no va a tener asistentes miembros del grupo de meetup el límite 
+   de asistentes invitados puede ser cualquiera, pero si al meeting van a asistir miembros del grupo de meetup
+   el límite de los asistentes miembro debe ser superior al límite de asistentes invitados.
+   
 ***Propuesta de grupo de Meetup***
 
  - Para crear un nuevo `Grupo de Meetup`, un `Miembro` hacer una `Propuesta de Grupo de Meetup`. 
