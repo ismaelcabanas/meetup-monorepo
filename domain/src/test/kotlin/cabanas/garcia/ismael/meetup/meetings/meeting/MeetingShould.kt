@@ -11,8 +11,10 @@ class MeetingShould {
     @Test
     fun `cancel successfully when has not started`() {
         val meeting = MeetingMother.create(
-            startDate = Instant.parse("2021-01-21T11:11:01Z"),
-            endDate = Instant.parse("2021-01-21T21:11:01Z")
+            MeetingTerm(
+                Instant.parse("2021-01-21T11:11:01Z"),
+                Instant.parse("2021-01-21T21:11:01Z")
+            )
         )
         val cancelMemberId = MemberId(SOME_MEMBER_ID)
         val cancelDate = Instant.parse("2021-01-21T12:11:01Z")
@@ -32,8 +34,10 @@ class MeetingShould {
     @Test
     fun `fail when cancel meeting after has started`() {
         val meeting = MeetingMother.create(
-            startDate = Instant.parse("2021-01-21T11:11:01Z"),
-            endDate = Instant.parse("2021-01-21T21:11:01Z")
+            MeetingTerm(
+                Instant.parse("2021-01-21T11:11:01Z"),
+                Instant.parse("2021-01-21T21:11:01Z")
+            )
         )
         val cancelMemberId = MemberId(SOME_MEMBER_ID)
         val cancelDate = Instant.parse("2021-01-21T10:11:01Z")

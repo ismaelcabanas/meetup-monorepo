@@ -7,12 +7,9 @@ object MeetingMother {
     private const val SOME_START_DATE = "2021-01-20T11:11:01Z"
     private const val SOME_END_DATE = "2021-01-20T21:11:01Z"
 
-    fun create(startDate: Instant?, endDate: Instant?): Meeting =
+    fun create(meetingTerm: MeetingTerm?): Meeting =
         Meeting(
             MeetingId(SOME_MEETING_ID),
-            MeetingTerm(
-                startDate ?: Instant.parse(SOME_START_DATE),
-                endDate ?: Instant.parse(SOME_END_DATE)
-            )
+            meetingTerm ?: MeetingTerm(Instant.parse(SOME_START_DATE), Instant.parse(SOME_END_DATE))
         )
 }
