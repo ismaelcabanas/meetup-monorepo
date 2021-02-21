@@ -8,7 +8,7 @@ object MeetingMother {
     private const val SOME_END_DATE = "2021-01-20T21:11:01Z"
 
     fun create(meetingTerm: MeetingTerm?): Meeting =
-        Meeting(
+        Meeting.create(
             MeetingId(SOME_MEETING_ID),
             meetingTerm ?: MeetingTerm(Instant.parse(SOME_START_DATE), Instant.parse(SOME_END_DATE))
         )

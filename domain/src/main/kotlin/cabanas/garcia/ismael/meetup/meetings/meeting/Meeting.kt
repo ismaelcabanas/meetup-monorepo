@@ -8,13 +8,20 @@ import cabanas.garcia.ismael.meetup.meetings.member.MemberId
 import cabanas.garcia.ismael.meetup.useraccess.userregistration.DomainEvent
 import java.time.Instant
 
-data class Meeting(
+class Meeting private constructor(
     val id: MeetingId,
     val term: MeetingTerm,
     val cancelMemberId: MemberId? = null,
     val cancelDate: Instant? = null
 ) {
     private var events = mutableListOf<DomainEvent>()
+
+    companion object {
+        fun create(id: MeetingId, term: MeetingTerm) = Meeting(
+            id,
+            term
+        )
+    }
 
     fun addComment(
         meetingCommentId: String,
