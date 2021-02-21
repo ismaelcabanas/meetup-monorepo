@@ -10,7 +10,9 @@ object MeetingMother {
     fun create(startDate: Instant?, endDate: Instant?): Meeting =
         Meeting(
             MeetingId(SOME_MEETING_ID),
-            startDate ?: Instant.parse(SOME_START_DATE),
-            endDate ?: Instant.parse(SOME_END_DATE)
+            MeetingTerm(
+                startDate ?: Instant.parse(SOME_START_DATE),
+                endDate ?: Instant.parse(SOME_END_DATE)
+            )
         )
 }

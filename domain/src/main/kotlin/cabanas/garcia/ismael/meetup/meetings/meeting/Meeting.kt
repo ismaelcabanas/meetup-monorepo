@@ -10,8 +10,7 @@ import java.time.Instant
 
 data class Meeting(
     val id: MeetingId,
-    val startDate: Instant,
-    val endDate: Instant,
+    val term: MeetingTerm,
     val cancelMemberId: MemberId? = null,
     val cancelDate: Instant? = null
 ) {
@@ -34,14 +33,13 @@ data class Meeting(
         )
 
     fun cancel(cancelMemberId: MemberId, cancelDate: Instant): Meeting {
-        if (cancelDate.isBefore(startDate)) {
+        if (!term.isAfterStart(cancelDate)) {
             throw MeetingCannotCanceledAfterStartException(id)
         }
 
         return Meeting(
             this.id,
-            this.startDate,
-            this.endDate,
+            this.term,
             cancelMemberId,
             cancelDate
         ).also {
