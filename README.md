@@ -62,7 +62,9 @@ Entre los requisitos que nos vamos a encontrar:
    de meetup. Si el meeting no va a tener asistentes miembros del grupo de meetup el límite 
    de asistentes invitados puede ser cualquiera, pero si al meeting van a asistir miembros del grupo de meetup
    el límite de los asistentes miembro debe ser superior al límite de asistentes invitados.
-   
+
+ - Un meeting no puede ser cancelado una vez éste se haya iniciado.
+ 
 ***Propuesta de grupo de Meetup***
 
  - Para crear un nuevo `Grupo de Meetup`, un `Miembro` hacer una `Propuesta de Grupo de Meetup`. 
@@ -70,7 +72,7 @@ Entre los requisitos que nos vamos a encontrar:
  - Para proponer una `Propuesta de Grupo de Meetup`, el `Miembro` necesita indicar un nombre, una descripción y la localización.
 
  - La propuesta de grupo de meetup se puede aceptar.
-
+/*--*
  - No se puede aceptar una propuesta de grupo de meetup cuando ésta ya ha sido aceptada.
   
  - Una vez aceptada la propuesta de grupo de meetup, se puede crear el grupo de meetup y el creador 
