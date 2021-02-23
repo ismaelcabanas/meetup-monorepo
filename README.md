@@ -58,13 +58,20 @@ Entre los requisitos que nos vamos a encontrar:
 
 ***Meeting***
 
+ - Un meeting no puede ser cancelado una vez éste se haya iniciado.
+   
  - Un meeting puede tener asistentes. Éstos asistentes pueden ser invitados o miembros del grupo 
-   de meetup. Si el meeting no va a tener asistentes miembros del grupo de meetup el límite 
+   de meetup. Si el meeting no va a tener asistentes miembros del grupo de meetup, el límite 
    de asistentes invitados puede ser cualquiera, pero si al meeting van a asistir miembros del grupo de meetup
    el límite de los asistentes miembro debe ser superior al límite de asistentes invitados.
-
- - Un meeting no puede ser cancelado una vez éste se haya iniciado.
  
+ - Una vez el meeting se ha iniciado, no se pueden eliminar asistentes del meeting.
+
+ - Tampoco se pueden eliminar miembros(usuarios) que no son asistentes del meeting.
+
+ - Siempre que un asistente del meeting sea eliminado se debe saber quién lo eliminó y el motivo por el que deja 
+   de asistir al meeting.
+
 ***Propuesta de grupo de Meetup***
 
  - Para crear un nuevo `Grupo de Meetup`, un `Miembro` hacer una `Propuesta de Grupo de Meetup`. 

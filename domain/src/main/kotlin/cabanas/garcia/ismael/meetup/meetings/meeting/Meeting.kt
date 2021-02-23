@@ -14,6 +14,7 @@ class Meeting private constructor(
     val cancelMemberId: MemberId? = null,
     val cancelDate: Instant? = null
 ) {
+    private var attendees = mutableListOf<MeetingAttendee>()
     private var events = mutableListOf<DomainEvent>()
 
     companion object {
@@ -41,7 +42,7 @@ class Meeting private constructor(
 
     fun cancel(cancelMemberId: MemberId, cancelDate: Instant): Meeting {
         if (!term.isAfterStart(cancelDate)) {
-            throw MeetingCannotCanceledAfterStartException(id)
+            throw MeetingCannotChangedAfterHasStartedException(id)
         }
 
         return Meeting(
@@ -61,7 +62,68 @@ class Meeting private constructor(
         }
     }
 
+    fun removeAttendee(
+        attendeeId: MemberId,
+        removingPersonId: MemberId,
+        removingDate: Instant,
+        reason: String? = null
+    ): Meeting {
+        if (term.isAfterStart(removingDate)) {
+            throw MeetingCannotChangedAfterHasStartedException(id)
+        }
+        if (!attendees.contains(MeetingAttendee(attendeeId))) {
+            throw OnlyMeetingAttendeesCanBeRemovedException(id, attendeeId)
+        }
+        if (reason == null) {
+            throw ReasonOfRemovingAttendeeFromMeetingMustBeProvidedException(id, attendeeId)
+        }
+
+        val attendeeRemoved = findAttendee(attendeeId).remove(removingPersonId, removingDate, reason)
+
+        replaceAttendee(attendeeId, attendeeRemoved)
+
+        return Meeting(
+            id,
+            term
+        ).also {
+            it.attendees = this.attendees
+            it.events = this.events
+            it.registerDomainEvent(
+                MeetingAttendeeRemoved(
+                    this.id.value,
+                    attendeeId.value,
+                    removingPersonId.value,
+                    removingDate,
+                    reason
+                )
+            )
+        }
+    }
+
+    fun addAttendee(attendeeId: MemberId): Meeting {
+        attendees.add(MeetingAttendee(attendeeId))
+        return Meeting(
+            id,
+            term
+        ).also {
+            it.events = this.events
+            it.attendees = this.attendees
+        }
+    }
+
+    fun attendees() = attendees
+
     fun events() = events
+
+    private fun findAttendee(attendeeId: MemberId): MeetingAttendee =
+        attendees.find {
+                attendee -> attendee.id == attendeeId
+        }!!
+
+    private fun replaceAttendee(attendeeIdToReplace: MemberId, newAttendee: MeetingAttendee) {
+        attendees.remove(findAttendee(attendeeIdToReplace))
+        attendees.add(newAttendee)
+    }
 
     private fun registerDomainEvent(domainEvent: DomainEvent) {
         events.add(domainEvent)
