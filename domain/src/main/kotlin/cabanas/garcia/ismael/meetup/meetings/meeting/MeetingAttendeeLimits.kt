@@ -17,4 +17,14 @@ data class MeetingAttendeeLimits(val memberAttendeeLimit: Int? = null, val guest
             }
         }
     }
+
+    fun guestsAboveOf(guestsNumber: Int): Boolean = guestsNumber > guestAttendeeLimit
+
+    fun attendeesAboveOf(attendeesNumber: Int) =
+        if (memberAttendeeLimit != null) {
+            attendeesNumber > memberAttendeeLimit
+        }
+        else {
+            false
+        }
 }

@@ -10,7 +10,10 @@ import java.time.Instant
 
 class Meeting private constructor(
     val id: MeetingId,
-    val term: MeetingTerm,
+    val meetingGroup: MeetingGroup,
+    val meetingAttendeeLimits: MeetingAttendeeLimits,
+    val enrolmentTerm: EnrolmentTerm,
+    val meetingTerm: MeetingTerm,
     val cancelMemberId: MemberId? = null,
     val cancelDate: Instant? = null
 ) {
@@ -18,9 +21,18 @@ class Meeting private constructor(
     private var events = mutableListOf<DomainEvent>()
 
     companion object {
-        fun create(id: MeetingId, term: MeetingTerm) = Meeting(
+        fun create(
+            id: MeetingId,
+            meetingGroup: MeetingGroup,
+            meetingAttendeeLimits: MeetingAttendeeLimits,
+            enrolmentTerm: EnrolmentTerm,
+            meetingTerm: MeetingTerm
+        ) = Meeting(
             id,
-            term
+            meetingGroup,
+            meetingAttendeeLimits,
+            enrolmentTerm,
+            meetingTerm
         )
     }
 
@@ -41,13 +53,16 @@ class Meeting private constructor(
         )
 
     fun cancel(cancelMemberId: MemberId, cancelDate: Instant): Meeting {
-        if (!term.isAfterStart(cancelDate)) {
-            throw MeetingCannotChangedAfterHasStartedException(id)
+        if (!meetingTerm.isAfterStart(cancelDate)) {
+            throw MeetingCannotChangedAfterHasStartedException()
         }
 
         return Meeting(
             this.id,
-            this.term,
+            this.meetingGroup,
+            this.meetingAttendeeLimits,
+            this.enrolmentTerm,
+            this.meetingTerm,
             cancelMemberId,
             cancelDate
         ).also {
@@ -68,10 +83,10 @@ class Meeting private constructor(
         removingDate: Instant,
         reason: String? = null
     ): Meeting {
-        if (term.isAfterStart(removingDate)) {
-            throw MeetingCannotChangedAfterHasStartedException(id)
+        if (meetingTerm.isAfterStart(removingDate)) {
+            throw MeetingCannotChangedAfterHasStartedException()
         }
-        if (!attendees.contains(MeetingAttendee(attendeeId))) {
+        if (attendees.find { meetingAttendee -> meetingAttendee.id == attendeeId } == null) {
             throw OnlyMeetingAttendeesCanBeRemovedException(id, attendeeId)
         }
         if (reason == null) {
@@ -84,7 +99,10 @@ class Meeting private constructor(
 
         return Meeting(
             id,
-            term
+            meetingGroup,
+            meetingAttendeeLimits,
+            enrolmentTerm,
+            meetingTerm
         ).also {
             it.attendees = this.attendees
             it.events = this.events
@@ -100,11 +118,42 @@ class Meeting private constructor(
         }
     }
 
-    fun addAttendee(attendeeId: MemberId): Meeting {
-        attendees.add(MeetingAttendee(attendeeId))
+    fun addAttendee(attendeeId: MemberId, enrolmentDate: Instant) =
+        addAttendee(attendeeId, enrolmentDate, 0)
+
+    fun addAttendee(attendeeId: MemberId, enrolmentDate: Instant, guestsNumber: Int): Meeting {
+        if (meetingTerm.isAfterStart(enrolmentDate)) {
+            throw MeetingCannotChangedAfterHasStartedException()
+        }
+        if (!enrolmentTerm.isInTerm(enrolmentDate)) {
+            throw MeetingAttendeeMustBeAddedInEnrolmentTermException()
+        }
+        if (!meetingGroup.isMemberMeetingGroup(attendeeId)) {
+            throw MeetingAttendeeMustBeAMemberOfMeetingGroupException()
+        }
+        if (meetingAttendeeLimits.guestsAboveOf(guestsNumber)) {
+            throw MeetingGuestsNumberIsAboveLimitException()
+        }
+        if (meetingAttendeeLimits.attendeesAboveOf(currentMeetingAttendeesNumber() + 1 + guestsNumber)) {
+            throw MeetingAttendeesNumberIsAboveLimitException()
+        }
+
+        attendees.add(MeetingAttendee(attendeeId, id, enrolmentDate, guestsNumber))
+
+        registerDomainEvent(
+            MeetingAttendeeAdded(
+                attendeeId.value,
+                id.value,
+                enrolmentDate
+            )
+        )
+
         return Meeting(
             id,
-            term
+            meetingGroup,
+            meetingAttendeeLimits,
+            enrolmentTerm,
+            meetingTerm
         ).also {
             it.events = this.events
             it.attendees = this.attendees
@@ -114,6 +163,9 @@ class Meeting private constructor(
     fun attendees() = attendees
 
     fun events() = events
+
+    private fun currentMeetingAttendeesNumber() =
+        attendees.sumBy { meetingAttendee -> meetingAttendee.attendeeWithGuestsNumber()  }
 
     private fun findAttendee(attendeeId: MemberId): MeetingAttendee =
         attendees.find {

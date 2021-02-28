@@ -25,4 +25,12 @@ object MeetingGroupMother {
             MeetingGroupLocation(SOME_COUNTRY, SOME_CITY),
             Instant.parse(SOME_CREATION_DATE)
         )
+
+    fun withMembers(attendees: List<MemberId>?): MeetingGroup {
+        var meetingGroup = create()
+
+        attendees?.forEach { meetingGroup = meetingGroup.join(it) }
+
+        return meetingGroup
+    }
 }
