@@ -17,51 +17,47 @@ buildscript {
 	}
 }
 
-allprojects {
-	repositories {
-		jcenter()
-	}
+repositories {
+	jcenter()
+}
 
-	apply plugin: 'kotlin'
+apply plugin: 'kotlin'
 
-	compileKotlin {
-		kotlinOptions {
-			jvmTarget = "1.8"
-		}
-	}
-
-	compileTestKotlin {
-		kotlinOptions {
-			jvmTarget = "1.8"
-		}
-	}
-
-	dependencies {
-		// Kotlin
-		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-		// Test
-		testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
-		testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
-		testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.4.2")
-		testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
-		testImplementation("org.mockito:mockito-inline:2.23.0")
-		testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
-		testImplementation("org.assertj:assertj-core:3.14.0")
-
-		// Kotlin Test
-		testImplementation("io.kotest:kotest-assertions-core:$kotestAssertionsVersion")
-		testImplementation "io.mockk:mockk:1.10.5"
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
 	}
 }
 
-subprojects {
-	sourceSets {
-		main.kotlin.srcDirs += 'src/main'
-		test.kotlin.srcDirs += 'src/test'
+compileTestKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
 	}
+}
 
-	test {
-		useJUnitPlatform()
-	}
+dependencies {
+	// Kotlin
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+	// Test
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+	testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
+	testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.4.2")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+	testImplementation("org.mockito:mockito-inline:2.23.0")
+	testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
+	testImplementation("org.assertj:assertj-core:3.14.0")
+
+	// Kotlin Test
+	testImplementation("io.kotest:kotest-assertions-core:$kotestAssertionsVersion")
+	testImplementation "io.mockk:mockk:1.10.5"
+}
+
+sourceSets {
+	main.kotlin.srcDirs += 'src/main'
+	test.kotlin.srcDirs += 'src/test'
+}
+
+test {
+	useJUnitPlatform()
 }
