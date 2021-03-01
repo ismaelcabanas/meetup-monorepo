@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment
 
-import cabanas.garcia.ismael.meetup.domain.shared.DomainEvent
+import cabanas.garcia.ismael.meetup.shared.DomainEvent
 import java.time.Instant
 
 data class MeetingCommentCreated(

@@ -2,7 +2,7 @@ package cabanas.garcia.ismael.meetup.meetings.application.meetingcomment
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentRepository
-import cabanas.garcia.ismael.meetup.domain.shared.service.EventBus
+import cabanas.garcia.ismael.meetup.shared.service.EventBus
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 
