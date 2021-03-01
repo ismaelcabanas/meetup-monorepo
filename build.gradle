@@ -1,6 +1,3 @@
-group = 'cabanas.garcia.ismael'
-version = '1.0-SNAPSHOT'
-
 buildscript {
 	ext {
 		kotlinVersion = '1.3.72'
@@ -17,9 +14,17 @@ buildscript {
 	}
 }
 
+plugins {
+	id 'jacoco'
+}
+
+
 repositories {
 	jcenter()
 }
+
+group = 'cabanas.garcia.ismael'
+version = '1.0-SNAPSHOT'
 
 apply plugin: 'kotlin'
 
@@ -61,3 +66,13 @@ sourceSets {
 test {
 	useJUnitPlatform()
 }
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
+}
+
+check.dependsOn jacocoTestReport
