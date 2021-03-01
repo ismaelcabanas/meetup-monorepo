@@ -1,12 +1,9 @@
-package cabanas.garcia.ismael.meetup.application.administration.acceptmeetupgroupproposal
+package cabanas.garcia.ismael.meetup.administration.application.acceptmeetupgroupproposal
 
 import cabanas.garcia.ismael.meetup.domain.administration.*
 import cabanas.garcia.ismael.meetup.domain.shared.service.EventBus
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Test
-import java.time.Instant
 
 class AcceptMeetupGroupProposalShould {
     var repository = mockk<MeetupGroupProposalRepository>(relaxed = true)

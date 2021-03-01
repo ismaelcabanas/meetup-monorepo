@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.application.administration.requestmeetupgroupproposalverification
+package cabanas.garcia.ismael.meetup.administration.application.requestmeetupgroupproposalverification
 
 import cabanas.garcia.ismael.meetup.domain.administration.MeetupGroupProposalFactory
 import cabanas.garcia.ismael.meetup.domain.administration.MeetupGroupProposalRepository
