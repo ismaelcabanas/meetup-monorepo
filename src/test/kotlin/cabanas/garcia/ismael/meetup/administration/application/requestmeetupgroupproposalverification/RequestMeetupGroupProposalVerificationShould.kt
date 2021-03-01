@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.meetup.administration.application.requestmeetupgroupproposalverification
 
-import cabanas.garcia.ismael.meetup.domain.administration.*
+import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalCreated
+import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalRepository
 import cabanas.garcia.ismael.meetup.domain.shared.service.EventBus
 import io.mockk.mockk
 import io.mockk.verify

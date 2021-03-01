@@ -1,8 +1,8 @@
 package cabanas.garcia.ismael.meetup.administration.application.acceptmeetupgroupproposal
 
-import cabanas.garcia.ismael.meetup.domain.administration.MeetupGroupProposalId
-import cabanas.garcia.ismael.meetup.domain.administration.MeetupGroupProposalRepository
-import cabanas.garcia.ismael.meetup.domain.administration.UserId
+import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalId
+import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalRepository
+import cabanas.garcia.ismael.meetup.administration.domain.UserId
 import cabanas.garcia.ismael.meetup.domain.shared.service.EventBus
 
 class AcceptMeetupGroupProposalCommandHandler(

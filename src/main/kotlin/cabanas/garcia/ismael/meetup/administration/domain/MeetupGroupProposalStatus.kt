@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.administration
+package cabanas.garcia.ismael.meetup.administration.domain
 
 enum class MeetupGroupProposalStatus {
     PENDING_OF_APPROVAL,

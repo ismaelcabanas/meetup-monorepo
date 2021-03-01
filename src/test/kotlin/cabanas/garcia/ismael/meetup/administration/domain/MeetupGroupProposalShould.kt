@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.administration
+package cabanas.garcia.ismael.meetup.administration.domain
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
@@ -10,7 +10,10 @@ class MeetupGroupProposalShould {
     @Test
     fun `create a successful meetup group proposal`() {
         val meetupGroupProposal =
-            MeetupGroupProposalFactory.createProposal(SOME_ID, SOME_USER_ID, SOME_NAME, SOME_DESCRIPTION, SOME_COUNTRY, SOME_CITY, Instant.parse(SOME_DATE))
+            MeetupGroupProposalFactory.createProposal(
+                SOME_ID, SOME_USER_ID, SOME_NAME, SOME_DESCRIPTION, SOME_COUNTRY, SOME_CITY, Instant.parse(
+                    SOME_DATE
+                ))
 
         meetupGroupProposal.events() shouldContain
             MeetupGroupProposalCreated(

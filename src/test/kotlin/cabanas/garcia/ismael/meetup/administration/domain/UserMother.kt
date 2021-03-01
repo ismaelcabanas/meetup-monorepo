@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.administration
+package cabanas.garcia.ismael.meetup.administration.domain
 
 object UserMother {
     private const val SOME_ADMIN_USER_ID = "some admin id"

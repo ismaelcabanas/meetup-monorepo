@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.administration
+package cabanas.garcia.ismael.meetup.administration.domain
 
 interface MeetupGroupProposalState {
     fun pendingApprove(meetupGroupProposal: MeetupGroupProposal): MeetupGroupProposal

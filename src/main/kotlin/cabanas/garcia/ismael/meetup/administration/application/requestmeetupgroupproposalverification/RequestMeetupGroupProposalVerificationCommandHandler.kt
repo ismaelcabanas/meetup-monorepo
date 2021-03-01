@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.meetup.administration.application.requestmeetupgroupproposalverification
 
-import cabanas.garcia.ismael.meetup.domain.administration.MeetupGroupProposalFactory
-import cabanas.garcia.ismael.meetup.domain.administration.MeetupGroupProposalRepository
+import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalFactory
+import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalRepository
 import cabanas.garcia.ismael.meetup.domain.shared.service.EventBus
 
 class RequestMeetupGroupProposalVerificationCommandHandler(
