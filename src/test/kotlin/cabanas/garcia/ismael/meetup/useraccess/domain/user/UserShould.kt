@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.useraccess.user
+package cabanas.garcia.ismael.meetup.useraccess.domain.user
 
 import io.kotest.matchers.collections.shouldContain
 import org.junit.jupiter.api.Test

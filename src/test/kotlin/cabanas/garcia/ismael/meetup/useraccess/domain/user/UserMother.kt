@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.useraccess.user
+package cabanas.garcia.ismael.meetup.useraccess.domain.user
 
 object UserMother {
     private const val SOME_USER_ID = "some id"

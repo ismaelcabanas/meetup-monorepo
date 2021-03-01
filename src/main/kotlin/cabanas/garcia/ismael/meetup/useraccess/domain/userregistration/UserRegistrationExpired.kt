@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.useraccess.userregistration
+package cabanas.garcia.ismael.meetup.useraccess.domain.userregistration
 
 import cabanas.garcia.ismael.meetup.domain.shared.DomainEvent
 

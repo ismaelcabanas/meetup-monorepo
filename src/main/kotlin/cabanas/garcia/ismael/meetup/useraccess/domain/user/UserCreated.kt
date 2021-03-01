@@ -1,8 +1,8 @@
-package cabanas.garcia.ismael.meetup.domain.useraccess.userregistration
+package cabanas.garcia.ismael.meetup.useraccess.domain.user
 
 import cabanas.garcia.ismael.meetup.domain.shared.DomainEvent
 
-data class NewUserRegistered (
+data class UserCreated(
     val id: String,
     val login: String,
     val email: String,

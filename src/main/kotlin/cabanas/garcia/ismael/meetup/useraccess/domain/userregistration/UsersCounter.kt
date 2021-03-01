@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.domain.useraccess.userregistration
+package cabanas.garcia.ismael.meetup.useraccess.domain.userregistration
 
 interface UsersCounter {
     fun countUsersByLogin(login: String): Int
