@@ -14,6 +14,7 @@ object MeetingMother {
     private const val ENROLMENT_DATE = "2021-01-15T00:00:00Z"
 
     fun create(
+        meetingId: String? = null,
         meetingGroup: MeetingGroup? = null,
         meetingAttendeeLimits: MeetingAttendeeLimits? = null,
         enrolmentTerm: EnrolmentTerm? = null,
@@ -21,7 +22,7 @@ object MeetingMother {
         attendees: List<MemberId>? = null
     ): Meeting {
         var meeting = Meeting.create(
-            MeetingId(SOME_MEETING_ID),
+            MeetingId(meetingId ?: SOME_MEETING_ID),
             meetingGroup ?: MeetingGroupMother.withMembers(attendees?.map { it }),
             meetingAttendeeLimits ?: MeetingAttendeeLimits(5, 2),
             enrolmentTerm ?: EnrolmentTerm(Instant.parse(SOME_ENROLMENT_START_DATE), Instant.parse(SOME_ENROLMENT_END_DATE)),

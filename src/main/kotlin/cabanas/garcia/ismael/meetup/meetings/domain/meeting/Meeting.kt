@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 
 import cabanas.garcia.ismael.meetup.meetings.domain.configuration.MeetingGroupConfiguration
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingComment
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentFactory
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentId
@@ -159,6 +160,10 @@ class Meeting private constructor(
             it.events = this.events
             it.attendees = this.attendees
         }
+    }
+
+    fun signUpMemberToWaitList(memberId: MemberId) {
+        registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
     }
 
     fun attendees() = attendees

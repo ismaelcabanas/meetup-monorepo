@@ -77,6 +77,8 @@ Entre los requisitos que nos vamos a encontrar:
    
  - Un asistente sólo puede ser añadido si el límite de asistentes al meeting no ha sido superado.
 
+ - Si se ha alcanzado el límite de meeting, los miembros del meetup pueden registrarse en una lista de espera. 
+
  - Un asistente sólo puede ser añadido una sola vez al meeting.
 
  - Un meeting puede tener asistentes. Éstos asistentes pueden ser invitados o miembros del grupo
@@ -85,6 +87,7 @@ Entre los requisitos que nos vamos a encontrar:
    el límite de los asistentes miembro debe ser superior al límite de asistentes invitados.
 
  - Una vez el meeting se ha iniciado, no se pueden eliminar asistentes del meeting.
+
 
 ***Propuesta de grupo de Meetup***
 
