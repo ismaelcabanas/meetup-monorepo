@@ -163,6 +163,9 @@ class Meeting private constructor(
     }
 
     fun signUpMemberToWaitList(memberId: MemberId) {
+        if (meetingTerm.isAfterStart(Instant.now())) {
+            throw MeetingCannotChangedAfterHasStartedException()
+        }
         registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
     }
 

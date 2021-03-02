@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroup
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import java.time.Instant
+import java.time.Period
 
 object MeetingMother {
     private const val SOME_MEETING_ID = "some meeting id"
@@ -37,5 +38,22 @@ object MeetingMother {
 
         return meeting
     }
+
+    fun notStartedYet(meetingId: String?) =
+        create(
+            meetingId,
+            meetingTerm = MeetingTerm(
+                Instant.now().plus(Period.ofDays(1)),
+                Instant.now().plus(Period.ofDays(2))
+            )
+        )
+
+    fun started() =
+        create(
+            meetingTerm = MeetingTerm(
+                Instant.now().minus(Period.ofDays(1)),
+                Instant.now().plus(Period.ofDays(1))
+            )
+        )
 
 }
