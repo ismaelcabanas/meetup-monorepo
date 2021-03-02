@@ -3,28 +3,35 @@ package cabanas.garcia.ismael.meetup.meetings.application.signupmembertowaillist
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingId
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingMother
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingRepository
-import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingTerm
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupId
+import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
+import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupRepository
 import cabanas.garcia.ismael.meetup.shared.service.EventBus
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.time.Instant
-import java.time.Period
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class SignUpMemberToWaitListCommandHandlerShould {
     var meetingRepository = mockk<MeetingRepository>(relaxed = true)
+    var meetingGroupRepository = mockk<MeetingGroupRepository>(relaxed = true)
     var eventBus = mockk<EventBus>(relaxed = true)
+    private lateinit var commandHandler: SignUpMemberToWaitListCommandHandler
+
+    @BeforeEach
+    fun `configure sut`() {
+        val meetingNotStarted = MeetingMother.notStartedYet(SOME_MEETING_ID)
+        val meetingGroupWithMember = MeetingGroupMother.withMember(SOME_MEMBER_ID)
+        every { meetingRepository.findById(MeetingId(SOME_MEETING_ID)) } returns meetingNotStarted
+        every { meetingGroupRepository.findBy(meetingNotStarted.meetingGroup.id) } returns meetingGroupWithMember
+        commandHandler = SignUpMemberToWaitListCommandHandler(meetingGroupRepository, meetingRepository, eventBus)
+    }
 
     @Test
     fun `persist meeting wait list with member`() {
-        every { meetingRepository.findById(MeetingId(SOME_MEETING_ID)) } returns
-                MeetingMother.notStartedYet(
-                    SOME_MEETING_ID
-                )
         val command = SignUpMemberToWaitListCommand(SOME_MEETING_ID, SOME_MEMBER_ID)
-        val commandHandler = SignUpMemberToWaitListCommandHandler(meetingRepository, eventBus)
 
         commandHandler.handle(command)
 
@@ -35,12 +42,7 @@ class SignUpMemberToWaitListCommandHandlerShould {
 
     @Test
     fun `publish member added to wait list event`() {
-        every { meetingRepository.findById(MeetingId(SOME_MEETING_ID)) } returns
-                MeetingMother.notStartedYet(
-                    SOME_MEETING_ID
-                )
         val command = SignUpMemberToWaitListCommand(SOME_MEETING_ID, SOME_MEMBER_ID)
-        val commandHandler = SignUpMemberToWaitListCommandHandler(meetingRepository, eventBus)
 
         commandHandler.handle(command)
 

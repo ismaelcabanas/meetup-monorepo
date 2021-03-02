@@ -72,4 +72,16 @@ object MeetingMother {
             )
         )
 
+    fun inEnrolmentTerm() =
+        create(
+            enrolmentTerm = EnrolmentTerm(
+                Instant.now().minus(Period.ofDays(5)),
+                Instant.now().plus(Period.ofDays(1))
+            ),
+            meetingTerm = MeetingTerm(
+                Instant.now().plus(Period.ofDays(3)),
+                Instant.now().plus(Period.ofDays(4))
+            )
+        )
+
 }

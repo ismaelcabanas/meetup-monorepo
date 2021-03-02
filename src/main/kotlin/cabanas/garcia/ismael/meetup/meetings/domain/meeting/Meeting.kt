@@ -158,9 +158,10 @@ class Meeting private constructor(
         }
     }
 
-    fun signUpMemberToWaitList(memberId: MemberId) {
+    fun signUpMemberToWaitList(meetingGroup: MeetingGroup, memberId: MemberId) {
         checkMeetingCannotChangedAfterHasStarted(Instant.now())
         checkMeetingAttendeeMustBeAddedInEnrolmentTerm(Instant.now())
+        checkMemberOnWailListMustBeMemberOfMeetingGroup(meetingGroup, memberId)
 
         registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
     }
@@ -168,6 +169,12 @@ class Meeting private constructor(
     fun attendees() = attendees
 
     fun events() = events
+
+    private fun checkMemberOnWailListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
+        if (!meetingGroup.isMemberMeetingGroup(memberId)) {
+            throw MemberOnWailListMustBeMemberOfMeetingGroupException()
+        }
+    }
 
     private fun checkMeetingCannotChangedAfterHasStarted(enrolmentDate: Instant) {
         if (meetingTerm.isAfterStart(enrolmentDate)) {
