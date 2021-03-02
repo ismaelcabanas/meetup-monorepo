@@ -124,12 +124,8 @@ class Meeting private constructor(
         addAttendee(attendeeId, enrolmentDate, 0)
 
     fun addAttendee(attendeeId: MemberId, enrolmentDate: Instant, guestsNumber: Int): Meeting {
-        if (meetingTerm.isAfterStart(enrolmentDate)) {
-            throw MeetingCannotChangedAfterHasStartedException()
-        }
-        if (!enrolmentTerm.isInTerm(enrolmentDate)) {
-            throw MeetingAttendeeMustBeAddedInEnrolmentTermException()
-        }
+        checkMeetingCannotChangedAfterHasStarted(enrolmentDate)
+        checkMeetingAttendeeMustBeAddedInEnrolmentTerm(enrolmentDate)
         if (!meetingGroup.isMemberMeetingGroup(attendeeId)) {
             throw MeetingAttendeeMustBeAMemberOfMeetingGroupException()
         }
@@ -163,15 +159,27 @@ class Meeting private constructor(
     }
 
     fun signUpMemberToWaitList(memberId: MemberId) {
-        if (meetingTerm.isAfterStart(Instant.now())) {
-            throw MeetingCannotChangedAfterHasStartedException()
-        }
+        checkMeetingCannotChangedAfterHasStarted(Instant.now())
+        checkMeetingAttendeeMustBeAddedInEnrolmentTerm(Instant.now())
+
         registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
     }
 
     fun attendees() = attendees
 
     fun events() = events
+
+    private fun checkMeetingCannotChangedAfterHasStarted(enrolmentDate: Instant) {
+        if (meetingTerm.isAfterStart(enrolmentDate)) {
+            throw MeetingCannotChangedAfterHasStartedException()
+        }
+    }
+
+    private fun checkMeetingAttendeeMustBeAddedInEnrolmentTerm(enrolmentDate: Instant) {
+        if (!enrolmentTerm.isInTerm(enrolmentDate)) {
+            throw MeetingAttendeeMustBeAddedInEnrolmentTermException()
+        }
+    }
 
     private fun currentMeetingAttendeesNumber() =
         attendees.sumBy { meetingAttendee -> meetingAttendee.attendeeWithGuestsNumber()  }

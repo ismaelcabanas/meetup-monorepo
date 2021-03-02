@@ -42,9 +42,13 @@ object MeetingMother {
     fun notStartedYet(meetingId: String?) =
         create(
             meetingId,
+            enrolmentTerm = EnrolmentTerm(
+                Instant.now().minus(Period.ofDays(5)),
+                Instant.now().plus(Period.ofDays(1))
+            ),
             meetingTerm = MeetingTerm(
-                Instant.now().plus(Period.ofDays(1)),
-                Instant.now().plus(Period.ofDays(2))
+                Instant.now().plus(Period.ofDays(3)),
+                Instant.now().plus(Period.ofDays(4))
             )
         )
 
@@ -53,6 +57,18 @@ object MeetingMother {
             meetingTerm = MeetingTerm(
                 Instant.now().minus(Period.ofDays(1)),
                 Instant.now().plus(Period.ofDays(1))
+            )
+        )
+
+    fun outOfEnrolmentTerm() =
+        create(
+            enrolmentTerm = EnrolmentTerm(
+                Instant.now().minus(Period.ofDays(5)),
+                Instant.now().minus(Period.ofDays(1))
+            ),
+            meetingTerm = MeetingTerm(
+                Instant.now().plus(Period.ofDays(1)),
+                Instant.now().plus(Period.ofDays(2))
             )
         )
 

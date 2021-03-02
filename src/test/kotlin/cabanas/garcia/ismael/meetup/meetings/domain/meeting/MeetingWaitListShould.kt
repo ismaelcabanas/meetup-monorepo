@@ -18,8 +18,14 @@ class MeetingWaitListShould {
     }
     
     @Test
-    fun `not sign up member to wait list when term ended`() {
-        TODO("Not implemented yet")    
+    fun `not sign up member to wait list when sign up out of enrolment term to meeting`() {
+        val meeting = MeetingMother.outOfEnrolmentTerm()
+
+        val exception = shouldThrow<MeetingAttendeeMustBeAddedInEnrolmentTermException> {
+            meeting.signUpMemberToWaitList(MemberId(SOME_MEMBER_ID))
+        }
+
+        exception.message shouldBe "Attendee can be added only in enrolment term."
     }
     
     @Test
