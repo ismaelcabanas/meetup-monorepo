@@ -172,6 +172,8 @@ class Meeting private constructor(
 
     fun attendees() = attendees
 
+    fun waitListMembers() = waitListMembers
+
     fun events() = events
 
 

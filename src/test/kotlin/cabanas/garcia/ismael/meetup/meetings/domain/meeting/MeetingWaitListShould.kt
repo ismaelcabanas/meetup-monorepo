@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -58,7 +59,13 @@ class MeetingWaitListShould {
 
     @Test
     fun `sign up member to wait list successfully`() {
-        TODO("Not implemented yet")
+        val meetingGroup = MeetingGroupMother.withMember(SOME_MEMBER_ID)
+        val meeting = MeetingMother.inEnrolmentTerm()
+
+        meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
+
+        meeting.waitListMembers() shouldContain
+                MeetingWaitListMember(meeting.id, MemberId(SOME_MEMBER_ID))
     }
 
     private companion object {
