@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttend
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.domain.DomainException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
@@ -185,7 +186,7 @@ class MeetingShould {
         val newAttendeeId = MemberId(SOME_MEMBER_ID)
         val enrolmentDate = Instant.parse("2020-12-31T00:00:00Z")
 
-        val exception = shouldThrow<MeetingAttendeeMustBeAddedInEnrolmentTermException> {
+        val exception = shouldThrow<DomainException> {
             meeting.addAttendee(newAttendeeId, enrolmentDate)
         }
 
@@ -207,7 +208,7 @@ class MeetingShould {
         val newAttendeeId = MemberId(SOME_MEMBER_ID)
         val enrolmentDate = Instant.parse("2021-01-22T00:00:00Z")
 
-        val exception = shouldThrow<MeetingAttendeeMustBeAddedInEnrolmentTermException> {
+        val exception = shouldThrow<DomainException> {
             meeting.addAttendee(newAttendeeId, enrolmentDate)
         }
 

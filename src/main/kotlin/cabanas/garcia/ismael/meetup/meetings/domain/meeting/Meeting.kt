@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttend
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeRemoved
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MeetingAttendeeMustBeAddedInEnrolmentTermRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberCannotBeMoreThanOnceOnMeetingWaitListRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberOnWaitListMustBeMemberOfMeetingGroupRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingComment
@@ -13,9 +14,6 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommen
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroup
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.domain.AggregateRoot
-import cabanas.garcia.ismael.meetup.shared.domain.BusinessRule
-import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
-import cabanas.garcia.ismael.meetup.shared.domain.DomainException
 import java.time.Instant
 
 class Meeting private constructor(
@@ -133,7 +131,7 @@ class Meeting private constructor(
 
     fun addAttendee(attendeeId: MemberId, enrolmentDate: Instant, guestsNumber: Int): Meeting {
         checkMeetingCannotChangedAfterHasStarted(enrolmentDate)
-        checkMeetingAttendeeMustBeAddedInEnrolmentTerm(enrolmentDate)
+        checkRule(MeetingAttendeeMustBeAddedInEnrolmentTermRule(enrolmentTerm, enrolmentDate))
         if (!meetingGroup.isMemberMeetingGroup(attendeeId)) {
             throw MeetingAttendeeMustBeAMemberOfMeetingGroupException()
         }
@@ -168,7 +166,7 @@ class Meeting private constructor(
 
     fun signUpMemberToWaitList(meetingGroup: MeetingGroup, memberId: MemberId) {
         checkMeetingCannotChangedAfterHasStarted(Instant.now())
-        checkMeetingAttendeeMustBeAddedInEnrolmentTerm(Instant.now())
+        checkRule(MeetingAttendeeMustBeAddedInEnrolmentTermRule(enrolmentTerm))
         checkRule(MemberOnWaitListMustBeMemberOfMeetingGroupRule(meetingGroup, memberId))
         checkRule(MemberCannotBeMoreThanOnceOnMeetingWaitListRule(waitListMembers, memberId))
 
@@ -184,12 +182,6 @@ class Meeting private constructor(
     private fun checkMeetingCannotChangedAfterHasStarted(enrolmentDate: Instant) {
         if (meetingTerm.isAfterStart(enrolmentDate)) {
             throw MeetingCannotChangedAfterHasStartedException()
-        }
-    }
-
-    private fun checkMeetingAttendeeMustBeAddedInEnrolmentTerm(enrolmentDate: Instant) {
-        if (!enrolmentTerm.isInTerm(enrolmentDate)) {
-            throw MeetingAttendeeMustBeAddedInEnrolmentTermException()
         }
     }
 
