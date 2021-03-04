@@ -5,12 +5,15 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttend
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeRemoved
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberCannotBeMoreThanOnceOnMeetingWaitListRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingComment
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentFactory
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroup
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.domain.BusinessRule
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
+import cabanas.garcia.ismael.meetup.shared.domain.DomainException
 import java.time.Instant
 
 class Meeting private constructor(
@@ -166,7 +169,7 @@ class Meeting private constructor(
         checkMeetingCannotChangedAfterHasStarted(Instant.now())
         checkMeetingAttendeeMustBeAddedInEnrolmentTerm(Instant.now())
         checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup, memberId)
-        checkCannotBeMoreThanOnceOnWaitList(memberId)
+        checkRule(MemberCannotBeMoreThanOnceOnMeetingWaitListRule(waitListMembers, memberId))
 
         waitListMembers.add(MeetingWaitListMember.create(this.id, memberId))
 
@@ -178,13 +181,6 @@ class Meeting private constructor(
     fun waitListMembers() = waitListMembers
 
     fun events() = events
-
-
-    private fun checkCannotBeMoreThanOnceOnWaitList(memberId: MemberId) {
-        if (waitListMembers.firstOrNull { it.memberId == memberId } != null) {
-            throw MemberOnWaitListAlreadyExistException()
-        }
-    }
 
     private fun checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
         if (!meetingGroup.isMemberMeetingGroup(memberId)) {
@@ -219,5 +215,11 @@ class Meeting private constructor(
 
     private fun registerDomainEvent(domainEvent: DomainEvent) {
         events.add(domainEvent)
+    }
+
+    private fun checkRule(rule: BusinessRule) {
+        if (rule.isBroken()) {
+            throw DomainException(rule.message())
+        }
     }
 }

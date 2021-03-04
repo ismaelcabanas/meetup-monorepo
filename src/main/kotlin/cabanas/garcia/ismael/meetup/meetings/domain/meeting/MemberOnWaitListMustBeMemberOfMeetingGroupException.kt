@@ -1,4 +1,6 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 
+import cabanas.garcia.ismael.meetup.shared.domain.DomainException
+
 class MemberOnWaitListMustBeMemberOfMeetingGroupException
-    : Exception("Member on waitlist must be a member of meeting group.")
+    : DomainException("Member on waitlist must be a member of meeting group.")

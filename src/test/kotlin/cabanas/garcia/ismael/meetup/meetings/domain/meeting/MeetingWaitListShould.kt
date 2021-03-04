@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.domain.DomainException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
@@ -14,7 +15,7 @@ class MeetingWaitListShould {
         val meetingGroup = MeetingGroupMother.create()
         val meeting = MeetingMother.started()
 
-        val exception = shouldThrow<MeetingCannotChangedAfterHasStartedException> {
+        val exception = shouldThrow<DomainException> {
             meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
         }
 
@@ -26,7 +27,7 @@ class MeetingWaitListShould {
         val meetingGroup = MeetingGroupMother.create()
         val meeting = MeetingMother.outOfEnrolmentTerm()
 
-        val exception = shouldThrow<MeetingAttendeeMustBeAddedInEnrolmentTermException> {
+        val exception = shouldThrow<DomainException> {
             meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
         }
 
@@ -38,7 +39,7 @@ class MeetingWaitListShould {
         val meetingGroup = MeetingGroupMother.create()
         val meeting = MeetingMother.inEnrolmentTerm()
 
-        val exception = shouldThrow<MemberOnWaitListMustBeMemberOfMeetingGroupException> {
+        val exception = shouldThrow<DomainException> {
             meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
         }
 
@@ -51,7 +52,7 @@ class MeetingWaitListShould {
         val meeting = MeetingMother.inEnrolmentTerm()
         meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
 
-        val exception = shouldThrow<MemberOnWaitListAlreadyExistException> {
+        val exception = shouldThrow<DomainException> {
             meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
         }
 
