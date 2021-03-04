@@ -2,7 +2,7 @@ package cabanas.garcia.ismael.meetup.administration.application.requestmeetupgro
 
 import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalCreated
 import cabanas.garcia.ismael.meetup.administration.domain.MeetupGroupProposalRepository
-import cabanas.garcia.ismael.meetup.shared.service.EventBus
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

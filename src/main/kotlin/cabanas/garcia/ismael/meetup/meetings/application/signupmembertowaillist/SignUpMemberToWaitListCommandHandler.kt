@@ -2,10 +2,9 @@ package cabanas.garcia.ismael.meetup.meetings.application.signupmembertowaillist
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingId
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingRepository
-import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
-import cabanas.garcia.ismael.meetup.shared.service.EventBus
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 
 class SignUpMemberToWaitListCommandHandler(
     private val meetingGroupRepository: MeetingGroupRepository,

@@ -4,10 +4,9 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingId
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingMother
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
-import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupRepository
-import cabanas.garcia.ismael.meetup.shared.service.EventBus
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
