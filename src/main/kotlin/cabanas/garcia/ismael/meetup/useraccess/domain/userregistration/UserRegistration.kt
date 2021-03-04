@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.meetup.useraccess.domain.userregistration
 
-import cabanas.garcia.ismael.meetup.shared.DomainEvent
+import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.User
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.UserFactory
 import java.time.Instant

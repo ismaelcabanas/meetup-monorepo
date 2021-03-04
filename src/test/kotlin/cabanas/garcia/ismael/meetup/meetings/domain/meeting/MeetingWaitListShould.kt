@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import io.kotest.assertions.throwables.shouldThrow
@@ -66,6 +67,11 @@ class MeetingWaitListShould {
 
         meeting.waitListMembers() shouldContain
                 MeetingWaitListMember(meeting.id, MemberId(SOME_MEMBER_ID))
+        meeting.events() shouldContain
+                MeetingWaitListMemberAdded(
+                    meeting.id.value,
+                    SOME_MEMBER_ID
+                )
     }
 
     private companion object {

@@ -4,7 +4,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.configuration.MeetingGroupCo
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroup
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
-import cabanas.garcia.ismael.meetup.shared.DomainEvent
+import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import java.time.Instant
 
 class MeetingComment(
