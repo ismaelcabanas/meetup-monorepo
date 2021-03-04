@@ -176,9 +176,9 @@ class Meeting private constructor(
         registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
     }
 
-    fun attendees() = attendees
+    fun attendees() = attendees.toList()
 
-    fun waitListMembers() = waitListMembers
+    fun waitListMembers() = waitListMembers.toList()
 
     private fun checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
         if (!meetingGroup.isMemberMeetingGroup(memberId)) {
