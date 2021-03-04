@@ -11,6 +11,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommen
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroup
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.domain.AggregateRoot
 import cabanas.garcia.ismael.meetup.shared.domain.BusinessRule
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import cabanas.garcia.ismael.meetup.shared.domain.DomainException
@@ -24,10 +25,9 @@ class Meeting private constructor(
     val meetingTerm: MeetingTerm,
     val cancelMemberId: MemberId? = null,
     val cancelDate: Instant? = null
-) {
+): AggregateRoot() {
     private var attendees = mutableListOf<MeetingAttendee>()
     private var waitListMembers = mutableListOf<MeetingWaitListMember>()
-    private var events = mutableListOf<DomainEvent>()
 
     companion object {
         fun create(
@@ -180,8 +180,6 @@ class Meeting private constructor(
 
     fun waitListMembers() = waitListMembers
 
-    fun events() = events
-
     private fun checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
         if (!meetingGroup.isMemberMeetingGroup(memberId)) {
             throw MemberOnWaitListMustBeMemberOfMeetingGroupException()
@@ -211,10 +209,6 @@ class Meeting private constructor(
     private fun replaceAttendee(attendeeIdToReplace: MemberId, newAttendee: MeetingAttendee) {
         attendees.remove(findAttendee(attendeeIdToReplace))
         attendees.add(newAttendee)
-    }
-
-    private fun registerDomainEvent(domainEvent: DomainEvent) {
-        events.add(domainEvent)
     }
 
     private fun checkRule(rule: BusinessRule) {
