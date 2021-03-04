@@ -1,5 +1,8 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeRemoved
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import io.kotest.assertions.throwables.shouldThrow

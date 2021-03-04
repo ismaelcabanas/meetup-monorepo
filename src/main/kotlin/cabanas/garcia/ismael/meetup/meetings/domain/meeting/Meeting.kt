@@ -1,6 +1,9 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 
 import cabanas.garcia.ismael.meetup.meetings.domain.configuration.MeetingGroupConfiguration
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeRemoved
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingComment
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentFactory

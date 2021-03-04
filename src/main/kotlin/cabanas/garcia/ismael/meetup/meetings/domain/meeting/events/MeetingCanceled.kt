@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.meetings.domain.meeting
+package cabanas.garcia.ismael.meetup.meetings.domain.meeting.events
 
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import java.time.Instant
