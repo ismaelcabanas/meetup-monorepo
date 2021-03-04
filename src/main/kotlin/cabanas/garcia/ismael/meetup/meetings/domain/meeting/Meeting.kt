@@ -210,10 +210,4 @@ class Meeting private constructor(
         attendees.remove(findAttendee(attendeeIdToReplace))
         attendees.add(newAttendee)
     }
-
-    private fun checkRule(rule: BusinessRule) {
-        if (rule.isBroken()) {
-            throw DomainException(rule.message())
-        }
-    }
 }
