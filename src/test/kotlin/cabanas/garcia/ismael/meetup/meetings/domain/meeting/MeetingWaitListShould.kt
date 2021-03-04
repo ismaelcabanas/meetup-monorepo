@@ -36,7 +36,7 @@ class MeetingWaitListShould {
         val meetingGroup = MeetingGroupMother.create()
         val meeting = MeetingMother.inEnrolmentTerm()
 
-        val exception = shouldThrow<MemberOnWailListMustBeMemberOfMeetingGroupException> {
+        val exception = shouldThrow<MemberOnWaitListMustBeMemberOfMeetingGroupException> {
             meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
         }
 
@@ -45,7 +45,15 @@ class MeetingWaitListShould {
 
     @Test
     fun `not sign up member to wait list when member is already in wait list`() {
-        TODO("Not implemented yet")
+        val meetingGroup = MeetingGroupMother.withMember(SOME_MEMBER_ID)
+        val meeting = MeetingMother.inEnrolmentTerm()
+        meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
+
+        val exception = shouldThrow<MemberOnWaitListAlreadyExistException> {
+            meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
+        }
+
+        exception.message shouldBe "Member already exist on wait list."
     }
 
     @Test

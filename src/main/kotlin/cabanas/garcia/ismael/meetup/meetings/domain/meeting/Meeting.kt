@@ -20,6 +20,7 @@ class Meeting private constructor(
     val cancelDate: Instant? = null
 ) {
     private var attendees = mutableListOf<MeetingAttendee>()
+    private var waitListMembers = mutableListOf<MeetingWaitListMember>()
     private var events = mutableListOf<DomainEvent>()
 
     companion object {
@@ -161,7 +162,10 @@ class Meeting private constructor(
     fun signUpMemberToWaitList(meetingGroup: MeetingGroup, memberId: MemberId) {
         checkMeetingCannotChangedAfterHasStarted(Instant.now())
         checkMeetingAttendeeMustBeAddedInEnrolmentTerm(Instant.now())
-        checkMemberOnWailListMustBeMemberOfMeetingGroup(meetingGroup, memberId)
+        checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup, memberId)
+        checkCannotBeMoreThanOnceOnWaitList(memberId)
+
+        waitListMembers.add(MeetingWaitListMember.create(this.id, memberId))
 
         registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
     }
@@ -170,9 +174,16 @@ class Meeting private constructor(
 
     fun events() = events
 
-    private fun checkMemberOnWailListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
+
+    private fun checkCannotBeMoreThanOnceOnWaitList(memberId: MemberId) {
+        if (waitListMembers.firstOrNull { it.memberId == memberId } != null) {
+            throw MemberOnWaitListAlreadyExistException()
+        }
+    }
+
+    private fun checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
         if (!meetingGroup.isMemberMeetingGroup(memberId)) {
-            throw MemberOnWailListMustBeMemberOfMeetingGroupException()
+            throw MemberOnWaitListMustBeMemberOfMeetingGroupException()
         }
     }
 
