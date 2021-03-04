@@ -6,6 +6,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttend
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberCannotBeMoreThanOnceOnMeetingWaitListRule
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberOnWaitListMustBeMemberOfMeetingGroupRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingComment
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentFactory
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingCommentId
@@ -168,7 +169,7 @@ class Meeting private constructor(
     fun signUpMemberToWaitList(meetingGroup: MeetingGroup, memberId: MemberId) {
         checkMeetingCannotChangedAfterHasStarted(Instant.now())
         checkMeetingAttendeeMustBeAddedInEnrolmentTerm(Instant.now())
-        checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup, memberId)
+        checkRule(MemberOnWaitListMustBeMemberOfMeetingGroupRule(meetingGroup, memberId))
         checkRule(MemberCannotBeMoreThanOnceOnMeetingWaitListRule(waitListMembers, memberId))
 
         waitListMembers.add(MeetingWaitListMember.create(this.id, memberId))
@@ -179,12 +180,6 @@ class Meeting private constructor(
     fun attendees() = attendees.toList()
 
     fun waitListMembers() = waitListMembers.toList()
-
-    private fun checkMemberOnWaitListMustBeMemberOfMeetingGroup(meetingGroup: MeetingGroup, memberId: MemberId) {
-        if (!meetingGroup.isMemberMeetingGroup(memberId)) {
-            throw MemberOnWaitListMustBeMemberOfMeetingGroupException()
-        }
-    }
 
     private fun checkMeetingCannotChangedAfterHasStarted(enrolmentDate: Instant) {
         if (meetingTerm.isAfterStart(enrolmentDate)) {
