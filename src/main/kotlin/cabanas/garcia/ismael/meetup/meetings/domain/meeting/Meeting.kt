@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttend
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttendeeRemoved
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberRemoved
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MeetingAttendeeMustBeAddedInEnrolmentTermRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MeetingCannotChangedAfterHasStartedRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberCannotBeMoreThanOnceOnMeetingWaitListRule
@@ -170,6 +171,10 @@ class Meeting private constructor(
         waitListMembers.add(MeetingWaitListMember.create(this.id, memberId))
 
         registerDomainEvent(MeetingWaitListMemberAdded(id.value, memberId.value))
+    }
+
+    fun signOffMemberFromWaitList(memberId: MemberId) {
+        registerDomainEvent(MeetingWaitListMemberRemoved(id.value, memberId.value))
     }
 
     fun attendees() = attendees.toList()
