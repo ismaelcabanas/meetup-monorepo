@@ -6,6 +6,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingAttend
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingCanceled
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MeetingAttendeeMustBeAddedInEnrolmentTermRule
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MeetingCannotChangedAfterHasStartedRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberCannotBeMoreThanOnceOnMeetingWaitListRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.rules.MemberOnWaitListMustBeMemberOfMeetingGroupRule
 import cabanas.garcia.ismael.meetup.meetings.domain.meetingcomment.MeetingComment
@@ -61,9 +62,7 @@ class Meeting private constructor(
         )
 
     fun cancel(cancelMemberId: MemberId, cancelDate: Instant): Meeting {
-        if (!meetingTerm.isAfterStart(cancelDate)) {
-            throw MeetingCannotChangedAfterHasStartedException()
-        }
+        checkRule(MeetingCannotChangedAfterHasStartedRule(meetingTerm, cancelDate))
 
         return Meeting(
             this.id,
@@ -91,9 +90,7 @@ class Meeting private constructor(
         removingDate: Instant,
         reason: String? = null
     ): Meeting {
-        if (meetingTerm.isAfterStart(removingDate)) {
-            throw MeetingCannotChangedAfterHasStartedException()
-        }
+        checkRule(MeetingCannotChangedAfterHasStartedRule(meetingTerm, removingDate))
         if (attendees.find { meetingAttendee -> meetingAttendee.id == attendeeId } == null) {
             throw OnlyMeetingAttendeesCanBeRemovedException(id, attendeeId)
         }
@@ -130,7 +127,7 @@ class Meeting private constructor(
         addAttendee(attendeeId, enrolmentDate, 0)
 
     fun addAttendee(attendeeId: MemberId, enrolmentDate: Instant, guestsNumber: Int): Meeting {
-        checkMeetingCannotChangedAfterHasStarted(enrolmentDate)
+        checkRule(MeetingCannotChangedAfterHasStartedRule(meetingTerm, enrolmentDate))
         checkRule(MeetingAttendeeMustBeAddedInEnrolmentTermRule(enrolmentTerm, enrolmentDate))
         if (!meetingGroup.isMemberMeetingGroup(attendeeId)) {
             throw MeetingAttendeeMustBeAMemberOfMeetingGroupException()
@@ -165,7 +162,7 @@ class Meeting private constructor(
     }
 
     fun signUpMemberToWaitList(meetingGroup: MeetingGroup, memberId: MemberId) {
-        checkMeetingCannotChangedAfterHasStarted(Instant.now())
+        checkRule(MeetingCannotChangedAfterHasStartedRule(meetingTerm, Instant.now()))
         checkRule(MeetingAttendeeMustBeAddedInEnrolmentTermRule(enrolmentTerm))
         checkRule(MemberOnWaitListMustBeMemberOfMeetingGroupRule(meetingGroup, memberId))
         checkRule(MemberCannotBeMoreThanOnceOnMeetingWaitListRule(waitListMembers, memberId))
@@ -178,12 +175,6 @@ class Meeting private constructor(
     fun attendees() = attendees.toList()
 
     fun waitListMembers() = waitListMembers.toList()
-
-    private fun checkMeetingCannotChangedAfterHasStarted(enrolmentDate: Instant) {
-        if (meetingTerm.isAfterStart(enrolmentDate)) {
-            throw MeetingCannotChangedAfterHasStartedException()
-        }
-    }
 
     private fun currentMeetingAttendeesNumber() =
         attendees.sumBy { meetingAttendee -> meetingAttendee.attendeeWithGuestsNumber()  }

@@ -22,7 +22,7 @@ class MeetingShould {
             )
         )
         val cancelMemberId = MemberId(SOME_MEMBER_ID)
-        val cancelDate = Instant.parse("2021-01-21T12:11:01Z")
+        val cancelDate = Instant.parse("2021-01-13T12:11:01Z")
 
         val meetingCanceled = meeting.cancel(cancelMemberId, cancelDate)
 
@@ -45,9 +45,9 @@ class MeetingShould {
             )
         )
         val cancelMemberId = MemberId(SOME_MEMBER_ID)
-        val cancelDate = Instant.parse("2021-01-21T10:11:01Z")
+        val cancelDate = Instant.parse("2021-01-21T15:11:01Z")
 
-        val exception = shouldThrow<MeetingCannotChangedAfterHasStartedException> {
+        val exception = shouldThrow<DomainException> {
             meeting.cancel(cancelMemberId, cancelDate)
         }
 
@@ -64,7 +64,7 @@ class MeetingShould {
         )
         val removingDate = Instant.parse("2021-01-21T13:11:01Z")
 
-        val exception = shouldThrow<MeetingCannotChangedAfterHasStartedException> {
+        val exception = shouldThrow<DomainException> {
             meeting.removeAttendee(
                 MemberId(SOME_MEMBER_ID),
                 MemberId(ANOTHER_MEMBER_ID),
@@ -290,7 +290,7 @@ class MeetingShould {
         )
         val enrolmentDate = Instant.parse("2021-01-22T13:00:00Z")
 
-        val exception = shouldThrow<MeetingCannotChangedAfterHasStartedException> {
+        val exception = shouldThrow<DomainException> {
             meeting.addAttendee(MemberId(ANOTHER_MEMBER_ID), enrolmentDate, 1)
         }
 
