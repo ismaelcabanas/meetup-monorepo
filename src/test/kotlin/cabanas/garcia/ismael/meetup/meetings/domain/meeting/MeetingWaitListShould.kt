@@ -75,6 +75,17 @@ class MeetingWaitListShould {
                 )
     }
 
+    @Test
+    fun `sign off member from wait list when meeting has started is not possible`() {
+        val meeting = MeetingMother.started()
+
+        val exception = shouldThrow<DomainException> {
+            meeting.signOffMemberFromWaitList(MemberId(SOME_MEMBER_ID))
+        }
+
+        exception.message shouldBe "Meeting cannot be changed after start."
+    }
+
     private companion object {
         private const val SOME_MEMBER_ID = "some member id"
     }

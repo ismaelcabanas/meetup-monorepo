@@ -174,6 +174,8 @@ class Meeting private constructor(
     }
 
     fun signOffMemberFromWaitList(memberId: MemberId) {
+        checkRule(MeetingCannotChangedAfterHasStartedRule(meetingTerm, Instant.now()))
+
         registerDomainEvent(MeetingWaitListMemberRemoved(id.value, memberId.value))
     }
 
