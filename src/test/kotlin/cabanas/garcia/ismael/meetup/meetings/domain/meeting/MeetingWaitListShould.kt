@@ -1,11 +1,13 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meeting
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberAdded
+import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberRemoved
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.domain.DomainException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -84,6 +86,23 @@ class MeetingWaitListShould {
         }
 
         exception.message shouldBe "Meeting cannot be changed after start."
+    }
+
+    @Test
+    fun `sign off member from wait list successfully`() {
+        val meetingGroup = MeetingGroupMother.withMember(SOME_MEMBER_ID)
+        val meeting = MeetingMother.inEnrolmentTerm()
+        meeting.signUpMemberToWaitList(meetingGroup, MemberId(SOME_MEMBER_ID))
+
+        meeting.signOffMemberFromWaitList(MemberId(SOME_MEMBER_ID))
+
+        meeting.waitListMembers() shouldNotContain
+                MeetingWaitListMember(meeting.id, MemberId(SOME_MEMBER_ID))
+        meeting.events() shouldContain
+                MeetingWaitListMemberRemoved(
+                    meeting.id.value,
+                    SOME_MEMBER_ID
+                )
     }
 
     private companion object {

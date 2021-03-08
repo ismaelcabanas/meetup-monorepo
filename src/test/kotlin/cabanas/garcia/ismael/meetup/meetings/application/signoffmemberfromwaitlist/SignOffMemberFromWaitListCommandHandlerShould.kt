@@ -5,7 +5,9 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingMother
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.events.MeetingWaitListMemberRemoved
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupMother
+import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
+import io.kotest.matchers.collections.shouldContain
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -21,6 +23,7 @@ class SignOffMemberFromWaitListCommandHandlerShould {
     fun `configure sut`() {
         val meetingNotStarted = MeetingMother.notStartedYet(SOME_MEETING_ID)
         val meetingGroupWithMember = MeetingGroupMother.withMember(SOME_MEMBER_ID)
+        meetingNotStarted.signUpMemberToWaitList(meetingGroupWithMember, MemberId(SOME_MEMBER_ID))
         every { meetingRepository.findById(MeetingId(SOME_MEETING_ID)) } returns meetingNotStarted
         commandHandler = SignOffMemberFromWaitListCommandHandler(meetingRepository, eventBus)
     }
@@ -44,7 +47,9 @@ class SignOffMemberFromWaitListCommandHandlerShould {
 
         verify {
             eventBus.publish(
-                listOf(MeetingWaitListMemberRemoved(SOME_MEETING_ID, SOME_MEMBER_ID))
+                match {
+                    it.contains(MeetingWaitListMemberRemoved(SOME_MEETING_ID, SOME_MEMBER_ID))
+                }
             )
         }
     }

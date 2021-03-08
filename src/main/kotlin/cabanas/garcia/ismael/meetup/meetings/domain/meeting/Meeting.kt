@@ -176,6 +176,11 @@ class Meeting private constructor(
     fun signOffMemberFromWaitList(memberId: MemberId) {
         checkRule(MeetingCannotChangedAfterHasStartedRule(meetingTerm, Instant.now()))
 
+        val meetingWaitListMember = waitListMembers.first {
+            it.memberId == memberId
+        }
+        waitListMembers.remove(meetingWaitListMember)
+
         registerDomainEvent(MeetingWaitListMemberRemoved(id.value, memberId.value))
     }
 
