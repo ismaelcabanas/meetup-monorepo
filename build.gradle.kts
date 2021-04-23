@@ -21,6 +21,9 @@ testSets {
     create("integrationTest") {
         dirName = "integration-test"
     }
+    create("acceptanceTest") {
+        dirName = "acceptance-test"
+    }
 }
 
 dependencies {
@@ -49,7 +52,11 @@ dependencies {
     // Integration Test dependencies
     val integrationTestImplementation by configurations
     add("integrationTestImplementation", sourceSets["test"].output)
-    integrationTestImplementation("io.rest-assured:spring-mock-mvc:3.1.1")
+
+    // Acceptance Test dependencies
+    val acceptanceTestImplementation by configurations
+    add("acceptanceTestImplementation", sourceSets["test"].output)
+    acceptanceTestImplementation("io.rest-assured:spring-mock-mvc:3.1.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -67,5 +74,5 @@ tasks {
             html.isEnabled = true
         }
     }
-    "check" { dependsOn("jacocoTestReport") }
+    "check" { dependsOn("acceptanceTest", "jacocoTestReport") }
 }
