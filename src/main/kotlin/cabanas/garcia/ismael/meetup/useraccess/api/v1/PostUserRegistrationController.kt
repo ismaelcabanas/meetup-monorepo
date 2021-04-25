@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.meetup.useraccess.api.v1
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 class PostUserRegistrationController {
     @RequestMapping("/v1/user-registrations")
     @PostMapping
-    fun execute(): ResponseEntity<Void> {
+    fun execute(@RequestBody requestBody: CreateUserRegistrationRequest): ResponseEntity<Void> {
         return ResponseEntity(HttpStatus.CREATED)
     }
 }

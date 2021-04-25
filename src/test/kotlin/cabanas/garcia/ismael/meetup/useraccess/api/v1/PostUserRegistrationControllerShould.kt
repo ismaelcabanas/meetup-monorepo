@@ -9,8 +9,9 @@ class PostUserRegistrationControllerShould {
     @Test
     fun `return 201 when post a user registration`() {
         val controller = PostUserRegistrationController()
+        val requestBody = CreateUserRegistrationRequestMother.random()
 
-        val response = controller.execute()
+        val response = controller.execute(requestBody)
 
         response shouldBe ResponseEntity(HttpStatus.CREATED)
     }
