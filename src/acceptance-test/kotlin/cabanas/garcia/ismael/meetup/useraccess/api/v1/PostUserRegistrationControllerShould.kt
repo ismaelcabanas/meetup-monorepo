@@ -1,19 +1,18 @@
 package cabanas.garcia.ismael.meetup.useraccess.api.v1
 
-import cabanas.garcia.ismael.meetup.Application
 import io.restassured.http.ContentType
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.test.context.ContextConfiguration
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@WebMvcTest(PostUserRegistrationController::class)
-@ContextConfiguration(classes = [Application::class])
+@SpringBootTest
+@AutoConfigureMockMvc
 class PostUserRegistrationControllerShould {
     @Autowired
     private lateinit var mvc: MockMvc
