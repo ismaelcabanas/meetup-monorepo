@@ -38,7 +38,10 @@ dependencies {
     runtimeOnly("com.h2database:h2")
 
     // Test dependencies
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "junit")
+        exclude(module = "mockito-core")
+    }
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
@@ -46,6 +49,7 @@ dependencies {
     testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     testImplementation("org.assertj:assertj-core:3.14.0")
     testImplementation("com.github.javafaker:javafaker:1.0.2")
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
 
     // Kotlin test dependencies
     testImplementation("io.kotest:kotest-assertions-core:4.4.3")
