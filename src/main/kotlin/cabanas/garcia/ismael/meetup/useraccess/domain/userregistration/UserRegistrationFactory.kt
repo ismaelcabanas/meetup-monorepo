@@ -12,7 +12,8 @@ object UserRegistrationFactory {
     ): UserRegistration {
         val userRegistration = UserRegistration(UserRegistrationId(id), login, password, email, firstName, lastName)
 
-        return userRegistration.register(usersCounter)
-    }
+        userRegistration.register(usersCounter)
 
+        return userRegistration
+    }
 }

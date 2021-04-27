@@ -32,14 +32,13 @@ class UserRegistrationShould {
 
         userRegistrationRegistered.events() shouldContain
                 NewUserRegistered(
-                    userRegistrationRegistered.id(),
+                    userRegistrationRegistered.id.value,
                     userRegistrationRegistered.login,
                     userRegistrationRegistered.email,
                     userRegistrationRegistered.firstName,
                     userRegistrationRegistered.lastName
                 )
-        userRegistrationRegistered.status shouldBe UserRegistrationStatus.WAITING_FOR_CONFIRMATION
-        userRegistrationRegistered.registerDate shouldNotBe null
+        userRegistrationRegistered.status() shouldBe UserRegistrationStatus.WAITING_FOR_CONFIRMATION
     }
 
     @Test
@@ -63,17 +62,16 @@ class UserRegistrationShould {
 
     @Test
     fun `confirm an user registration waiting for confirmation`() {
-        val userRegistrationRegistered = UserRegistrationMother.aUserRegistrationRegistered()
+        val userRegistration = UserRegistrationMother.aUserRegistrationRegistered()
 
-        val userRegistrationConfirmed = userRegistrationRegistered.confirm()
+        userRegistration.confirm()
 
-        userRegistrationConfirmed.events() shouldContain
+        userRegistration.events() shouldContain
                 UserRegistrationConfirmed(
-                    userRegistrationRegistered.id()
+                    userRegistration.id.value
 
                 )
-        userRegistrationConfirmed.status shouldBe UserRegistrationStatus.CONFIRMED
-        userRegistrationConfirmed.registerDate shouldBe userRegistrationRegistered.registerDate
+        userRegistration.status() shouldBe UserRegistrationStatus.CONFIRMED
     }
 
     @Test
@@ -89,16 +87,16 @@ class UserRegistrationShould {
 
     @Test
     fun `expire an user registration waiting for confirmation`() {
-        val userRegistrationRegistered = UserRegistrationMother.aUserRegistrationRegistered()
+        val userRegistration = UserRegistrationMother.aUserRegistrationRegistered()
 
-        val userRegistrationExpired = userRegistrationRegistered.expire()
+        userRegistration.expire()
 
-        userRegistrationExpired.events() shouldContain
+        userRegistration.events() shouldContain
                 UserRegistrationExpired(
-                    userRegistrationRegistered.id()
+                    userRegistration.id.value
 
                 )
-        userRegistrationExpired.status shouldBe UserRegistrationStatus.EXPIRED
+        userRegistration.status() shouldBe UserRegistrationStatus.EXPIRED
     }
 
     @Test
@@ -137,7 +135,7 @@ class UserRegistrationShould {
                     user.firstName,
                     user.lastName
                 )
-        user.id() shouldBe userRegistrationConfirmed.id()
+        user.id() shouldBe userRegistrationConfirmed.id.value
         user.isActive shouldBe true
     }
 

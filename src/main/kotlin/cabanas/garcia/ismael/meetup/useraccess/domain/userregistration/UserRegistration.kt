@@ -1,100 +1,48 @@
 package cabanas.garcia.ismael.meetup.useraccess.domain.userregistration
 
+import cabanas.garcia.ismael.meetup.shared.domain.AggregateRoot
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.User
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.UserFactory
 import java.time.Instant
 
-data class UserRegistration (
+class UserRegistration (
     val id: UserRegistrationId,
     val login: String,
     val password: String,
     val email: String,
     val firstName:String,
-    val lastName: String,
-    val status: UserRegistrationStatus = UserRegistrationStatus.WAITING_FOR_CONFIRMATION,
-    val registerDate: Instant? = Instant.now()
-) {
-    private var events: List<DomainEvent> = mutableListOf()
+    val lastName: String
+) : AggregateRoot() {
+    private var status: UserRegistrationStatus = UserRegistrationStatus.WAITING_FOR_CONFIRMATION
+    private lateinit var registerDate: Instant
 
-    private constructor(
-        id: UserRegistrationId,
-        login: String,
-        password: String,
-        email: String,
-        firstName: String,
-        lastName: String,
-        status: UserRegistrationStatus,
-        registerDate: Instant?,
-        events: List<DomainEvent>
-    ) : this(
-        id,
-        login,
-        password,
-        email,
-        firstName,
-        lastName,
-        status,
-        registerDate
-    ) {
-        this.events = events
-    }
-
-    fun register(usersCounter: UsersCounter) =
-        if (usersCounter.countUsersByLogin(this.login) == 0)
-            UserRegistration(
-                this.id,
-                this.login,
-                this.password,
-                this.email,
-                this.firstName,
-                this.lastName,
-                this.status,
-                this.registerDate,
-                events = mutableListOf(NewUserRegistered(id.value, login, email, firstName, lastName))
-                )
+    fun register(usersCounter: UsersCounter): Unit =
+        if (usersCounter.countUsersByLogin(this.login) == 0) {
+            this.status = UserRegistrationStatus.WAITING_FOR_CONFIRMATION
+            this.registerDate = Instant.now()
+            registerDomainEvent(NewUserRegistered(id.value, login, email, firstName, lastName))
+        }
         else throw UserRegistrationAlreadyExistException(this.login)
 
-    fun id() = id.value
-
-    fun events() = events.toList()
-
-    fun confirm(): UserRegistration {
+    fun confirm() {
         if (this.status == UserRegistrationStatus.CONFIRMED) {
             throw UserRegistrationAlreadyConfirmedException(this.login)
         } else if (this.status == UserRegistrationStatus.EXPIRED) {
             throw UserRegistrationAlreadyExpiredException()
         }
 
-        return UserRegistration(
-            this.id,
-            this.login,
-            this.password,
-            this.email,
-            this.firstName,
-            this.lastName,
-            status = UserRegistrationStatus.CONFIRMED,
-            events = mutableListOf(UserRegistrationConfirmed(this.id.value)),
-            registerDate = this.registerDate
-        )
+        this.status = UserRegistrationStatus.CONFIRMED
+        registerDomainEvent(UserRegistrationConfirmed(this.id.value))
     }
 
-    fun expire(): UserRegistration {
+    fun expire() {
         if (this.status == UserRegistrationStatus.EXPIRED) {
             throw UserRegistrationAlreadyExpiredException()
         }
 
-        return UserRegistration(
-            this.id,
-            this.login,
-            this.password,
-            this.email,
-            this.firstName,
-            this.lastName,
-            status = UserRegistrationStatus.EXPIRED,
-            events = mutableListOf(UserRegistrationExpired(this.id.value)),
-            registerDate = this.registerDate
-        )
+        this.status = UserRegistrationStatus.EXPIRED
+        registerDomainEvent(UserRegistrationExpired(this.id.value))
     }
 
     fun createUser(): User {
@@ -112,4 +60,5 @@ data class UserRegistration (
         )
     }
 
+    fun status() = this.status
 }

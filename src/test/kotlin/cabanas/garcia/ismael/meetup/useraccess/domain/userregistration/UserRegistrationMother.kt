@@ -19,19 +19,25 @@ object UserRegistrationMother {
             SOME_LAST_NAME
         )
 
-        return userRegistration.register(UsersCounterThatAlwaysReturnZero())
+        userRegistration.register(UsersCounterThatAlwaysReturnZero())
+
+        return userRegistration
     }
 
     fun aUserRegistrationConfirmed(): UserRegistration {
         val userRegistrationRegistered = aUserRegistrationRegistered()
 
-        return userRegistrationRegistered.confirm()
+        userRegistrationRegistered.confirm()
+
+        return userRegistrationRegistered
     }
 
     fun aUserRegistrationExpired(): UserRegistration {
         val userRegistrationRegistered = aUserRegistrationRegistered()
 
-        return userRegistrationRegistered.expire()
+        userRegistrationRegistered.expire()
+
+        return userRegistrationRegistered
     }
 
 }
