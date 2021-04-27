@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.meetup.shared.application
 
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.CreateUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.CreateUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
@@ -7,14 +8,16 @@ import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UsersCoun
 
 class DummyCommandBus(
     userRegistrationRepository: UserRegistrationRepository,
-    usersCounter: UsersCounter
+    usersCounter: UsersCounter,
+    eventBus: EventBus
 ) : CommandBus {
     private val commandHandler: CommandHandler
 
     init {
         commandHandler = CreateUserRegistrationCommandHandler(
             userRegistrationRepository,
-            usersCounter
+            usersCounter,
+            eventBus
         )
     }
 

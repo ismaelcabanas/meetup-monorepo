@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.meetup.useraccess.api.v1
 
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
+import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.NewUserRegistered
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -25,6 +27,9 @@ class PostUserRegistrationControllerShould {
     @MockkBean
     private lateinit var userRegistrationRepository: UserRegistrationRepository
 
+    @MockkBean
+    private lateinit var eventBus: EventBus
+
     @BeforeEach
     fun setUp() {
         RestAssuredMockMvc.mockMvc(mvc)
@@ -33,6 +38,7 @@ class PostUserRegistrationControllerShould {
     @Test
     fun `return 201 when post a user registration`() {
         every { userRegistrationRepository.save(any()) } returns Unit
+        every { eventBus.publish(any()) } returns Unit
         val requestBody = CreateUserRegistrationRequestMother.random()
 
         given()
@@ -52,6 +58,22 @@ class PostUserRegistrationControllerShould {
                     assertThat(requestBody.lastName).isEqualTo(it.lastName)
                     assertThat(requestBody.email).isEqualTo(it.email)
                     assertThat(requestBody.password).isEqualTo(it.password)
+                }
+            )
+        }
+
+        verify {
+            eventBus.publish(
+                match {
+                    it.contains(
+                        NewUserRegistered(
+                            requestBody.id,
+                            requestBody.email,
+                            requestBody.email,
+                            requestBody.firstName,
+                            requestBody.lastName
+                        )
+                    )
                 }
             )
         }
