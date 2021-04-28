@@ -59,6 +59,4 @@ class UserRegistration (
             this.lastName
         )
     }
-
-    fun status() = this.status
 }

@@ -38,7 +38,6 @@ class UserRegistrationShould {
                     userRegistrationRegistered.firstName,
                     userRegistrationRegistered.lastName
                 )
-        userRegistrationRegistered.status() shouldBe UserRegistrationStatus.WAITING_FOR_CONFIRMATION
     }
 
     @Test
@@ -71,7 +70,6 @@ class UserRegistrationShould {
                     userRegistration.id.value
 
                 )
-        userRegistration.status() shouldBe UserRegistrationStatus.CONFIRMED
     }
 
     @Test
@@ -96,7 +94,6 @@ class UserRegistrationShould {
                     userRegistration.id.value
 
                 )
-        userRegistration.status() shouldBe UserRegistrationStatus.EXPIRED
     }
 
     @Test
