@@ -10,7 +10,7 @@ class CreateUserRegistrationCommandHandler(
     private val userRegistrationRepository: UserRegistrationRepository,
     private val usersCounter: UsersCounter,
     private val eventBus: EventBus
-) : CommandHandler {
+) : CommandHandler<CreateUserRegistrationCommand> {
     override fun handle(command: CreateUserRegistrationCommand) {
         val userRegistration = UserRegistrationFactory.registerNewUser(
             command.id,

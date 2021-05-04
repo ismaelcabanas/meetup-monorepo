@@ -1,7 +1,5 @@
 package cabanas.garcia.ismael.meetup.shared.application
 
-import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.CreateUserRegistrationCommand
-
-interface CommandHandler {
-    fun handle(command: CreateUserRegistrationCommand)
+interface CommandHandler<C : Command> {
+    fun handle(command: C)
 }

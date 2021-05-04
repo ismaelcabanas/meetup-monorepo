@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.meetup.shared.infrastructure.configuration
 
-import cabanas.garcia.ismael.meetup.shared.application.DummyCommandBus
+import cabanas.garcia.ismael.meetup.shared.application.InMemoryCommandBus
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UsersCounter
@@ -14,5 +14,5 @@ class CommandBusConfiguration {
         userRegistrationRepository: UserRegistrationRepository,
         usersCounter: UsersCounter,
         eventBus: EventBus
-    ) = DummyCommandBus(userRegistrationRepository, usersCounter, eventBus)
+    ) = InMemoryCommandBus(userRegistrationRepository, usersCounter, eventBus)
 }

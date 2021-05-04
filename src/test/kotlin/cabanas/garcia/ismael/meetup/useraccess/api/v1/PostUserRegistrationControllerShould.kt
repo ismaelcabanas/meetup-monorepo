@@ -1,6 +1,5 @@
 package cabanas.garcia.ismael.meetup.useraccess.api.v1
 
-import cabanas.garcia.ismael.meetup.shared.application.DummyCommandBus
 import cabanas.garcia.ismael.meetup.shared.application.SuccessCommandBus
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
