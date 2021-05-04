@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.meetup.useraccess.api.v1
 
 import cabanas.garcia.ismael.meetup.shared.application.CommandBus
-import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.confirm.ConfirmUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
 import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping

@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.useraccess.application.rergistration.confirm
+package cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration
 
 import cabanas.garcia.ismael.meetup.shared.application.Command
 

@@ -3,8 +3,8 @@ package cabanas.garcia.ismael.meetup.shared.application
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.CreateUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.CreateUserRegistrationCommandHandler
-import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.confirm.ConfirmUserRegistrationCommand
-import cabanas.garcia.ismael.meetup.useraccess.application.rergistration.confirm.ConfirmUserRegistrationCommandHandler
+import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UsersCounter
 import kotlin.reflect.KClass
