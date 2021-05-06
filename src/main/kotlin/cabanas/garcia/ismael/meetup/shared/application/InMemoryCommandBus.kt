@@ -1,6 +1,8 @@
 package cabanas.garcia.ismael.meetup.shared.application
 
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
+import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.newRegistration.CreateUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.newRegistration.CreateUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
@@ -12,7 +14,8 @@ import kotlin.reflect.KClass
 class InMemoryCommandBus(
     userRegistrationRepository: UserRegistrationRepository,
     usersCounter: UsersCounter,
-    eventBus: EventBus
+    eventBus: EventBus,
+    authenticateUserCommandHandler: AuthenticateUserCommandHandler
 ) : CommandBus {
     private val commandHandlers: MutableMap<KClass<out Command>, in CommandHandler<out Command>> = mutableMapOf()
 
@@ -26,6 +29,7 @@ class InMemoryCommandBus(
             userRegistrationRepository,
             eventBus
         )
+        commandHandlers[AuthenticateUserCommand::class] = authenticateUserCommandHandler
     }
 
     override fun dispatch(command: Command) {
