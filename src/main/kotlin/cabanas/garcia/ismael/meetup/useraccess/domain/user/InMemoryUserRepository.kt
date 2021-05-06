@@ -1,7 +1,12 @@
 package cabanas.garcia.ismael.meetup.useraccess.domain.user
 
+import java.lang.RuntimeException
+
 class InMemoryUserRepository : UserRepository {
-    override fun findBy(login: String, password: String): User {
-        TODO("Not yet implemented")
-    }
+    private var users: MutableMap<UserId, User> = mutableMapOf()
+
+    override fun findBy(login: String, password: String): User =
+        users.values.find {
+                user -> user.login == login && user.password == password
+        } ?: throw RuntimeException("User not found")
 }
