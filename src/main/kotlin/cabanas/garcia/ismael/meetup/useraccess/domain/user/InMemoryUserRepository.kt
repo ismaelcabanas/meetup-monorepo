@@ -9,4 +9,8 @@ class InMemoryUserRepository : UserRepository {
         users.values.find {
                 user -> user.login == login && user.password == password
         } ?: throw RuntimeException("User not found")
+
+    override fun save(user: User) {
+        users[UserId(user.id())] = user
+    }
 }

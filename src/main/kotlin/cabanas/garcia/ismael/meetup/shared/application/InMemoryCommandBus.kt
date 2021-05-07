@@ -7,6 +7,8 @@ import cabanas.garcia.ismael.meetup.useraccess.application.newRegistration.Creat
 import cabanas.garcia.ismael.meetup.useraccess.application.newRegistration.CreateUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommandHandler
+import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UsersCounter
 import kotlin.reflect.KClass
@@ -15,7 +17,8 @@ class InMemoryCommandBus(
     userRegistrationRepository: UserRegistrationRepository,
     usersCounter: UsersCounter,
     eventBus: EventBus,
-    authenticateUserCommandHandler: AuthenticateUserCommandHandler
+    authenticateUserCommandHandler: AuthenticateUserCommandHandler,
+    createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler
 ) : CommandBus {
     private val commandHandlers: MutableMap<KClass<out Command>, in CommandHandler<out Command>> = mutableMapOf()
 
@@ -30,6 +33,7 @@ class InMemoryCommandBus(
             eventBus
         )
         commandHandlers[AuthenticateUserCommand::class] = authenticateUserCommandHandler
+        commandHandlers[CreateUserByUserRegistrationCommand::class] = createUserByUserRegistrationCommandHandler
     }
 
     override fun dispatch(command: Command) {

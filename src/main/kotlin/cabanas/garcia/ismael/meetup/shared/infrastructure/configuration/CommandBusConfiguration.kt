@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.meetup.shared.infrastructure.configuration
 import cabanas.garcia.ismael.meetup.shared.application.InMemoryCommandBus
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
+import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UsersCounter
 import org.springframework.context.annotation.Bean
@@ -15,6 +16,13 @@ class CommandBusConfiguration {
         userRegistrationRepository: UserRegistrationRepository,
         usersCounter: UsersCounter,
         eventBus: EventBus,
-        authenticateUserCommandHandler: AuthenticateUserCommandHandler
-    ) = InMemoryCommandBus(userRegistrationRepository, usersCounter, eventBus, authenticateUserCommandHandler)
+        authenticateUserCommandHandler: AuthenticateUserCommandHandler,
+        createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler
+    ) = InMemoryCommandBus(
+        userRegistrationRepository,
+        usersCounter,
+        eventBus,
+        authenticateUserCommandHandler,
+        createUserByUserRegistrationCommandHandler
+    )
 }
