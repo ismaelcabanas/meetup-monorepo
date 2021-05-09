@@ -4,7 +4,6 @@ import cabanas.garcia.ismael.meetup.shared.MotherCreator
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.User
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.UserAuthenticated
-import cabanas.garcia.ismael.meetup.useraccess.domain.user.UserMother
 import cabanas.garcia.ismael.meetup.useraccess.domain.user.UserRepository
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -40,12 +39,12 @@ class PostAuthenticateUserControllerShould {
     @Test
     fun `returns 200 when user authenticates succesfully`() {
         val requestBody = AuthenticationRequestMother.random()
-        every { userRepository.findBy(requestBody.login, requestBody.password) } returns
+        every { userRepository.findBy(requestBody.username, requestBody.password) } returns
                 User(
                     UUID.randomUUID().toString(),
-                    requestBody.login,
+                    requestBody.username,
                     requestBody.password,
-                    requestBody.login,
+                    requestBody.username,
                     MotherCreator.faker().name().firstName(),
                     MotherCreator.faker().name().lastName()
                 )
@@ -60,14 +59,14 @@ class PostAuthenticateUserControllerShould {
             .assertThat(MockMvcResultMatchers.status().isOk)
 
         verify {
-            userRepository.findBy(requestBody.login, requestBody.password)
+            userRepository.findBy(requestBody.username, requestBody.password)
         }
 
         verify {
             eventBus.publish(
                 match {
                     it.contains(
-                        UserAuthenticated(requestBody.login, requestBody.password)
+                        UserAuthenticated(requestBody.username, requestBody.password)
                     )
                 }
             )

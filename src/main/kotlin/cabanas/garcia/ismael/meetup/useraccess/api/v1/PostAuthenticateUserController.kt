@@ -21,8 +21,8 @@ class PostAuthenticateUserController(
             }
 
     private fun toCommand(requestBody: AuthenticateRequestBody) =
-        AuthenticateUserCommand(requestBody.login, requestBody.password)
+        AuthenticateUserCommand(requestBody.username, requestBody.password)
 
 }
 
-data class AuthenticateRequestBody(val login: String, val password: String)
+data class AuthenticateRequestBody(val username: String, val password: String)
