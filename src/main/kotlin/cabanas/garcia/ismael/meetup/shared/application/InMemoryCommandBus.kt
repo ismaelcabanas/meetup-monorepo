@@ -3,8 +3,8 @@ package cabanas.garcia.ismael.meetup.shared.application
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
-import cabanas.garcia.ismael.meetup.useraccess.application.newRegistration.CreateUserRegistrationCommand
-import cabanas.garcia.ismael.meetup.useraccess.application.newRegistration.CreateUserRegistrationCommandHandler
+import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.CreateUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.CreateUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommand
