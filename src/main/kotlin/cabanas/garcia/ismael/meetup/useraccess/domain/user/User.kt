@@ -2,39 +2,35 @@ package cabanas.garcia.ismael.meetup.useraccess.domain.user
 
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 
-data class User(
-    val userId: String,
-    val login: String,
-    val password: String,
-    val email: String,
-    val firstName:String,
-    val lastName: String
+class User private constructor(
+    builder: Builder
 ) {
-    private val id: UserId = UserId(userId)
+    val id: UserId = builder.id
+    val login: String = builder.login
+    val password: String = builder.password
+    val email: String = builder.email
+    val firstName:String = builder.firstName
+    val lastName: String? = builder.lastName
     private val roles = mutableListOf<Role>()
-    private var events: List<DomainEvent> = mutableListOf()
+    private var events: MutableList<DomainEvent> = mutableListOf()
     val isActive: Boolean = true
 
-    constructor(
-        userId: String,
-        login: String,
-        password: String,
-        email: String,
-        firstName: String,
-        lastName: String,
-        events: List<DomainEvent>
-    ) : this(
-        userId,
-        login,
-        password,
-        email,
-        firstName,
-        lastName
-    ) {
-        this.events = events
+    companion object {
+        @JvmStatic
+        fun create(
+            id: UserId,
+            login: String,
+            password: String,
+            email: String,
+            firstName: String,
+            lastName: String
+        ): User =
+            Builder(id, login, password, email, firstName, lastName)
+                .build()
+                .apply {
+                    events.add(UserCreated(id.value, login, email, firstName, lastName))
+                }
     }
-
-    fun id(): String = id.value
 
     fun events(): List<DomainEvent> = events.toList()
 
@@ -44,4 +40,17 @@ data class User(
         }
 
     fun roles(): List<Role> = roles.toList()
+
+    data class Builder (
+        val id: UserId,
+        val login: String,
+        val password: String,
+        val email: String,
+        val firstName: String,
+        var lastName: String? = null
+    ) {
+
+        fun lastName(lastName: String) = apply { this.lastName = lastName }
+        fun build() = User(this)
+    }
 }

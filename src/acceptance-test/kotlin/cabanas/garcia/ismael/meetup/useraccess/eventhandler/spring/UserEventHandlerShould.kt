@@ -46,7 +46,7 @@ class UserEventHandlerShould {
         verify {
             userRepository.save(
                 withArg {
-                    it.userId shouldNotBe null
+                    it.id shouldNotBe null
                     it.login shouldBe userRegistrationConfirmed.login
                     it.password shouldBe userRegistrationConfirmed.password
                     it.email shouldBe userRegistrationConfirmed.email

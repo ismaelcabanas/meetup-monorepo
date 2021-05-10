@@ -9,12 +9,12 @@ object UserMother {
     private const val SOME_LAST_NAME = "some last name"
 
     fun aUserWithoutRoles(): User =
-        User(
-            SOME_USER_ID,
+        User.Builder(
+            UserId(SOME_USER_ID),
             SOME_LOGIN,
             SOME_PASSWORD,
             SOME_EMAIL,
             SOME_FIRST_NAME,
             SOME_LAST_NAME
-        )
+        ).build()
 }

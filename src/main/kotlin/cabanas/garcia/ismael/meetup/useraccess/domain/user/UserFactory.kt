@@ -11,12 +11,11 @@ object UserFactory {
         firstName: String,
         lastName: String
     ): User =
-        User(
-            userId,
-            login,
-            password,
-            email,
-            firstName,
-            lastName,
-            mutableListOf<DomainEvent>(UserCreated(userId, login, email, firstName, lastName)))
+        User.create(
+                UserId(userId),
+                login,
+                password,
+                email,
+                firstName,
+                lastName)
 }

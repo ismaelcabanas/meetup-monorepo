@@ -11,6 +11,6 @@ class InMemoryUserRepository : UserRepository {
         } ?: throw RuntimeException("User not found")
 
     override fun save(user: User) {
-        users[UserId(user.id())] = user
+        users[user.id] = user
     }
 }

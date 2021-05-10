@@ -126,13 +126,13 @@ class UserRegistrationShould {
 
         user.events() shouldContain
                 UserCreated(
-                    user.id(),
+                    user.id.value,
                     user.login,
                     user.email,
                     user.firstName,
                     user.lastName
                 )
-        user.id() shouldBe userRegistrationConfirmed.id.value
+        user.id.value shouldBe userRegistrationConfirmed.id.value
         user.isActive shouldBe true
     }
 
