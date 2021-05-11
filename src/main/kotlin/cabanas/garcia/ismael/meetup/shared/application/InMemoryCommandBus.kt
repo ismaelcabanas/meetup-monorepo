@@ -3,8 +3,8 @@ package cabanas.garcia.ismael.meetup.shared.application
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
-import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.CreateUserRegistrationCommand
-import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.CreateUserRegistrationCommandHandler
+import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.NewUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.NewUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommand
@@ -23,7 +23,7 @@ class InMemoryCommandBus(
     private val commandHandlers: MutableMap<KClass<out Command>, in CommandHandler<out Command>> = mutableMapOf()
 
     init {
-        commandHandlers[CreateUserRegistrationCommand::class] = CreateUserRegistrationCommandHandler(
+        commandHandlers[NewUserRegistrationCommand::class] = NewUserRegistrationCommandHandler(
             userRegistrationRepository,
             usersCounter,
             eventBus

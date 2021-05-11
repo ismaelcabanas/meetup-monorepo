@@ -8,25 +8,26 @@ import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UsersCoun
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class CreateUserRegistrationCommandHandler(
+class NewUserRegistrationCommandHandler(
     private val userRegistrationRepository: UserRegistrationRepository,
     private val usersCounter: UsersCounter,
     private val eventBus: EventBus
-) : CommandHandler<CreateUserRegistrationCommand> {
-    private var logger: Logger = LoggerFactory.getLogger(CreateUserRegistrationCommandHandler::class.java)
+) : CommandHandler<NewUserRegistrationCommand> {
+    private var logger: Logger = LoggerFactory.getLogger(NewUserRegistrationCommandHandler::class.java)
 
-    override fun handle(command: CreateUserRegistrationCommand) {
+    override fun handle(command: NewUserRegistrationCommand) {
         logger.info("New user registration $command")
 
-        val userRegistration = UserRegistrationFactory.registerNewUser(
+        val userRegistration = UserRegistrationFactory.create(
             command.id,
             command.email,
             command.password,
             command.email,
             command.firstName,
-            command.lastName,
-            usersCounter
+            command.lastName
         )
+
+        userRegistration.register(usersCounter)
 
         userRegistrationRepository.save(userRegistration)
 

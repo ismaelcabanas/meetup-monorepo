@@ -4,7 +4,6 @@ import cabanas.garcia.ismael.meetup.useraccess.domain.user.UserCreated
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
@@ -20,40 +19,41 @@ class UserRegistrationShould {
 
     @Test
     fun `create user registration when is the first time user wants register`() {
-        val userRegistrationRegistered = UserRegistrationFactory.registerNewUser(
+        val userRegistration = UserRegistrationFactory.create(
             SOME_USER_REGISTRATION_ID,
             SOME_LOGIN,
             SOME_PASSWORD,
             SOME_EMAIL,
             SOME_FIRST_NAME,
-            SOME_LAST_NAME,
-            usersCounter
+            SOME_LAST_NAME
         )
 
-        userRegistrationRegistered.events() shouldContain
+        userRegistration.register(usersCounter)
+
+        userRegistration.events() shouldContain
                 NewUserRegistered(
-                    userRegistrationRegistered.id.value,
-                    userRegistrationRegistered.login,
-                    userRegistrationRegistered.email,
-                    userRegistrationRegistered.firstName,
-                    userRegistrationRegistered.lastName
+                    userRegistration.id.value,
+                    userRegistration.login,
+                    userRegistration.email,
+                    userRegistration.firstName,
+                    userRegistration.lastName
                 )
     }
 
     @Test
     fun `not create an user registration when user has registered before`() {
         every { usersCounter.countUsersByLogin(SOME_LOGIN) } returns 1
+        val userRegistration = UserRegistrationFactory.create(
+            SOME_USER_REGISTRATION_ID,
+            SOME_LOGIN,
+            SOME_PASSWORD,
+            SOME_EMAIL,
+            SOME_FIRST_NAME,
+            SOME_LAST_NAME
+        )
 
         val exception = shouldThrow<UserRegistrationAlreadyExistException> {
-            UserRegistrationFactory.registerNewUser(
-                SOME_USER_REGISTRATION_ID,
-                SOME_LOGIN,
-                SOME_PASSWORD,
-                SOME_EMAIL,
-                SOME_FIRST_NAME,
-                SOME_LAST_NAME,
-                usersCounter
-            )
+            userRegistration.register(usersCounter)
         }
 
         exception.message shouldBe "$SOME_LOGIN has already registered."

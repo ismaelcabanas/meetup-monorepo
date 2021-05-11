@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.meetup.useraccess.api.v1
 
 import cabanas.garcia.ismael.meetup.shared.application.CommandBus
-import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.CreateUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.NewUserRegistrationCommand
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,8 +22,8 @@ class PostUserRegistrationController(
                 ResponseEntity(HttpStatus.CREATED)
             }
 
-    private fun toCommand(requestBody: CreateUserRegistrationRequest): CreateUserRegistrationCommand =
-        CreateUserRegistrationCommand(
+    private fun toCommand(requestBody: CreateUserRegistrationRequest): NewUserRegistrationCommand =
+        NewUserRegistrationCommand(
             requestBody.id,
             requestBody.firstName,
             requestBody.lastName,
