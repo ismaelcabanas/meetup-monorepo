@@ -26,7 +26,7 @@ class MeetingShould {
 
         val meetingCanceled = meeting.cancel(cancelMemberId, cancelDate)
 
-        meetingCanceled.events() shouldContain
+        meetingCanceled.pullEvents() shouldContain
                 MeetingCanceled(
                     meetingCanceled.id.value,
                     SOME_MEMBER_ID,
@@ -114,7 +114,7 @@ class MeetingShould {
             SOME_REASON
         )
 
-        meetingWithAttendeeRemoved.events() shouldContain
+        meetingWithAttendeeRemoved.pullEvents() shouldContain
                 MeetingAttendeeRemoved(
                     meetingWithAttendeeRemoved.id.value,
                     SOME_MEMBER_ID,
@@ -165,7 +165,7 @@ class MeetingShould {
 
         val meetingWithNewAttendee = meeting.addAttendee(newAttendeeId, enrolmentDate)
 
-        meetingWithNewAttendee.events() shouldContain
+        meetingWithNewAttendee.pullEvents() shouldContain
                 MeetingAttendeeAdded(
                     newAttendeeId.value,
                     meeting.id.value,

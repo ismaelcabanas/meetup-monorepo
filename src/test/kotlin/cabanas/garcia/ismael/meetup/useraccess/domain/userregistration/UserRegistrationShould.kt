@@ -30,7 +30,7 @@ class UserRegistrationShould {
 
         userRegistration.register(usersCounter)
 
-        userRegistration.events() shouldContain
+        userRegistration.pullEvents() shouldContain
                 NewUserRegistered(
                     userRegistration.id.value,
                     userRegistration.login,
@@ -65,7 +65,7 @@ class UserRegistrationShould {
 
         userRegistration.confirm()
 
-        userRegistration.events() shouldContain
+        userRegistration.pullEvents() shouldContain
                 UserRegistrationConfirmed(
                     userRegistration.id.value
 
@@ -89,7 +89,7 @@ class UserRegistrationShould {
 
         userRegistration.expire()
 
-        userRegistration.events() shouldContain
+        userRegistration.pullEvents() shouldContain
                 UserRegistrationExpired(
                     userRegistration.id.value
 

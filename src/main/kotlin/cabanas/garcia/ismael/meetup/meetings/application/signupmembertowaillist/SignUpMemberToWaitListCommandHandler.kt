@@ -17,7 +17,7 @@ class SignUpMemberToWaitListCommandHandler(
         meeting.signUpMemberToWaitList(meetingGroup, MemberId(command.memberId))
 
         meetingRepository.save(meeting)
-        eventBus.publish(meeting.events())
+        eventBus.publish(meeting.pullEvents())
     }
 
 }

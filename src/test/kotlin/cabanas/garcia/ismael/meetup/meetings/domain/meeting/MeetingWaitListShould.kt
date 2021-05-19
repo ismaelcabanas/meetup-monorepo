@@ -70,7 +70,7 @@ class MeetingWaitListShould {
 
         meeting.waitListMembers() shouldContain
                 MeetingWaitListMember(meeting.id, MemberId(SOME_MEMBER_ID))
-        meeting.events() shouldContain
+        meeting.pullEvents() shouldContain
                 MeetingWaitListMemberAdded(
                     meeting.id.value,
                     SOME_MEMBER_ID
@@ -98,7 +98,7 @@ class MeetingWaitListShould {
 
         meeting.waitListMembers() shouldNotContain
                 MeetingWaitListMember(meeting.id, MemberId(SOME_MEMBER_ID))
-        meeting.events() shouldContain
+        meeting.pullEvents() shouldContain
                 MeetingWaitListMemberRemoved(
                     meeting.id.value,
                     SOME_MEMBER_ID

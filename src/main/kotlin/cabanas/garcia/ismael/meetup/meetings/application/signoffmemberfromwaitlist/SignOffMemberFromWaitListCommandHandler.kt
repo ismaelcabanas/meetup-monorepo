@@ -16,6 +16,6 @@ class SignOffMemberFromWaitListCommandHandler(
 
         meetingRepository.save(meeting)
 
-        eventBus.publish(meeting.events())
+        eventBus.publish(meeting.pullEvents())
     }
 }

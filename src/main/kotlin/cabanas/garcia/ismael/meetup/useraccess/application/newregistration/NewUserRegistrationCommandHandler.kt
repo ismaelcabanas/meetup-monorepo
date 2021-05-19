@@ -31,6 +31,6 @@ class NewUserRegistrationCommandHandler(
 
         userRegistrationRepository.save(userRegistration)
 
-        eventBus.publish(userRegistration.events())
+        eventBus.publish(userRegistration.pullEvents())
     }
 }
