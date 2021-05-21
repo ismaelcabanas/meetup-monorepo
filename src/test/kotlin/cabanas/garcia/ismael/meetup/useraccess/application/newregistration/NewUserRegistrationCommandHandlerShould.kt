@@ -2,9 +2,11 @@ package cabanas.garcia.ismael.meetup.useraccess.application.newregistration
 
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.*
-import io.mockk.verify
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.Test
 
 class NewUserRegistrationCommandHandlerShould {
@@ -28,6 +30,25 @@ class NewUserRegistrationCommandHandlerShould {
             command.firstName,
             command.lastName
         ))
+    }
+
+    @Test
+    fun `don't save an user registration of an existent user`() {
+        val handler = NewUserRegistrationCommandHandler(userRegistrationRepository, usersCounter, eventBus)
+        val command = NewUserRegistrationCommandMother.random()
+        every { usersCounter.countUsersByLogin(command.email) } returns 1
+
+        catchThrowable {
+            handler.handle(command)
+        }
+
+        shouldHaveNotSavedUserRegistration()
+    }
+
+    private fun shouldHaveNotSavedUserRegistration() {
+        verify(exactly = 0) {
+            userRegistrationRepository.save(any())
+        }
     }
 
     private fun userRegistrationFromCommand(command: NewUserRegistrationCommand): UserRegistration =

@@ -32,11 +32,11 @@ Entre los requisitos que nos vamos a encontrar:
 
  - Cada `Administrador`, `Miembro` y `Pagador` es un `Usuario`. 
 
- - Para ser un `Usuario`, se requiere que el usuario se registre previamente (`Registro de Usuario`) que confirme el registro. 
+ - Para que un `Usuario` cree una cuenta en el sistema debe registrarse previamente. 
 
- - El usuario sólo puede registrarse una sola vez.
+ - El mismo usuario sólo puede registrarse una sola vez.
 
- - Un registro de usuario puede expirar mientras esté pendiente de confirmación.
+ - Un registro de usuario expirará a las 24 horas si no se ha realizado la confirmación del registro por parte del usuario.
    
  - El usuario deberá confirmar el registro de usuario para poder ser registrado en el sistema.
    
