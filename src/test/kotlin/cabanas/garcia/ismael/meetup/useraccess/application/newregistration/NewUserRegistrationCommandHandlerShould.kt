@@ -21,15 +21,8 @@ class NewUserRegistrationCommandHandlerShould {
 
         handler.handle(command)
 
-        val expectedUserRegistration = userRegistrationFromCommand(command)
-        shouldHaveSaved(expectedUserRegistration)
-        shouldHavePublished(NewUserRegistered(
-            command.id,
-            command.email,
-            command.email,
-            command.firstName,
-            command.lastName
-        ))
+        shouldHaveSaved(expectedUserRegistrationFromCommand(command))
+        shouldHavePublished(expectedNewUserRegisteredFromCommand(command))
     }
 
     @Test
@@ -51,7 +44,7 @@ class NewUserRegistrationCommandHandlerShould {
         }
     }
 
-    private fun userRegistrationFromCommand(command: NewUserRegistrationCommand): UserRegistration =
+    private fun expectedUserRegistrationFromCommand(command: NewUserRegistrationCommand): UserRegistration =
         UserRegistration(
             UserRegistrationId(command.id),
             command.email,
@@ -59,6 +52,15 @@ class NewUserRegistrationCommandHandlerShould {
             command.email,
             command.firstName,
             command.lastName)
+
+    private fun expectedNewUserRegisteredFromCommand(command: NewUserRegistrationCommand) =
+        NewUserRegistered(
+            command.id,
+            command.email,
+            command.email,
+            command.firstName,
+            command.lastName
+        )
 
     private fun shouldHavePublished(expected: NewUserRegistered) {
         verify {
