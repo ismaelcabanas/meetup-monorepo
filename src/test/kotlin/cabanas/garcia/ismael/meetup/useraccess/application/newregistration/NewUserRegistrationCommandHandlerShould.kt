@@ -36,6 +36,13 @@ class NewUserRegistrationCommandHandlerShould {
         }
 
         shouldHaveNotSavedUserRegistration()
+        shouldHaveNotPublishedUserRegistered()
+    }
+
+    private fun shouldHaveNotPublishedUserRegistered() {
+        verify(exactly = 0) {
+            eventBus.publish(any())
+        }
     }
 
     private fun shouldHaveNotSavedUserRegistration() {
