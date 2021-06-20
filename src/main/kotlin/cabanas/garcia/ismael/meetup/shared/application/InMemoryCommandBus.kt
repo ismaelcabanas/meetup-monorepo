@@ -5,8 +5,8 @@ import cabanas.garcia.ismael.meetup.useraccess.application.authentication.Authen
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.NewUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.newregistration.NewUserRegistrationCommandHandler
-import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommand
-import cabanas.garcia.ismael.meetup.useraccess.application.confirmRegistration.ConfirmUserRegistrationCommandHandler
+import cabanas.garcia.ismael.meetup.useraccess.application.confirmregistration.ConfirmUserRegistrationCommand
+import cabanas.garcia.ismael.meetup.useraccess.application.confirmregistration.ConfirmUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.createuser.CreateUserByUserRegistrationCommandHandler
 import cabanas.garcia.ismael.meetup.useraccess.domain.userregistration.UserRegistrationRepository
