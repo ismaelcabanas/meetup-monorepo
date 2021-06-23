@@ -2,7 +2,6 @@ package cabanas.garcia.ismael.meetup
 
 import cabanas.garcia.ismael.meetup.shared.MotherCreator
 import cabanas.garcia.ismael.meetup.useraccess.api.v1.AuthenticateRequestBody
-import cabanas.garcia.ismael.meetup.useraccess.api.v1.CreateUserRegistrationRequest
 import io.restassured.http.ContentType
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.junit.jupiter.api.BeforeEach
@@ -16,7 +15,7 @@ import java.util.UUID
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SignInAcceptanceTest {
+class SignInAcceptanceTest : BaseAcceptanceTest() {
     @Autowired
     private lateinit var mvc: MockMvc
 
@@ -43,41 +42,6 @@ class SignInAcceptanceTest {
 
         thenUserCanSignIn(login, password)
     }
-
-    private fun givenUserRegisterWith(
-        userId: String,
-        firstName: String,
-        lastName: String,
-        login: String,
-        password: String
-    ) {
-        val requestBody = CreateUserRegistrationRequest(
-            userId,
-            firstName,
-            lastName,
-            login,
-            password
-        )
-        RestAssuredMockMvc.given()
-            .contentType(ContentType.JSON)
-            .body(requestBody)
-            .`when`()
-            .post("/v1/user-registrations")
-            .then()
-            .log().all()
-            .assertThat(MockMvcResultMatchers.status().isCreated)
-    }
-
-    private fun whenUserConfirmRegistration(userId: String) {
-        RestAssuredMockMvc.given()
-            .contentType(ContentType.JSON)
-            .`when`()
-            .patch("/v1/user-registrations/${userId}/confirm")
-            .then()
-            .log().all()
-            .assertThat(MockMvcResultMatchers.status().isOk)
-    }
-
 
     private fun thenUserCanSignIn(login: String, password: String) {
         val requestBody = AuthenticateRequestBody(login, password)
