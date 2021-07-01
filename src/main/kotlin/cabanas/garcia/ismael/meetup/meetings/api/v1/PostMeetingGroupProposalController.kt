@@ -7,21 +7,30 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
+import javax.validation.Valid
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @RestController
 class PostMeetingGroupProposalController {
     @RequestMapping("/v1/meeting/meeting-group-proposals")
     @PostMapping
-    fun execute(@RequestBody requestBody: PostMeetingGroupProposalRequest): ResponseEntity<Void> {
+    fun execute(@Valid @RequestBody requestBody: PostMeetingGroupProposalRequest): ResponseEntity<Void> {
         return ResponseEntity(HttpStatus.CREATED)
     }
 }
 
 data class PostMeetingGroupProposalRequest(
-    val meetingGroupProposalId: String?,
-    val meetingGroupProposalName: String?,
-    val meetingGroupProposalDescription: String?,
-    val meetingGroupProposalCountry: String?,
-    val meetingGroupProposalCity: String?,
-    val meetingGroupProposalDate: Instant?
+    @get:NotEmpty(message = "Meeting group proposal identifier cannot be null.")
+    val meetingGroupProposalId: String? = null,
+    @get:NotEmpty(message = "Meeting group proposal name cannot be null.")
+    val meetingGroupProposalName: String? = null,
+    @get:NotEmpty(message = "Meeting group proposal description cannot be null.")
+    val meetingGroupProposalDescription: String? = null,
+    @get:NotEmpty(message = "Meeting group proposal country cannot be null.")
+    val meetingGroupProposalCountry: String? = null,
+    @get:NotEmpty(message = "Meeting group proposal city cannot be null.")
+    val meetingGroupProposalCity: String? = null,
+    @get:NotNull(message = "Meeting group proposal date cannot be null.")
+    val meetingGroupProposalDate: Instant? = null
 )
