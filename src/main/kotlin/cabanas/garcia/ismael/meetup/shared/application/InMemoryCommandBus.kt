@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.meetup.shared.application
 
+import cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal.CreateMeetingGroupProposalCommand
+import cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal.CreateMeetingGroupProposalCommandHandler
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
@@ -18,7 +20,8 @@ class InMemoryCommandBus(
     usersCounter: UsersCounter,
     eventBus: EventBus,
     authenticateUserCommandHandler: AuthenticateUserCommandHandler,
-    createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler
+    createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler,
+    createMeetingGroupProposalCommandHandler: CreateMeetingGroupProposalCommandHandler
 ) : CommandBus {
     private val commandHandlers: MutableMap<KClass<out Command>, in CommandHandler<out Command>> = mutableMapOf()
 
@@ -34,6 +37,7 @@ class InMemoryCommandBus(
         )
         commandHandlers[AuthenticateUserCommand::class] = authenticateUserCommandHandler
         commandHandlers[CreateUserByUserRegistrationCommand::class] = createUserByUserRegistrationCommandHandler
+        commandHandlers[CreateMeetingGroupProposalCommand::class] = createMeetingGroupProposalCommandHandler
     }
 
     override fun dispatch(command: Command) {

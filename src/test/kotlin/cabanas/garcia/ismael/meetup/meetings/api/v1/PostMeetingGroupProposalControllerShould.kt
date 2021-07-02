@@ -1,12 +1,16 @@
 package cabanas.garcia.ismael.meetup.meetings.api.v1
 
 import cabanas.garcia.ismael.meetup.shared.MotherCreator
+import cabanas.garcia.ismael.meetup.shared.application.CommandBus
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.mockk.mockk
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
@@ -115,6 +119,12 @@ class PostMeetingGroupProposalControllerShould {
                 jsonPath("$.errors[0].error", equalTo("Meeting group proposal date cannot be null."))
             }
         }
+    }
+
+    @TestConfiguration
+    class ControllerTestConfig {
+        @Bean
+        fun commandBus() = mockk<CommandBus>()
     }
 }
 

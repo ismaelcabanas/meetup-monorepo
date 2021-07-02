@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.meetup.meetings.api.v1
 
+import cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal.CreateMeetingGroupProposalCommand
+import cabanas.garcia.ismael.meetup.shared.application.CommandBus
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,12 +14,27 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @RestController
-class PostMeetingGroupProposalController {
+class PostMeetingGroupProposalController(
+    private val commandBus: CommandBus
+) {
     @RequestMapping("/v1/meeting/meeting-group-proposals")
     @PostMapping
-    fun execute(@Valid @RequestBody requestBody: PostMeetingGroupProposalRequest): ResponseEntity<Void> {
-        return ResponseEntity(HttpStatus.CREATED)
-    }
+    fun execute(@Valid @RequestBody requestBody: PostMeetingGroupProposalRequest): ResponseEntity<Void> =
+        commandBus
+            .dispatch(toCommand(requestBody))
+            .let {
+                ResponseEntity(HttpStatus.CREATED)
+            }
+
+    private fun toCommand(requestBody: PostMeetingGroupProposalRequest): CreateMeetingGroupProposalCommand =
+        CreateMeetingGroupProposalCommand(
+            requestBody.meetingGroupProposalId,
+            requestBody.meetingGroupProposalName,
+            requestBody.meetingGroupProposalDescription,
+            requestBody.meetingGroupProposalCountry,
+            requestBody.meetingGroupProposalCity,
+            requestBody.meetingGroupProposalDate
+        )
 }
 
 data class PostMeetingGroupProposalRequest(

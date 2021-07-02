@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class CommandHandlerConfiguration {
+class UserAccessCommandHandlerConfiguration {
     @Bean
     fun authenticationCommandHandler(userRepository: UserRepository, eventBus: EventBus) =
         AuthenticateUserCommandHandler(userRepository, eventBus)

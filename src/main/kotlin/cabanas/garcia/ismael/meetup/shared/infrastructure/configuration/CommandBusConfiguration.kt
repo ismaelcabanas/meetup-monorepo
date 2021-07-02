@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.meetup.shared.infrastructure.configuration
 
+import cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal.CreateMeetingGroupProposalCommandHandler
+import cabanas.garcia.ismael.meetup.shared.application.CommandBus
 import cabanas.garcia.ismael.meetup.shared.application.InMemoryCommandBus
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
@@ -17,12 +19,14 @@ class CommandBusConfiguration {
         usersCounter: UsersCounter,
         eventBus: EventBus,
         authenticateUserCommandHandler: AuthenticateUserCommandHandler,
-        createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler
-    ) = InMemoryCommandBus(
+        createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler,
+        createMeetingGroupProposalCommandHandler: CreateMeetingGroupProposalCommandHandler
+    ): CommandBus = InMemoryCommandBus(
         userRegistrationRepository,
         usersCounter,
         eventBus,
         authenticateUserCommandHandler,
-        createUserByUserRegistrationCommandHandler
+        createUserByUserRegistrationCommandHandler,
+        createMeetingGroupProposalCommandHandler
     )
 }
