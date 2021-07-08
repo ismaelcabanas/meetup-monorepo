@@ -47,7 +47,7 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
         val meetingGroupProposalCity = MotherCreator.faker().address().city()
         val meetingGroupProposalDate = MotherCreator.faker().date().future(60, TimeUnit.DAYS).toInstant()
 
-        whenUserMakesMeetingGroupProposalWith(
+        givenUserMakesMeetingGroupProposalWith(
             meetingGroupProposalId,
             meetingGroupProposalName,
             meetingGroupProposalDescription,
@@ -61,7 +61,7 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
         thenUserMeetingGroupCanJoinToMeetingGroup(meetingGroupProposalId)
     }
 
-    private fun whenUserMakesMeetingGroupProposalWith(
+    private fun givenUserMakesMeetingGroupProposalWith(
         meetingGroupProposalId: String?,
         meetingGroupProposalName: String?,
         meetingGroupProposalDescription: String?,
