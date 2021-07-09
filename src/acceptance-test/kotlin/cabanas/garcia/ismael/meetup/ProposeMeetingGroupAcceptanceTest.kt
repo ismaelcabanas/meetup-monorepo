@@ -40,6 +40,7 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
 
     @Test
     fun `meeting group user propose a meetup group`() {
+        val proposalMemberId = UUID.randomUUID().toString()
         val meetingGroupProposalId = UUID.randomUUID().toString()
         val meetingGroupProposalName = MotherCreator.faker().space().galaxy()
         val meetingGroupProposalDescription = MotherCreator.faker().lorem().sentence()
@@ -48,6 +49,7 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
         val meetingGroupProposalDate = MotherCreator.faker().date().future(60, TimeUnit.DAYS).toInstant()
 
         givenUserMakesMeetingGroupProposalWith(
+            proposalMemberId,
             meetingGroupProposalId,
             meetingGroupProposalName,
             meetingGroupProposalDescription,
@@ -56,12 +58,15 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
             meetingGroupProposalDate
         )
 
-        whenAdministratorAcceptMeetingGroupProposal(meetingGroupProposalId)
+        val adminUserId = UUID.randomUUID().toString()
+        whenAdministratorAcceptMeetingGroupProposal(meetingGroupProposalId, adminUserId)
 
-        thenUserMeetingGroupCanJoinToMeetingGroup(meetingGroupProposalId)
+        val memberId = UUID.randomUUID().toString()
+        thenUserMeetingGroupCanJoinToMeetingGroup(meetingGroupProposalId, memberId)
     }
 
     private fun givenUserMakesMeetingGroupProposalWith(
+        proposalMemberId: String?,
         meetingGroupProposalId: String?,
         meetingGroupProposalName: String?,
         meetingGroupProposalDescription: String?,
@@ -79,6 +84,7 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
         )
         RestAssuredMockMvc.given()
             .contentType(ContentType.JSON)
+            .header("X-Meeting-User-Info", proposalMemberId)
             .body(requestBody)
             .`when`()
             .post("/v1/meeting/meeting-group-proposals")
@@ -87,9 +93,10 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
             .assertThat(MockMvcResultMatchers.status().isCreated)
     }
 
-    private fun whenAdministratorAcceptMeetingGroupProposal(meetingGroupProposalId: String) {
+    private fun whenAdministratorAcceptMeetingGroupProposal(meetingGroupProposalId: String, adminUserId: String) {
         RestAssuredMockMvc.given()
             .contentType(ContentType.JSON)
+            .header("X-Meeting-User-Info", adminUserId)
             .`when`()
             .patch("/v1/administration/meeting-group-proposals/$meetingGroupProposalId/accept")
             .then()
@@ -97,9 +104,10 @@ class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
             .assertThat(MockMvcResultMatchers.status().isOk)
     }
 
-    private fun thenUserMeetingGroupCanJoinToMeetingGroup(meetingGroupProposalId: String) {
+    private fun thenUserMeetingGroupCanJoinToMeetingGroup(meetingGroupProposalId: String, memberId: String) {
         RestAssuredMockMvc.given()
             .contentType(ContentType.JSON)
+            .header("X-Meeting-User-Info", memberId)
             .`when`()
             .patch("/v1/meeting/meeting-groups/$meetingGroupProposalId/join")
             .then()

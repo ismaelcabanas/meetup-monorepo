@@ -5,6 +5,7 @@ import java.time.Instant
 
 data class CreateMeetingGroupProposalCommand(
     val meetingGroupProposalId: String? = null,
+    val proposalMemberId: String? = null,
     val meetingGroupProposalName: String? = null,
     val meetingGroupProposalDescription: String? = null,
     val meetingGroupProposalCountry: String? = null,

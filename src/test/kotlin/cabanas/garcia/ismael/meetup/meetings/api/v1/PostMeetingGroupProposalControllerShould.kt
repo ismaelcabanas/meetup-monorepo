@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.mockk
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -25,11 +26,33 @@ class PostMeetingGroupProposalControllerShould {
     @Autowired
     private lateinit var mapper: ObjectMapper
 
+    private lateinit var proposalMemberId: String
+
+    @BeforeEach
+    fun `set up`() {
+        proposalMemberId = UUID.randomUUID().toString()
+    }
+
+    @Test
+    fun `return 400 when header meeting group proposal member id is not set`() {
+        mockMvc.post("/v1/meeting/meeting-group-proposals") {
+            accept = MediaType.APPLICATION_JSON
+            contentType = MediaType.APPLICATION_JSON
+            content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.random())
+        }.andExpect {
+            status { isBadRequest() }
+            content {
+                jsonPath("$.message", equalTo("X-Meeting-User-Info header must be set."))
+            }
+        }
+    }
+
     @Test
     fun `return 400 when meeting group proposal identifier is not set`() {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            header("X-Meeting-User-Info", proposalMemberId)
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.withoutMeetingGroupProposalId())
         }.andExpect {
             status { isBadRequest() }
@@ -46,6 +69,7 @@ class PostMeetingGroupProposalControllerShould {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            header("X-Meeting-User-Info", proposalMemberId)
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.withoutMeetingGroupProposalName())
         }.andExpect {
             status { isBadRequest() }
@@ -62,6 +86,7 @@ class PostMeetingGroupProposalControllerShould {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            header("X-Meeting-User-Info", proposalMemberId)
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.withoutMeetingGroupProposalDescription())
         }.andExpect {
             status { isBadRequest() }
@@ -78,6 +103,7 @@ class PostMeetingGroupProposalControllerShould {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            header("X-Meeting-User-Info", proposalMemberId)
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.withoutMeetingGroupProposalCity())
         }.andExpect {
             status { isBadRequest() }
@@ -94,6 +120,7 @@ class PostMeetingGroupProposalControllerShould {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            header("X-Meeting-User-Info", proposalMemberId)
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.withoutMeetingGroupProposalCountry())
         }.andExpect {
             status { isBadRequest() }
@@ -110,6 +137,7 @@ class PostMeetingGroupProposalControllerShould {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
+            header("X-Meeting-User-Info", proposalMemberId)
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.withoutMeetingGroupProposalDate())
         }.andExpect {
             status { isBadRequest() }
@@ -181,5 +209,15 @@ object PostMeetingGroupProposalRequestMother {
             meetingGroupProposalDescription = MotherCreator.faker().lorem().sentence(),
             meetingGroupProposalCity = MotherCreator.faker().address().city(),
             meetingGroupProposalCountry = MotherCreator.faker().address().country()
+        )
+
+    fun random(): PostMeetingGroupProposalRequest =
+        PostMeetingGroupProposalRequest(
+            meetingGroupProposalId = UUID.randomUUID().toString(),
+            meetingGroupProposalName = MotherCreator.faker().gameOfThrones().house(),
+            meetingGroupProposalDescription = MotherCreator.faker().lorem().sentence(),
+            meetingGroupProposalCity = MotherCreator.faker().address().city(),
+            meetingGroupProposalCountry = MotherCreator.faker().address().country(),
+            meetingGroupProposalDate = MotherCreator.faker().date().future(60, TimeUnit.DAYS).toInstant()
         )
 }

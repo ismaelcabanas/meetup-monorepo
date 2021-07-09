@@ -4,10 +4,7 @@ import cabanas.garcia.ismael.meetup.meetings.application.createmeetinggrouppropo
 import cabanas.garcia.ismael.meetup.shared.application.CommandBus
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.time.Instant
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
@@ -19,16 +16,20 @@ class PostMeetingGroupProposalController(
 ) {
     @RequestMapping("/v1/meeting/meeting-group-proposals")
     @PostMapping
-    fun execute(@Valid @RequestBody requestBody: PostMeetingGroupProposalRequest): ResponseEntity<Void> =
+    fun execute(
+        @RequestHeader("X-Meeting-User-Info") proposalMemberId: String,
+        @Valid @RequestBody requestBody: PostMeetingGroupProposalRequest
+    ): ResponseEntity<Void> =
         commandBus
-            .dispatch(toCommand(requestBody))
+            .dispatch(toCommand(proposalMemberId, requestBody))
             .let {
                 ResponseEntity(HttpStatus.CREATED)
             }
 
-    private fun toCommand(requestBody: PostMeetingGroupProposalRequest): CreateMeetingGroupProposalCommand =
+    private fun toCommand(proposalMemberId: String, requestBody: PostMeetingGroupProposalRequest): CreateMeetingGroupProposalCommand =
         CreateMeetingGroupProposalCommand(
             requestBody.meetingGroupProposalId,
+            proposalMemberId,
             requestBody.meetingGroupProposalName,
             requestBody.meetingGroupProposalDescription,
             requestBody.meetingGroupProposalCountry,
