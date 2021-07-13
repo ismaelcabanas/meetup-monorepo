@@ -2,7 +2,10 @@ package cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.MotherCreator
 import java.time.Instant
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 object MeetingGroupProposalMother {
     private const val SOME_NAME = "some name"
@@ -31,4 +34,17 @@ object MeetingGroupProposalMother {
             MeetingGroupLocation(SOME_COUNTRY, SOME_CITY),
             Instant.parse(SOME_DATE)
         ).propose().accept()
+
+    fun random(): MeetingGroupProposal =
+        MeetingGroupProposal(
+            MeetingGroupProposalId(UUID.randomUUID().toString()),
+            MemberId(UUID.randomUUID().toString()),
+            MotherCreator.faker().name().name(),
+            MotherCreator.faker().lorem().sentence(),
+            MeetingGroupLocation(
+                MotherCreator.faker().country().countryCode2(),
+                MotherCreator.faker().country().capital()
+            ),
+            MotherCreator.faker().date().future(30, TimeUnit.DAYS).toInstant()
+        )
 }

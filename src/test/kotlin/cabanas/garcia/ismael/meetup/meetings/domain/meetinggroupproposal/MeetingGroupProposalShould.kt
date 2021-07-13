@@ -63,6 +63,16 @@ class MeetingGroupProposalShould {
     }
 
     @Test
+    fun `fail when accept a created meeting group proposal`() {
+        val meetingGroupProposal = MeetingGroupProposalMother.random()
+
+        val exception = shouldThrow<MeetingGroupProposalNotProposedException> {
+            meetingGroupProposal.accept()
+        }
+
+        exception.message shouldBe "Meeting group proposal '${meetingGroupProposal.id.value}' has not been proposed."
+    }
+    @Test
     fun `create meeting group and creator meeting group proposal is the meeting group organizer`() {
         val meetingGroupProposalAccepted = MeetingGroupProposalFactory.propose(
             MeetingGroupProposalId(SOME_MEETING_GROUP_PROPOSAL_ID),

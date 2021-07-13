@@ -7,7 +7,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import java.time.Instant
 
-data class MeetingGroupProposal(
+class MeetingGroupProposal(
     val id: MeetingGroupProposalId,
     val proposalMemberId: MemberId,
     val name: String,
@@ -15,7 +15,7 @@ data class MeetingGroupProposal(
     val meetingGroupLocation: MeetingGroupLocation,
     val proposalDate: Instant
 ) {
-    private lateinit var state: MeetingGroupProposalState
+    private var state: MeetingGroupProposalState = MeetingGroupProposalState.CREATED
     private var events = mutableListOf<DomainEvent>()
 
     fun propose(): MeetingGroupProposal =
@@ -38,6 +38,9 @@ data class MeetingGroupProposal(
     fun accept(): MeetingGroupProposal {
         if (this.state == MeetingGroupProposalState.ACCEPTED) {
             throw MeetingGroupProposalAlreadyAcceptedException(this.id)
+        }
+        if (this.state == MeetingGroupProposalState.CREATED) {
+            throw MeetingGroupProposalNotProposedException(this.id)
         }
 
         return this.also {
