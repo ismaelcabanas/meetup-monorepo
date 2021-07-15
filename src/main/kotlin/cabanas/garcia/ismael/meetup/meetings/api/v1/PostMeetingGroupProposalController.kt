@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.meetup.meetings.api.v1
 
-import cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal.CreateMeetingGroupProposalCommand
+import cabanas.garcia.ismael.meetup.meetings.application.proposemeetinggroup.ProposeMeetingGroupProposalCommand
 import cabanas.garcia.ismael.meetup.shared.application.CommandBus
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,8 +26,8 @@ class PostMeetingGroupProposalController(
                 ResponseEntity(HttpStatus.CREATED)
             }
 
-    private fun toCommand(proposalMemberId: String, requestBody: PostMeetingGroupProposalRequest): CreateMeetingGroupProposalCommand =
-        CreateMeetingGroupProposalCommand(
+    private fun toCommand(proposalMemberId: String, requestBody: PostMeetingGroupProposalRequest): ProposeMeetingGroupProposalCommand =
+        ProposeMeetingGroupProposalCommand(
             requestBody.meetingGroupProposalId,
             proposalMemberId,
             requestBody.meetingGroupProposalName,

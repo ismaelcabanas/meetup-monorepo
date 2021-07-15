@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal
+package cabanas.garcia.ismael.meetup.meetings.application.proposemeetinggroup
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposal
@@ -10,15 +10,14 @@ import io.kotest.matchers.shouldBe
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import kotlin.math.exp
 
-class CreateMeetingGroupProposalCommandHandlerShould {
+class ProposeMeetingGroupProposalCommandHandlerShould {
     var meetingGroupProposalRepository = mockk<MeetingGroupProposalRepository>(relaxed = true)
 
     @Test
     fun `save a meeting group proposal`() {
-        val handler = CreateMeetingGroupProposalCommandHandler(meetingGroupProposalRepository)
-        val command = CreateMeetingGroupProposalCommandMother.random()
+        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository)
+        val command = ProposeMeetingGroupProposalCommandMother.random()
 
         handler.handle(command)
 

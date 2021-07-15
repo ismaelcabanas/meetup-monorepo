@@ -1,18 +1,17 @@
-package cabanas.garcia.ismael.meetup.meetings.application.createmeetinggroupproposal
+package cabanas.garcia.ismael.meetup.meetings.application.proposemeetinggroup
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposal
-import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalFactory
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.application.CommandHandler
 
-class CreateMeetingGroupProposalCommandHandler(
+class ProposeMeetingGroupProposalCommandHandler(
     private val meetingGroupProposalRepository: MeetingGroupProposalRepository
-) : CommandHandler<CreateMeetingGroupProposalCommand> {
+) : CommandHandler<ProposeMeetingGroupProposalCommand> {
 
-    override fun handle(command: CreateMeetingGroupProposalCommand) {
+    override fun handle(command: ProposeMeetingGroupProposalCommand) {
         val meetingGroupProposal =
             MeetingGroupProposal(
                 MeetingGroupProposalId(command.meetingGroupProposalId!!),

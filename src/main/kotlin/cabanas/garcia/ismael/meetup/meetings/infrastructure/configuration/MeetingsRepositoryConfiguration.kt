@@ -1,9 +1,12 @@
 package cabanas.garcia.ismael.meetup.meetings.infrastructure.configuration
 
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposal
+import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalId
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 @Configuration
 class MeetingsRepositoryConfiguration {
@@ -12,10 +15,11 @@ class MeetingsRepositoryConfiguration {
         InMemoryMeetingGroupProposalRepository()
 }
 
-class InMemoryMeetingGroupProposalRepository :
-    MeetingGroupProposalRepository {
+class InMemoryMeetingGroupProposalRepository : MeetingGroupProposalRepository {
+    private var meetingGroupProposals: ConcurrentMap<MeetingGroupProposalId, MeetingGroupProposal> = ConcurrentHashMap()
+
     override fun save(meetingGroupProposal: MeetingGroupProposal) {
-        TODO("Not yet implemented")
+        meetingGroupProposals[meetingGroupProposal.id] = meetingGroupProposal
     }
 
 }
