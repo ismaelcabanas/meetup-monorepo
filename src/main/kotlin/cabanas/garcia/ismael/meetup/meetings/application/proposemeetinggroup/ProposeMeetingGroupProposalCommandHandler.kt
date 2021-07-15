@@ -27,6 +27,6 @@ class ProposeMeetingGroupProposalCommandHandler(
         meetingGroupProposal.propose()
 
         meetingGroupProposalRepository.save(meetingGroupProposal)
-        eventBus.publish(meetingGroupProposal.events())
+        eventBus.publish(meetingGroupProposal.pullEvents())
     }
 }

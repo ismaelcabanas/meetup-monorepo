@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroup
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupId
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.domain.AggregateRoot
 import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 import java.time.Instant
 
@@ -14,10 +15,9 @@ class MeetingGroupProposal(
     val description: String,
     val meetingGroupLocation: MeetingGroupLocation,
     val proposalDate: Instant
-) {
+) : AggregateRoot() {
     var state: MeetingGroupProposalState = MeetingGroupProposalState.CREATED
         private set
-    private var events = mutableListOf<DomainEvent>()
 
     fun propose(): MeetingGroupProposal =
         this.also {
@@ -64,10 +64,4 @@ class MeetingGroupProposal(
             meetingGroupLocation,
             creationDate
         ).create()
-
-    fun events() = events
-
-    private fun registerDomainEvent(domainEvent: DomainEvent) {
-        events.add(domainEvent)
-    }
 }

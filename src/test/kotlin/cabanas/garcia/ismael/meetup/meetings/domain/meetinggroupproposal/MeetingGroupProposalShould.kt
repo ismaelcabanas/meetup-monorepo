@@ -23,7 +23,7 @@ class MeetingGroupProposalShould {
             Instant.parse(SOME_DATE)
         )
 
-        meetingGroupProposal.events() shouldContain
+        meetingGroupProposal.pullEvents() shouldContain
                 MeetingGroupProposalProposed(
                     SOME_MEETING_GROUP_PROPOSAL_ID,
                     SOME_MEMBER_ID,
@@ -43,7 +43,7 @@ class MeetingGroupProposalShould {
 
         meetingGroupProposalProposed.accept()
 
-        meetingGroupProposalProposed.events() shouldContain
+        meetingGroupProposalProposed.pullEvents() shouldContain
                 MeetingGroupProposalAccepted(
                     SOME_MEETING_GROUP_PROPOSAL_ID
                 )
