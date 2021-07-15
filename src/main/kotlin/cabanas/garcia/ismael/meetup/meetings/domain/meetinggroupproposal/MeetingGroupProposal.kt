@@ -15,7 +15,8 @@ class MeetingGroupProposal(
     val meetingGroupLocation: MeetingGroupLocation,
     val proposalDate: Instant
 ) {
-    private var state: MeetingGroupProposalState = MeetingGroupProposalState.CREATED
+    var state: MeetingGroupProposalState = MeetingGroupProposalState.CREATED
+        private set
     private var events = mutableListOf<DomainEvent>()
 
     fun propose(): MeetingGroupProposal =

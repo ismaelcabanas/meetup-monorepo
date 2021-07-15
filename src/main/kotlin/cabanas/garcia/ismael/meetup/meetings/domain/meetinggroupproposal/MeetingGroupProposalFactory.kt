@@ -21,5 +21,4 @@ object MeetingGroupProposalFactory {
             meetingGroupLocation,
             proposalDate
         ).propose()
-
 }
