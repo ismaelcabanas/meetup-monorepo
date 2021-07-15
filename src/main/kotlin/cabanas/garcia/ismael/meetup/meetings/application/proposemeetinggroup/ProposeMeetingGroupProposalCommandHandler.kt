@@ -6,9 +6,11 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.Meeting
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.application.CommandHandler
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 
 class ProposeMeetingGroupProposalCommandHandler(
-    private val meetingGroupProposalRepository: MeetingGroupProposalRepository
+    private val meetingGroupProposalRepository: MeetingGroupProposalRepository,
+    private val eventBus: EventBus
 ) : CommandHandler<ProposeMeetingGroupProposalCommand> {
 
     override fun handle(command: ProposeMeetingGroupProposalCommand) {
@@ -25,5 +27,6 @@ class ProposeMeetingGroupProposalCommandHandler(
         meetingGroupProposal.propose()
 
         meetingGroupProposalRepository.save(meetingGroupProposal)
+        eventBus.publish(meetingGroupProposal.events())
     }
 }
