@@ -15,15 +15,7 @@ class ProposeMeetingGroupProposalCommandHandler(
 ) : CommandHandler<ProposeMeetingGroupProposalCommand> {
 
     override fun handle(command: ProposeMeetingGroupProposalCommand) {
-        if (command.meetingGroupProposalId == null) {
-            throw InvalidCommandException("Meeting group proposal identifier should be set.")
-        }
-        if (command.proposalMemberId == null) {
-            throw InvalidCommandException("Meeting group proposal member should be set.")
-        }
-        if (command.meetingGroupProposalName == null) {
-            throw InvalidCommandException("Meeting group proposal name should be set.")
-        }
+        checkCommand(command)
 
         val meetingGroupProposal =
             MeetingGroupProposal(
@@ -39,5 +31,17 @@ class ProposeMeetingGroupProposalCommandHandler(
 
         meetingGroupProposalRepository.save(meetingGroupProposal)
         eventBus.publish(meetingGroupProposal.pullEvents())
+    }
+
+    private fun checkCommand(command: ProposeMeetingGroupProposalCommand) {
+        if (command.meetingGroupProposalId == null) {
+            throw InvalidCommandException("Meeting group proposal identifier is required.")
+        }
+        if (command.proposalMemberId == null) {
+            throw InvalidCommandException("Meeting group proposal member is required.")
+        }
+        if (command.meetingGroupProposalName == null) {
+            throw InvalidCommandException("Meeting group proposal name is required.")
+        }
     }
 }

@@ -15,10 +15,10 @@ import org.junit.jupiter.api.Test
 class ProposeMeetingGroupProposalCommandHandlerShould {
     var meetingGroupProposalRepository = mockk<MeetingGroupProposalRepository>(relaxed = true)
     var eventBus = mockk<EventBus>(relaxed = true)
+    private val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
 
     @Test
     fun `save a meeting group proposal`() {
-        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
         val command = ProposeMeetingGroupProposalCommandMother.random()
 
         handler.handle(command)
@@ -37,7 +37,6 @@ class ProposeMeetingGroupProposalCommandHandlerShould {
 
     @Test
     fun `publish meeting group proposal proposed event`() {
-        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
         val command = ProposeMeetingGroupProposalCommandMother.random()
 
         handler.handle(command)
@@ -57,38 +56,35 @@ class ProposeMeetingGroupProposalCommandHandlerShould {
 
     @Test
     fun `fail when propose a meeting group without identifier`() {
-        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
         val command = ProposeMeetingGroupProposalCommandMother.withoutMeetingGroupProposalId()
 
         val exception = shouldThrowExactly<InvalidCommandException> {
             handler.handle(command)
         }
 
-        exception shouldHaveMessage "Meeting group proposal identifier should be set."
+        exception shouldHaveMessage "Meeting group proposal identifier is required."
     }
 
     @Test
     fun `fail when propose a meeting group without member`() {
-        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
         val command = ProposeMeetingGroupProposalCommandMother.withoutMeetingGroupProposalMember()
 
         val exception = shouldThrowExactly<InvalidCommandException> {
             handler.handle(command)
         }
 
-        exception shouldHaveMessage "Meeting group proposal member should be set."
+        exception shouldHaveMessage "Meeting group proposal member is required."
     }
 
     @Test
     fun `fail when propose a meeting group without name`() {
-        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
         val command = ProposeMeetingGroupProposalCommandMother.withoutMeetingGroupProposalName()
 
         val exception = shouldThrowExactly<InvalidCommandException> {
             handler.handle(command)
         }
 
-        exception shouldHaveMessage "Meeting group proposal name should be set."
+        exception shouldHaveMessage "Meeting group proposal name is required."
     }
 
     private fun shouldHavePublished(expectedDomainEvent: MeetingGroupProposalProposed) {
