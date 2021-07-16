@@ -52,5 +52,8 @@ class ProposeMeetingGroupProposalCommandHandler(
         if (command.meetingGroupProposalCity == null) {
             throw InvalidCommandException("Meeting group proposal city is required.")
         }
+        if (command.meetingGroupProposalDate == null) {
+            throw InvalidCommandException("Meeting group proposal date is required.")
+        }
     }
 }
