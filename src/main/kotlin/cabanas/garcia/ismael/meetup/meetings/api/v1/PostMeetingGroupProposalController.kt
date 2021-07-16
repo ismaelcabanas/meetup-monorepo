@@ -27,7 +27,7 @@ class PostMeetingGroupProposalController(
             }
 
     private fun toCommand(proposalMemberId: String, requestBody: PostMeetingGroupProposalRequest): ProposeMeetingGroupProposalCommand =
-        ProposeMeetingGroupProposalCommand(
+        ProposeMeetingGroupProposalCommand.Builder(
             requestBody.meetingGroupProposalId,
             proposalMemberId,
             requestBody.meetingGroupProposalName,
@@ -35,7 +35,7 @@ class PostMeetingGroupProposalController(
             requestBody.meetingGroupProposalCountry,
             requestBody.meetingGroupProposalCity,
             requestBody.meetingGroupProposalDate
-        )
+        ).build()
 }
 
 data class PostMeetingGroupProposalRequest(
