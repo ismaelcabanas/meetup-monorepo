@@ -3,8 +3,11 @@ package cabanas.garcia.ismael.meetup.meetings.application.proposemeetinggroup
 import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.*
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
+import cabanas.garcia.ismael.meetup.shared.application.InvalidCommandException
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
+import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.throwable.shouldHaveMessage
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -50,6 +53,18 @@ class ProposeMeetingGroupProposalCommandHandlerShould {
                 command.meetingGroupProposalDate!!
             )
         shouldHavePublished(expectedMeetingGroupProposalProposed)
+    }
+
+    @Test
+    fun `fail when propose a meeting group without identifier`() {
+        val handler = ProposeMeetingGroupProposalCommandHandler(meetingGroupProposalRepository, eventBus)
+        val command = ProposeMeetingGroupProposalCommandMother.withoutMeetingGroupProposalId()
+
+        val exception = shouldThrowExactly<InvalidCommandException> {
+            handler.handle(command)
+        }
+
+        exception shouldHaveMessage "Meeting group proposal identifier should be set."
     }
 
     private fun shouldHavePublished(expectedDomainEvent: MeetingGroupProposalProposed) {

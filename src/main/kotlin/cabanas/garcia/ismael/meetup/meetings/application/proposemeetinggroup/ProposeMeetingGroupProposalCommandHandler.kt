@@ -6,6 +6,7 @@ import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.Meeting
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal.MeetingGroupProposalRepository
 import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import cabanas.garcia.ismael.meetup.shared.application.CommandHandler
+import cabanas.garcia.ismael.meetup.shared.application.InvalidCommandException
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 
 class ProposeMeetingGroupProposalCommandHandler(
@@ -14,6 +15,10 @@ class ProposeMeetingGroupProposalCommandHandler(
 ) : CommandHandler<ProposeMeetingGroupProposalCommand> {
 
     override fun handle(command: ProposeMeetingGroupProposalCommand) {
+        if (command.meetingGroupProposalId == null) {
+            throw InvalidCommandException("Meeting group proposal identifier should be set.")
+        }
+
         val meetingGroupProposal =
             MeetingGroupProposal(
                 MeetingGroupProposalId(command.meetingGroupProposalId!!),
