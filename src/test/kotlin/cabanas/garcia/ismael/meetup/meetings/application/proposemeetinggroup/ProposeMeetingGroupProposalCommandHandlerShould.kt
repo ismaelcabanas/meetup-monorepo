@@ -87,6 +87,17 @@ class ProposeMeetingGroupProposalCommandHandlerShould {
         exception shouldHaveMessage "Meeting group proposal name is required."
     }
 
+    @Test
+    fun `fail when propose a meeting group without description`() {
+        val command = ProposeMeetingGroupProposalCommandMother.withoutMeetingGroupProposalDescription()
+
+        val exception = shouldThrowExactly<InvalidCommandException> {
+            handler.handle(command)
+        }
+
+        exception shouldHaveMessage "Meeting group proposal description is required."
+    }
+
     private fun shouldHavePublished(expectedDomainEvent: MeetingGroupProposalProposed) {
         verify {
             eventBus.publish(

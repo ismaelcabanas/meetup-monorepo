@@ -43,5 +43,8 @@ class ProposeMeetingGroupProposalCommandHandler(
         if (command.meetingGroupProposalName == null) {
             throw InvalidCommandException("Meeting group proposal name is required.")
         }
+        if (command.meetingGroupProposalDescription == null) {
+            throw InvalidCommandException("Meeting group proposal description is required.")
+        }
     }
 }
