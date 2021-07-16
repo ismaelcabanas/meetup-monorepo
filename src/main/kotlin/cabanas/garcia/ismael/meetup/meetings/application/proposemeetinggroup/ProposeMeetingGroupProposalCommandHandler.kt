@@ -46,5 +46,8 @@ class ProposeMeetingGroupProposalCommandHandler(
         if (command.meetingGroupProposalDescription == null) {
             throw InvalidCommandException("Meeting group proposal description is required.")
         }
+        if (command.meetingGroupProposalCountry == null) {
+            throw InvalidCommandException("Meeting group proposal country is required.")
+        }
     }
 }

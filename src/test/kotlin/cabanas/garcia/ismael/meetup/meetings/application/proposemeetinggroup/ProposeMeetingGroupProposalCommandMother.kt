@@ -60,4 +60,15 @@ object ProposeMeetingGroupProposalCommandMother {
             meetingGroupProposalDate = MotherCreator.faker().date().future(30, TimeUnit.DAYS).toInstant()
         )
     }
+
+    fun withoutMeetingGroupProposalCountry(): ProposeMeetingGroupProposalCommand {
+        return ProposeMeetingGroupProposalCommand(
+            meetingGroupProposalId = UUID.randomUUID().toString(),
+            proposalMemberId = UUID.randomUUID().toString(),
+            meetingGroupProposalName = MotherCreator.faker().gameOfThrones().house(),
+            meetingGroupProposalDescription = MotherCreator.faker().lorem().sentence(),
+            meetingGroupProposalCity = MotherCreator.faker().country().capital(),
+            meetingGroupProposalDate = MotherCreator.faker().date().future(30, TimeUnit.DAYS).toInstant()
+        )
+    }
 }
