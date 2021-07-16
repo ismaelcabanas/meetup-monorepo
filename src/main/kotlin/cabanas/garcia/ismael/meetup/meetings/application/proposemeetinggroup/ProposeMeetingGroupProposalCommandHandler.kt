@@ -18,6 +18,9 @@ class ProposeMeetingGroupProposalCommandHandler(
         if (command.meetingGroupProposalId == null) {
             throw InvalidCommandException("Meeting group proposal identifier should be set.")
         }
+        if (command.proposalMemberId == null) {
+            throw InvalidCommandException("Meeting group proposal member should be set.")
+        }
 
         val meetingGroupProposal =
             MeetingGroupProposal(
