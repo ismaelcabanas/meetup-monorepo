@@ -1,9 +1,7 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal
 
-import cabanas.garcia.ismael.meetup.meetings.domain.meeting.MeetingGroupLocation
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.MeetingGroupCreated
 import cabanas.garcia.ismael.meetup.meetings.domain.meetinggroup.NewMeetingGroupMemberJoined
-import cabanas.garcia.ismael.meetup.meetings.domain.member.MemberId
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
@@ -14,24 +12,19 @@ import java.time.Instant
 class MeetingGroupProposalShould {
     @Test
     fun `propose new meeting group`() {
-        val meetingGroupProposal = MeetingGroupProposalFactory.propose(
-            MeetingGroupProposalId(SOME_MEETING_GROUP_PROPOSAL_ID),
-            MemberId(SOME_MEMBER_ID),
-            SOME_NAME,
-            SOME_DESCRIPTION,
-            MeetingGroupLocation(SOME_COUNTRY, SOME_CITY),
-            Instant.parse(SOME_DATE)
-        )
+        val meetingGroupProposal = MeetingGroupProposalMother.random()
+
+        meetingGroupProposal.propose()
 
         meetingGroupProposal.pullEvents() shouldContain
                 MeetingGroupProposalProposed(
-                    SOME_MEETING_GROUP_PROPOSAL_ID,
-                    SOME_MEMBER_ID,
-                    SOME_NAME,
-                    SOME_DESCRIPTION,
-                    SOME_COUNTRY,
-                    SOME_CITY,
-                    Instant.parse(SOME_DATE)
+                    meetingGroupProposal.id.value,
+                    meetingGroupProposal.proposalMemberId.value,
+                    meetingGroupProposal.name,
+                    meetingGroupProposal.description,
+                    meetingGroupProposal.meetingGroupLocation.country,
+                    meetingGroupProposal.meetingGroupLocation.city,
+                    meetingGroupProposal.proposalDate
                 )
     }
 
@@ -72,22 +65,18 @@ class MeetingGroupProposalShould {
 
         exception.message shouldBe "Meeting group proposal '${meetingGroupProposal.id.value}' has not been proposed."
     }
+
     @Test
     fun `create meeting group and creator meeting group proposal is the meeting group organizer`() {
-        val meetingGroupProposalAccepted = MeetingGroupProposalFactory.propose(
-            MeetingGroupProposalId(SOME_MEETING_GROUP_PROPOSAL_ID),
-            MemberId(SOME_MEMBER_ID),
-            SOME_NAME,
-            SOME_DESCRIPTION,
-            MeetingGroupLocation(SOME_COUNTRY, SOME_CITY),
-            Instant.parse(SOME_DATE)
-        ).accept()
+        val meetingGroupProposalAccepted = MeetingGroupProposalMother.accepted(
+            SOME_MEETING_GROUP_PROPOSAL_ID
+        )
 
-        val meetupGroup = meetingGroupProposalAccepted.createMeetingGroup(
+        val meetingGroup = meetingGroupProposalAccepted.createMeetingGroup(
             Instant.parse(SOME_MEETING_GROUP_CREATION_DATE)
         )
 
-        meetupGroup.events() shouldContainExactly
+        meetingGroup.events() shouldContainExactly
                 mutableListOf(
                     MeetingGroupCreated(
                         SOME_MEETING_GROUP_PROPOSAL_ID,
