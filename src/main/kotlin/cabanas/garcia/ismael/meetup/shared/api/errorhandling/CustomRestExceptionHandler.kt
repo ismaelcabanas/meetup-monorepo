@@ -22,7 +22,7 @@ class CustomRestExceptionHandler {
     }
 
     @ExceptionHandler(MissingRequestHeaderException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     fun onMissingRequestHeaderExceptionException(e: MissingRequestHeaderException): ApiError {
         return ApiError("X-Meeting-User-Info header must be set.")

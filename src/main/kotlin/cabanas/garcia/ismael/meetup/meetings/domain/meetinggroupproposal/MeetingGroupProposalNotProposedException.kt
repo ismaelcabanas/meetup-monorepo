@@ -1,4 +1,6 @@
 package cabanas.garcia.ismael.meetup.meetings.domain.meetinggroupproposal
 
+import java.lang.RuntimeException
+
 class MeetingGroupProposalNotProposedException(val id: MeetingGroupProposalId)
-    : Exception("Meeting group proposal '${id.value}' has not been proposed.")
+    : RuntimeException("Meeting group proposal '${id.value}' has not been proposed.")
