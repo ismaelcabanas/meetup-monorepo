@@ -1,6 +1,24 @@
+spring:
+  datasource:
+    url: ${database.url}
+    driver-class-name: org.postgresql.Driver
+    username: ${database.user}
+    password: ${database.password}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
 server:
   port: 8000
 
 cors:
   allowedOrigins:
     - "*"
+
+database:
+  host: "localhost"
+  port: 5432
+  schema: "meetup"
+  user: "admin"
+  password: "admin"
+  url: "jdbc:postgresql://${database.host}:${database.port}/${database.schema}?currentSchema=${database.schema}"

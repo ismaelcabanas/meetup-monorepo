@@ -37,16 +37,20 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql:42.3.0")
+
+    //flyway
+    implementation("org.flywaydb:flyway-core:6.5.7")
 
     // Test dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "junit")
         exclude(module = "mockito-core")
     }
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.4.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.3")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.3")
     testImplementation("org.mockito:mockito-inline:2.23.0")
     testImplementation("org.mockito:mockito-junit-jupiter:2.27.0")
     testImplementation("org.assertj:assertj-core:3.14.0")
@@ -65,6 +69,7 @@ dependencies {
     val acceptanceTestImplementation by configurations
     add("acceptanceTestImplementation", sourceSets["test"].output)
     acceptanceTestImplementation("io.rest-assured:spring-mock-mvc:3.1.1")
+    acceptanceTestImplementation("org.testcontainers:testcontainers:1.15.3")
 }
 
 tasks.withType<KotlinCompile> {

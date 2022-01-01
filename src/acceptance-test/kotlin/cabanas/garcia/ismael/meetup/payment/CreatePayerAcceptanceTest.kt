@@ -7,7 +7,7 @@ import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import io.mockk.verify
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import java.util.UUID
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,7 +69,7 @@ class CreatePayerAcceptanceTest : BaseAcceptanceTest() {
                 ID = '${userId}'                
             """.trimIndent()
         ).let {
-            Assertions.assertThat(it).isEqualTo(1)
+            assertThat(it).isEqualTo(1)
         }
     }
 }
