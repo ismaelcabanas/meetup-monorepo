@@ -56,6 +56,7 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.14.0")
     testImplementation("com.github.javafaker:javafaker:1.0.2")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
+    testImplementation("com.github.javafaker:javafaker:1.0.2")
 
     // Kotlin test dependencies
     testImplementation("io.kotest:kotest-assertions-core:4.4.3")
