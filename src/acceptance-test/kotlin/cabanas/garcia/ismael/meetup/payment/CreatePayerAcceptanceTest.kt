@@ -53,6 +53,7 @@ class CreatePayerAcceptanceTest : BaseAcceptanceTest() {
                 listOf(
                     PayerCreated(
                         userId,
+                        login,
                         firstName,
                         lastName
                     )

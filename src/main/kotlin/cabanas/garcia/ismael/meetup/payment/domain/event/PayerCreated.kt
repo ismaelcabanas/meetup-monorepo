@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.meetup.shared.domain.DomainEvent
 
 data class PayerCreated(
     val userId: String,
+    val email: String,
     val firstName: String,
     val lastName: String
 ) : DomainEvent
