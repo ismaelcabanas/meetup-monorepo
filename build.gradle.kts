@@ -32,6 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -65,6 +66,8 @@ dependencies {
     // Integration Test dependencies
     val integrationTestImplementation by configurations
     add("integrationTestImplementation", sourceSets["test"].output)
+    integrationTestImplementation("org.testcontainers:junit-jupiter:1.16.2")
+    integrationTestImplementation("org.testcontainers:postgresql:1.16.2")
 
     // Acceptance Test dependencies
     val acceptanceTestImplementation by configurations
