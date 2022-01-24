@@ -74,6 +74,7 @@ dependencies {
     add("acceptanceTestImplementation", sourceSets["test"].output)
     acceptanceTestImplementation("io.rest-assured:spring-mock-mvc:3.1.1")
     acceptanceTestImplementation("org.testcontainers:testcontainers:1.15.3")
+    acceptanceTestImplementation("org.awaitility:awaitility-kotlin:4.1.1")
 }
 
 tasks.withType<KotlinCompile> {

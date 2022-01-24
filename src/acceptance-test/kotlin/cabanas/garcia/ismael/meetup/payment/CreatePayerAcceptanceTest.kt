@@ -8,6 +8,8 @@ import io.mockk.verify
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
+import org.awaitility.kotlin.await
+import org.awaitility.kotlin.untilAsserted
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,8 +25,6 @@ import org.springframework.test.web.servlet.MockMvc
 class CreatePayerAcceptanceTest : BaseAcceptanceTest() {
     @Autowired private lateinit var mvc: MockMvc
     @Autowired private lateinit var jdbcTemplate: JdbcTemplate
-
-    @MockBean private lateinit var eventBus: EventBus
 
     val userId = UUID.randomUUID().toString()
     val login: String = MotherCreator.faker().internet().emailAddress()
@@ -48,29 +48,19 @@ class CreatePayerAcceptanceTest : BaseAcceptanceTest() {
         )
 
         thenPayerIsCreatedSuccessfully(userId)
-        verify {
-            eventBus.publish(
-                listOf(
-                    PayerCreated(
-                        userId,
-                        login,
-                        firstName,
-                        lastName
-                    )
-                )
-            )
-        }
     }
 
     private fun thenPayerIsCreatedSuccessfully(userId: String) {
-        JdbcTestUtils.countRowsInTableWhere(
-            jdbcTemplate,
-            "PAYERS",
-            """
+        await untilAsserted {
+            assertThat(
+                JdbcTestUtils.countRowsInTableWhere(
+                    jdbcTemplate,
+                    "PAYERS",
+                    """
                 ID = '${userId}'                
             """.trimIndent()
-        ).let {
-            assertThat(it).isEqualTo(1)
+                )
+            ).isEqualTo(1)
         }
     }
 }

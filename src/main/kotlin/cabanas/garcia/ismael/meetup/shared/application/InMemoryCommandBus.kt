@@ -4,6 +4,8 @@ import cabanas.garcia.ismael.meetup.administration.application.acceptmeetupgroup
 import cabanas.garcia.ismael.meetup.administration.application.acceptmeetupgroupproposal.AcceptMeetupGroupProposalCommandHandler
 import cabanas.garcia.ismael.meetup.meetings.application.proposemeetinggroup.ProposeMeetingGroupProposalCommand
 import cabanas.garcia.ismael.meetup.meetings.application.proposemeetinggroup.ProposeMeetingGroupProposalCommandHandler
+import cabanas.garcia.ismael.meetup.payment.application.createpayer.CreatePayerCommand
+import cabanas.garcia.ismael.meetup.payment.application.createpayer.CreatePayerCommandHandler
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommand
 import cabanas.garcia.ismael.meetup.useraccess.application.authentication.AuthenticateUserCommandHandler
@@ -24,7 +26,8 @@ class InMemoryCommandBus(
     authenticateUserCommandHandler: AuthenticateUserCommandHandler,
     createUserByUserRegistrationCommandHandler: CreateUserByUserRegistrationCommandHandler,
     proposeMeetingGroupProposalCommandHandler: ProposeMeetingGroupProposalCommandHandler,
-    acceptMeetupGroupProposalCommandHandler: AcceptMeetupGroupProposalCommandHandler
+    acceptMeetupGroupProposalCommandHandler: AcceptMeetupGroupProposalCommandHandler,
+    createPayerCommandHandler: CreatePayerCommandHandler
 ) : CommandBus {
     private val commandHandlers: MutableMap<KClass<out Command>, in CommandHandler<out Command>> = mutableMapOf()
 
@@ -42,6 +45,7 @@ class InMemoryCommandBus(
         commandHandlers[CreateUserByUserRegistrationCommand::class] = createUserByUserRegistrationCommandHandler
         commandHandlers[ProposeMeetingGroupProposalCommand::class] = proposeMeetingGroupProposalCommandHandler
         commandHandlers[AcceptMeetupGroupProposalCommand::class] = acceptMeetupGroupProposalCommandHandler
+        commandHandlers[CreatePayerCommand::class] = createPayerCommandHandler
     }
 
     override fun dispatch(command: Command) {
