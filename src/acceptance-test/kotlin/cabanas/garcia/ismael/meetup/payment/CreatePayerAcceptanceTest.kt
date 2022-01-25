@@ -1,13 +1,12 @@
 package cabanas.garcia.ismael.meetup.payment
 
 import cabanas.garcia.ismael.meetup.BaseAcceptanceTest
-import cabanas.garcia.ismael.meetup.payment.domain.event.PayerCreated
 import cabanas.garcia.ismael.meetup.shared.MotherCreator
-import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
-import io.mockk.verify
 import io.restassured.module.mockmvc.RestAssuredMockMvc
-import java.util.UUID
-import org.assertj.core.api.Assertions.assertThat
+import java.util.*
+import javax.sql.DataSource
+import org.assertj.db.api.Assertions.assertThat
+import org.assertj.db.type.Table
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.untilAsserted
 import org.junit.jupiter.api.BeforeEach
@@ -15,16 +14,14 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.test.jdbc.JdbcTestUtils
 import org.springframework.test.web.servlet.MockMvc
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class CreatePayerAcceptanceTest : BaseAcceptanceTest() {
     @Autowired private lateinit var mvc: MockMvc
-    @Autowired private lateinit var jdbcTemplate: JdbcTemplate
+    @Autowired private lateinit var dataSource: DataSource
 
     val userId = UUID.randomUUID().toString()
     val login: String = MotherCreator.faker().internet().emailAddress()
@@ -47,20 +44,18 @@ class CreatePayerAcceptanceTest : BaseAcceptanceTest() {
             password
         )
 
-        thenPayerIsCreatedSuccessfully(userId)
+        thenPayerIsCreatedSuccessfully(userId, firstName, lastName, login)
     }
 
-    private fun thenPayerIsCreatedSuccessfully(userId: String) {
+    private fun thenPayerIsCreatedSuccessfully(userId: String, firstName: String, lastName: String, login: String) {
+        val table = Table(dataSource, "PAYERS")
         await untilAsserted {
-            assertThat(
-                JdbcTestUtils.countRowsInTableWhere(
-                    jdbcTemplate,
-                    "PAYERS",
-                    """
-                ID = '${userId}'                
-            """.trimIndent()
-                )
-            ).isEqualTo(1)
+            assertThat(table).row(0)
+                .column("ID").value().isEqualTo(userId)
+                .column("LOGIN").value().isEqualTo(login)
+                .column("EMAIL").value().isEqualTo(login)
+                .column("FIRST_NAME").value().isEqualTo(firstName)
+                .column("LAST_NAME").value().isEqualTo(lastName)
         }
     }
 }
