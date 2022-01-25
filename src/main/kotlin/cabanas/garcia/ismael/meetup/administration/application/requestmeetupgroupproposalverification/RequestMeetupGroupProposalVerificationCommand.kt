@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.meetup.administration.application.requestmeetupgroupproposalverification
 
+import cabanas.garcia.ismael.meetup.shared.application.Command
 import java.time.Instant
 
 data class RequestMeetupGroupProposalVerificationCommand(
@@ -10,4 +11,4 @@ data class RequestMeetupGroupProposalVerificationCommand(
     val country: String,
     val city: String,
     val proposalDate: Instant
-)
+) : Command
