@@ -124,3 +124,7 @@ Entre los requisitos que nos vamos a encontrar:
  - Un usuario puede añadir comentarios si es `Miembro` del `Grupo de Meetup`. 
 
  - Los comentarios sólo podrán añadirse si éstos están habilitados por configuración.
+
+***Pagos***
+
+ - Cada `Miembro` de la aplicación, que es un `Pagador` en el módulo de pagos.
