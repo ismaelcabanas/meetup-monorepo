@@ -4,23 +4,14 @@ import cabanas.garcia.ismael.meetup.meetings.api.v1.PostMeetingGroupProposalRequ
 import cabanas.garcia.ismael.meetup.shared.MotherCreator
 import io.restassured.http.ContentType
 import io.restassured.module.mockmvc.RestAssuredMockMvc
+import java.time.Instant
+import java.util.*
+import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.time.Instant
-import java.util.UUID
-import java.util.concurrent.TimeUnit
 
-@SpringBootTest
-@AutoConfigureMockMvc
 class ProposeMeetingGroupAcceptanceTest : BaseAcceptanceTest() {
-    @Autowired
-    private lateinit var mvc: MockMvc
-
     val userId = UUID.randomUUID().toString()
     val login: String = MotherCreator.faker().internet().emailAddress()
     val password: String = MotherCreator.faker().internet().password()

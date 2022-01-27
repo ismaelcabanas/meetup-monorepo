@@ -8,9 +8,18 @@ import java.time.ZoneOffset
 import java.util.*
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
+@SpringBootTest
+@AutoConfigureMockMvc
 abstract class BaseAcceptanceTest {
+    @Autowired
+    protected lateinit var mvc: MockMvc
+
     companion object {
 
         private val dockerCompose = DockerComposeHelper()
