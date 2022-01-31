@@ -73,10 +73,10 @@ class SubscriptionsAcceptanceTest : BaseAcceptanceTest() {
             .header("X-Meeting-User-Info", data.payerId)
             .body(buySubscriptionRequest)
             .`when`()
-            .post("/v1/subscriptions")
+            .post("/v1/payment/subscriptions")
             .then()
             .log().all()
-            .assertThat(MockMvcResultMatchers.status().isOk)
+            .assertThat(MockMvcResultMatchers.status().isCreated)
     }
 
     private fun thenSubscriptionPaymentIsCreatedSuccessfully(data: SubscriptionPaymentData) {
