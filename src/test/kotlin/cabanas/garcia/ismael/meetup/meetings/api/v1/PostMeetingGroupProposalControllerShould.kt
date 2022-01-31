@@ -34,13 +34,13 @@ class PostMeetingGroupProposalControllerShould {
     }
 
     @Test
-    fun `return 400 when header meeting group proposal member id is not set`() {
+    fun `return 403 when header meeting group proposal member id is not set`() {
         mockMvc.post("/v1/meeting/meeting-group-proposals") {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
             content = mapper.writeValueAsString(PostMeetingGroupProposalRequestMother.random())
         }.andExpect {
-            status { isBadRequest() }
+            status { isForbidden() }
             content {
                 jsonPath("$.message", equalTo("X-Meeting-User-Info header must be set."))
             }
