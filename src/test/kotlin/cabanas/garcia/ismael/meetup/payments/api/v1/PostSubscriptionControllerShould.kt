@@ -1,18 +1,21 @@
 package cabanas.garcia.ismael.meetup.payments.api.v1
 
 import cabanas.garcia.ismael.meetup.payment.api.v1.PostSubscriptionController
+import cabanas.garcia.ismael.meetup.shared.infrastructure.framework.configuration.ControllerTestConfiguration
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
-import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 
 @WebMvcTest(PostSubscriptionController::class)
+@ContextConfiguration(classes = [ControllerTestConfiguration::class])
 class PostSubscriptionControllerShould {
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -48,7 +51,7 @@ class PostSubscriptionControllerShould {
         }.andExpect {
             status { isForbidden() }
             content {
-                jsonPath("$.message", CoreMatchers.equalTo("X-Meeting-User-Info header must be set."))
+                jsonPath("$.message", equalTo("X-Meeting-User-Info header must be set."))
             }
         }
     }
@@ -66,9 +69,9 @@ class PostSubscriptionControllerShould {
         }.andExpect {
             status { isBadRequest() }
             content {
-                jsonPath("$.message", CoreMatchers.equalTo("Bad request data."))
-                jsonPath("$.errors[0].field", CoreMatchers.equalTo("paymentId"))
-                jsonPath("$.errors[0].error", CoreMatchers.equalTo("Payment identifier cannot be null."))
+                jsonPath("$.message", equalTo("Bad request data."))
+                jsonPath("$.errors[0].field", equalTo("paymentId"))
+                jsonPath("$.errors[0].error", equalTo("Payment identifier cannot be null."))
             }
         }
     }
@@ -86,9 +89,9 @@ class PostSubscriptionControllerShould {
         }.andExpect {
             status { isBadRequest() }
             content {
-                jsonPath("$.message", CoreMatchers.equalTo("Bad request data."))
-                jsonPath("$.errors[0].field", CoreMatchers.equalTo("type"))
-                jsonPath("$.errors[0].error", CoreMatchers.equalTo("Subscription type cannot be null."))
+                jsonPath("$.message", equalTo("Bad request data."))
+                jsonPath("$.errors[0].field", equalTo("type"))
+                jsonPath("$.errors[0].error", equalTo("Subscription type cannot be null."))
             }
         }
     }
@@ -106,9 +109,9 @@ class PostSubscriptionControllerShould {
         }.andExpect {
             status { isBadRequest() }
             content {
-                jsonPath("$.message", CoreMatchers.equalTo("Bad request data."))
-                jsonPath("$.errors[0].field", CoreMatchers.equalTo("value"))
-                jsonPath("$.errors[0].error", CoreMatchers.equalTo("Subscription value cannot be null."))
+                jsonPath("$.message", equalTo("Bad request data."))
+                jsonPath("$.errors[0].field", equalTo("value"))
+                jsonPath("$.errors[0].error", equalTo("Subscription value cannot be null."))
             }
         }
     }
@@ -126,9 +129,9 @@ class PostSubscriptionControllerShould {
         }.andExpect {
             status { isBadRequest() }
             content {
-                jsonPath("$.message", CoreMatchers.equalTo("Bad request data."))
-                jsonPath("$.errors[0].field", CoreMatchers.equalTo("period"))
-                jsonPath("$.errors[0].error", CoreMatchers.equalTo("Subscription period cannot be null."))
+                jsonPath("$.message", equalTo("Bad request data."))
+                jsonPath("$.errors[0].field", equalTo("period"))
+                jsonPath("$.errors[0].error", equalTo("Subscription period cannot be null."))
             }
         }
     }
@@ -146,11 +149,10 @@ class PostSubscriptionControllerShould {
         }.andExpect {
             status { isBadRequest() }
             content {
-                jsonPath("$.message", CoreMatchers.equalTo("Bad request data."))
-                jsonPath("$.errors[0].field", CoreMatchers.equalTo("date"))
-                jsonPath("$.errors[0].error", CoreMatchers.equalTo("Subscription date cannot be null."))
+                jsonPath("$.message", equalTo("Bad request data."))
+                jsonPath("$.errors[0].field", equalTo("date"))
+                jsonPath("$.errors[0].error", equalTo("Subscription date cannot be null."))
             }
         }
     }
-
 }

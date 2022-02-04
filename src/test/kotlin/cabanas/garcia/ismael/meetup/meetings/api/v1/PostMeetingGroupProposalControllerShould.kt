@@ -1,24 +1,22 @@
 package cabanas.garcia.ismael.meetup.meetings.api.v1
 
 import cabanas.garcia.ismael.meetup.shared.MotherCreator
-import cabanas.garcia.ismael.meetup.shared.application.CommandBus
+import cabanas.garcia.ismael.meetup.shared.infrastructure.framework.configuration.ControllerTestConfiguration
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.mockk.mockk
-import org.hamcrest.CoreMatchers
+import java.util.*
+import java.util.concurrent.TimeUnit
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 @WebMvcTest(PostMeetingGroupProposalController::class)
+@ContextConfiguration(classes = [ControllerTestConfiguration::class])
 class PostMeetingGroupProposalControllerShould {
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -147,12 +145,6 @@ class PostMeetingGroupProposalControllerShould {
                 jsonPath("$.errors[0].error", equalTo("Meeting group proposal date cannot be null."))
             }
         }
-    }
-
-    @TestConfiguration
-    class ControllerTestConfig {
-        @Bean
-        fun commandBus() = mockk<CommandBus>()
     }
 }
 
