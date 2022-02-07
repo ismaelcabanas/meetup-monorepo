@@ -1,0 +1,30 @@
+package cabanas.garcia.ismael.meetup.payment.application.buysubscription
+
+import cabanas.garcia.ismael.meetup.payment.domain.PayerId
+import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.Money
+import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionPayment
+import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionPaymentId
+import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionPaymentRepository
+import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionPeriod
+import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionType
+import cabanas.garcia.ismael.meetup.shared.application.CommandHandler
+import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
+
+class BuySubscriptionCommandHandler(
+    private val repository: SubscriptionPaymentRepository,
+    private val eventBus: EventBus
+) : CommandHandler<BuySubscriptionCommand> {
+    override fun handle(command: BuySubscriptionCommand) {
+        SubscriptionPayment.create(
+            SubscriptionPaymentId(command.paymentId),
+            PayerId(command.payerId),
+            SubscriptionType(command.type),
+            SubscriptionPeriod(command.period),
+            Money(command.value)
+        ).let {
+            repository.add(it)
+                .apply {
+                    eventBus.publish(it.pullEvents()) }
+        }
+    }
+}

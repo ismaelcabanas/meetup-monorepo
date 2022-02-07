@@ -127,4 +127,8 @@ Entre los requisitos que nos vamos a encontrar:
 
 ***Pagos***
 
- - Cada `Miembro` de la aplicación, que es un `Pagador` en el módulo de pagos.
+ - Cada `Miembro` de la aplicación, es un `Pagador` en el módulo de pagos.
+ - Un `Pagador` puede comprar una subscripción eligiendo el tipo de subscripción STANDARD o PREMIUM, y si
+   el pago quiere realizarlo anual o mensualmente. 
+ - La subscripción tendrá un precio determinado dependiendo de la subscripción seleccionada.
+ - El `precio de la subscripción` debe coincidir con una `lista de precios` disponibles.
