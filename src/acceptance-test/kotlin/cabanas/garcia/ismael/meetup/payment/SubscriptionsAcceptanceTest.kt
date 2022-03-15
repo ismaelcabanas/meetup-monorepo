@@ -50,7 +50,7 @@ class SubscriptionsAcceptanceTest : BaseAcceptanceTest() {
             payerId = userId,
             type = "STANDARD",
             price = MotherCreator.faker().number().randomDouble(2, 1, 100),
-            period = "MONTH",
+            period = "MONTHLY",
             date = MotherCreator.faker().date().future(10, TimeUnit.DAYS).toInstant()
         )
 
@@ -80,15 +80,16 @@ class SubscriptionsAcceptanceTest : BaseAcceptanceTest() {
     }
 
     private fun thenSubscriptionPaymentIsCreatedSuccessfully(data: SubscriptionPaymentData) {
-        val table = Table(dataSource, "SUBSCRIPTIONS_PAYMENT")
+        val table = Table(dataSource, "SUBSCRIPTION_PAYMENTS")
         await untilAsserted {
             Assertions.assertThat(table).row(0)
-                .column("PAYMENT_ID").value().isEqualTo(data.paymentId)
+                .column("ID").value().isEqualTo(data.paymentId)
                 .column("PAYER_ID").value().isEqualTo(data.payerId)
                 .column("TYPE").value().isEqualTo(data.type)
                 .column("PERIOD").value().isEqualTo(data.period)
-                .column("DATE").value().isEqualTo(data.date)
-                .column("PRICE").value().isEqualTo(data.price)
+                .column("START_DATE").value().isEqualTo(data.date)
+                .column("MONEY_VALUE").value().isEqualTo(data.price)
+                .column("STATUS").value().isEqualTo("WAITING_FOR_PAYMENT")
         }
     }
 }

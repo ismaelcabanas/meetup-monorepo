@@ -1,3 +1,5 @@
 package cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments
 
-data class SubscriptionType(val value: String)
+enum class SubscriptionType(val value: String) {
+    STANDARD("STANDARD");
+}

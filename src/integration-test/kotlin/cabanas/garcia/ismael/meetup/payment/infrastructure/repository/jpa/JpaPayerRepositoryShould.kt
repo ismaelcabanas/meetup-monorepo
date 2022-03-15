@@ -3,7 +3,7 @@ package cabanas.garcia.ismael.meetup.payment.infrastructure.repository.jpa
 import cabanas.garcia.ismael.meetup.payment.domain.Payer
 import cabanas.garcia.ismael.meetup.payment.domain.PayerId
 import cabanas.garcia.ismael.meetup.payment.domain.PayerRepository
-import cabanas.garcia.ismael.meetup.payment.infrastructure.configuration.PayerRepositoryConfiguration
+import cabanas.garcia.ismael.meetup.payment.infrastructure.configuration.PaymentRepositoryConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,7 @@ import org.springframework.test.context.jdbc.SqlGroup
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-@Import(PayerRepositoryConfiguration::class)
+@Import(PaymentRepositoryConfiguration::class)
 class JpaPayerRepositoryShould {
     @Autowired
     private lateinit var payerRepository: PayerRepository

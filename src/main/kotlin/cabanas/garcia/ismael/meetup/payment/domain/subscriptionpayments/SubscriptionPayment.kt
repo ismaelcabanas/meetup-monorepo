@@ -3,20 +3,35 @@ package cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments
 import cabanas.garcia.ismael.meetup.payment.domain.PayerId
 import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.event.SubscriptionPaymentCreated
 import cabanas.garcia.ismael.meetup.shared.domain.AggregateRoot
+import java.time.Instant
 
 data class SubscriptionPayment(
-    val paymentId: SubscriptionPaymentId
+    val paymentId: SubscriptionPaymentId,
+    val payerId: PayerId,
+    val status: SubscriptionPaymentStatus,
+    val type: SubscriptionType,
+    val period: SubscriptionPeriod,
+    val priceOffer: Money,
+    val startDate: Instant
 ) : AggregateRoot() {
+
     companion object {
         fun create(
             subscriptionPaymentId: SubscriptionPaymentId,
             payerId: PayerId,
             subscriptionType: SubscriptionType,
             subscriptionPeriod: SubscriptionPeriod,
-            priceOffer: Money
+            priceOffer: Money,
+            startDate: Instant
         ): SubscriptionPayment {
             val subscriptionPayment = SubscriptionPayment(
-                subscriptionPaymentId
+                subscriptionPaymentId,
+                payerId,
+                SubscriptionPaymentStatus.WAITING_FOR_PAYMENT,
+                subscriptionType,
+                subscriptionPeriod,
+                priceOffer,
+                startDate
             )
             subscriptionPayment.registerDomainEvent(
                 SubscriptionPaymentCreated(

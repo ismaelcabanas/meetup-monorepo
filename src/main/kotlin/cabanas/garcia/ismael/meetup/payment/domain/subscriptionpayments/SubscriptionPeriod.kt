@@ -1,3 +1,6 @@
 package cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments
 
-data class SubscriptionPeriod(val value: String)
+enum class SubscriptionPeriod(val value: String) {
+    ANNUAL("ANNUAL"),
+    MONTHLY("MONTHLY");
+}

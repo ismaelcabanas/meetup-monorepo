@@ -45,6 +45,4 @@ class PayerEntity() {
         result = 31 * result + lastName.hashCode()
         return result
     }
-
-
 }
