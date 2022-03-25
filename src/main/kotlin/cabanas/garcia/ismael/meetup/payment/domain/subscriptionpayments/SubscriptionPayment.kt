@@ -35,11 +35,13 @@ data class SubscriptionPayment(
             )
             subscriptionPayment.registerDomainEvent(
                 SubscriptionPaymentCreated(
-                    subscriptionPaymentId.value,
-                    payerId.value,
-                    subscriptionType.value,
-                    subscriptionPeriod.value,
-                    priceOffer.value
+                    subscriptionPayment.paymentId.value,
+                    subscriptionPayment.payerId.value,
+                    subscriptionPayment.status.value,
+                    subscriptionPayment.type.value,
+                    subscriptionPayment.period.value,
+                    subscriptionPayment.priceOffer.value,
+                    subscriptionPayment.startDate
                 )
             )
             return subscriptionPayment

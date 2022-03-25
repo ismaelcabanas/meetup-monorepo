@@ -9,11 +9,9 @@ import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.Subscrip
 import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionType
 import cabanas.garcia.ismael.meetup.shared.application.CommandHandler
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
-import cabanas.garcia.ismael.meetup.shared.infrastructure.service.DateProvider
 
 class BuySubscriptionCommandHandler(
     private val repository: SubscriptionPaymentRepository,
-    private val dateProvider: DateProvider,
     private val eventBus: EventBus
 ) : CommandHandler<BuySubscriptionCommand> {
     override fun handle(command: BuySubscriptionCommand) {
@@ -23,7 +21,7 @@ class BuySubscriptionCommandHandler(
             SubscriptionType.valueOf(command.type),
             SubscriptionPeriod.valueOf(command.period),
             Money(command.value),
-            dateProvider.now()
+            command.date
         ).let {
             repository.add(it)
                 .apply {

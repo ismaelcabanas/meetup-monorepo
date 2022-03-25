@@ -12,8 +12,6 @@ import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.Subscrip
 import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.event.SubscriptionPaymentCreated
 import cabanas.garcia.ismael.meetup.payments.domain.subscriptionpayments.FakerSubscriptionPaymentRepository
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
-import cabanas.garcia.ismael.meetup.shared.infrastructure.service.DateProvider
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import java.time.Instant
@@ -26,13 +24,10 @@ class BuySubscriptionCommandHandlerShould {
 
     private var repository: SubscriptionPaymentRepository = FakerSubscriptionPaymentRepository()
     private var eventBus: EventBus = mockk(relaxed = true)
-    private var dateProvider: DateProvider = mockk()
 
     @BeforeEach
     fun setUp() {
-        every { dateProvider.now() } returns Instant.parse(SOME_DATE)
-
-        commandHandler = BuySubscriptionCommandHandler(repository, dateProvider, eventBus)
+        commandHandler = BuySubscriptionCommandHandler(repository, eventBus)
     }
 
     @Test
@@ -58,13 +53,17 @@ class BuySubscriptionCommandHandlerShould {
 
     @Test
     fun `GIVEN a valid buy subscription command WHEN execute command handler THEN subscription payment created event is published`() {
-        val command = BuySubscriptionCommandMother.random()
+        val command = BuySubscriptionCommandMother.random(
+            date = Instant.parse(SOME_DATE)
+        )
         val expectedEvent = SubscriptionPaymentCreated(
             command.paymentId,
             command.payerId,
+            SubscriptionPaymentStatus.WAITING_FOR_PAYMENT.value,
             command.type,
             command.period,
-            command.value
+            command.value,
+            command.date
         )
 
         commandHandler.handle(command)

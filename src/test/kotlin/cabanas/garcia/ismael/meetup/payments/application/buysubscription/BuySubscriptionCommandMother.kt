@@ -10,7 +10,7 @@ object BuySubscriptionCommandMother {
         payerId: String? = MotherCreator.faker().internet().uuid(),
         type: String? = listOf("STANDARD", "PREMIUM").asSequence().shuffled().take(1).first(),
         value: Double? = MotherCreator.faker().number().randomDouble(2, 1, 100),
-        period: String? = listOf("MONTH", "ANNUAL").asSequence().shuffled().take(1).first(),
+        period: String? = listOf("MONTHLY", "ANNUAL").asSequence().shuffled().take(1).first(),
         date: Instant? = Instant.now()
     ): BuySubscriptionCommand =
         BuySubscriptionCommand(

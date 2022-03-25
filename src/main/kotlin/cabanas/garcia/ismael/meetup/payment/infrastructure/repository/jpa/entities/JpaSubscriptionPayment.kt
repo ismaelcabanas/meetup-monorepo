@@ -16,9 +16,9 @@ data class JpaSubscriptionPayment (
     @Column(nullable = false)
     val payerId: UUID,
     @Column(length = 50, nullable = false)
-    val type: String,
-    @Column(length = 50, nullable = false)
     val status: String,
+    @Column(length = 50, nullable = false)
+    val type: String,
     @Column(length = 50, nullable = false)
     val period: String,
     @Column(nullable = false)

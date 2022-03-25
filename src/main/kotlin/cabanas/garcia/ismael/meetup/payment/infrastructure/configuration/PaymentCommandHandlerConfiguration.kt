@@ -5,8 +5,6 @@ import cabanas.garcia.ismael.meetup.payment.application.createpayer.CreatePayerC
 import cabanas.garcia.ismael.meetup.payment.domain.PayerRepository
 import cabanas.garcia.ismael.meetup.payment.domain.subscriptionpayments.SubscriptionPaymentRepository
 import cabanas.garcia.ismael.meetup.shared.domain.service.EventBus
-import cabanas.garcia.ismael.meetup.shared.infrastructure.service.DateProvider
-import java.time.Instant
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -18,5 +16,5 @@ class PaymentCommandHandlerConfiguration {
 
     @Bean
     fun buySubscriptionCommandHandler(repository: SubscriptionPaymentRepository, eventBus: EventBus) =
-        BuySubscriptionCommandHandler(repository, { Instant.now() }, eventBus)
+        BuySubscriptionCommandHandler(repository, eventBus)
 }

@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.meetup.payment.api.v1.BuySubscriptionRequest
 import cabanas.garcia.ismael.meetup.shared.MotherCreator
 import io.restassured.http.ContentType
 import io.restassured.module.mockmvc.RestAssuredMockMvc
+import java.sql.Timestamp
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -87,7 +88,7 @@ class SubscriptionsAcceptanceTest : BaseAcceptanceTest() {
                 .column("PAYER_ID").value().isEqualTo(data.payerId)
                 .column("TYPE").value().isEqualTo(data.type)
                 .column("PERIOD").value().isEqualTo(data.period)
-                .column("START_DATE").value().isEqualTo(data.date)
+                .column("START_DATE").value().isEqualTo(Timestamp.from(data.date))
                 .column("MONEY_VALUE").value().isEqualTo(data.price)
                 .column("STATUS").value().isEqualTo("WAITING_FOR_PAYMENT")
         }
